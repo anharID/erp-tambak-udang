@@ -114,6 +114,7 @@ app()->getLocale()) }}">
         $(document).ready(function() {
             $('.datatable').DataTable();
         });
+
     </script>
 </body>
 
