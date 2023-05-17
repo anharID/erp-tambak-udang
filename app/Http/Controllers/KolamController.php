@@ -81,6 +81,7 @@ class KolamController extends Controller
     public function edit(Kolam $kolam)
     {
         //
+        return view('dashboard.tambak-udang.kolam.edit', compact('kolam'));
     }
 
     /**
@@ -93,6 +94,23 @@ class KolamController extends Controller
     public function update(Request $request, Kolam $kolam)
     {
         //
+        $request->validate([
+            'nama' => ['required', 'string', 'max:255'],
+            'lokasi' => ['required', 'string', 'max:255'],
+            'tipe' => ['required', 'string', 'max:255'],
+            'luas' => ['required', 'numeric', 'max:255'],
+            'kedalaman' => ['required', 'numeric', 'max:255'],
+        ]);
+
+        Kolam::where('id', $kolam->id)->update([
+            'nama' => $request->nama,
+            'lokasi' => $request->lokasi,
+            'tipe' => $request->tipe,
+            'luas' => $request->luas,
+            'kedalaman' => $request->kedalaman
+        ]);
+
+        return redirect()->route('kolam.index')->with('success', "Data berhasil diperbarui");
     }
 
     /**
@@ -104,5 +122,8 @@ class KolamController extends Controller
     public function destroy(Kolam $kolam)
     {
         //
+        $kolam->delete();
+
+        return redirect()->route('kolam.index')->with('success', "Kolam berhasil dihapus");
     }
 }

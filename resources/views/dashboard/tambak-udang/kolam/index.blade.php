@@ -39,7 +39,7 @@
                                         <form action="{{ route('kolam.destroy', $row->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus user ini?')" class="text-red-600">Hapus Data</button>
+                                            <button type="submit" onclick="return confirm('Aksi ini tidak dapat dibatalkan! Apakah Anda yakin ingin menghapus kolam ini? ')" class="text-red-600">Hapus Data</button>
                                         </form>
                                     </td>
                                 </tr>
