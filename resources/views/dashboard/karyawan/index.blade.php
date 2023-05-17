@@ -25,6 +25,7 @@
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Jabatan</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Gaji</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700">
@@ -35,7 +36,11 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->no_hp }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->email }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->jabatan }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->status }}</td>
+                                    @if ($row->status)
+                                    <td class="px-6 py-4 whitespace-nowrap">Bekerja</td>
+                                    @else
+                                    <td class="px-6 py-4 whitespace-nowrap">Cuti</td>
+                                    @endif
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->gaji }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <a href="{{ route('karyawan.edit', $row->id) }}" class="text-yellow-600">Edit</a>

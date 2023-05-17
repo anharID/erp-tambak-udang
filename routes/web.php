@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\KaryawanController;
+use App\Http\Controllers\KolamController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +32,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('/dashboard/users', UserController::class);
     Route::resource('/dashboard/karyawan', KaryawanController::class);
+    Route::resource('/dashboard/kolam', KolamController::class);
 });
 
 require __DIR__ . '/auth.php';
