@@ -38,8 +38,8 @@
                                     Admin</option>
                                 <option value="direktur" {{ $user->role == 'direktur' ? 'selected' : '' }}>Direktur
                                 </option>
-                                <option value="manejer_keuangan" {{ $user->role == 'manejer_keuangan' ? 'selected' : ''
-                                    }}>Manejer Keuangan</option>
+                                <option value="manajer keuangan" {{ $user->role == 'manajer keuangan' ? 'selected' : ''
+                                    }}>Manajer Keuangan</option>
                                 <option value="teknisi" {{ $user->role == 'teknisi' ? 'selected' : '' }}>Teknisi
                                 </option>
                                 <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
@@ -76,7 +76,7 @@
     <option disabled selected>Pilih satu opsi</option>
     <option value="superadmin">Super Admin</option>
     <option value="direktur">Direktur</option>
-    <option value="manejer_keuangan">Manejer Keuangan</option>
+    <option value="manajer keuangan">Manajer Keuangan</option>
     <option value="teknisi">Teknisi</option>
     <option value="admin">Admin</option>
 </select> --}}

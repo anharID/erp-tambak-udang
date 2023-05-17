@@ -31,7 +31,7 @@
                 <option value="">Pilih satu opsi</option>
                 <option value="superadmin">Super Admin</option>
                 <option value="direktur">Direktur</option>
-                <option value="manejer_keuangan">Manejer Keuangan</option>
+                <option value="manajer keuangan">Manajer Keuangan</option>
                 <option value="teknisi">Teknisi</option>
                 <option value="admin">Admin</option>
             </select>
