@@ -69,7 +69,11 @@ class KolamController extends Controller
      */
     public function show(Kolam $kolam)
     {
-        //
+
+        // Ambil siklus saat ini
+        $siklusSaatIni = $kolam->siklus()->whereNull('tanggal_selesai')->first();
+
+        return view('dashboard.tambak-udang.kolam.show', compact('kolam', 'siklusSaatIni'));
     }
 
     /**

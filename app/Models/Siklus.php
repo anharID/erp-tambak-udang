@@ -2,17 +2,17 @@
 
 namespace App\Models;
 
-use App\Models\Siklus;
+use App\Models\Kolam;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Kolam extends Model
+class Siklus extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
-    protected $table = 'kolam';
+    protected $table = 'siklus';
 
-    public function siklus(){
-        return $this->hasMany(Siklus::class);
+    public function kolam(){
+        return $this->belongsTo(Kolam::class, 'kolam_id');
     }
 }

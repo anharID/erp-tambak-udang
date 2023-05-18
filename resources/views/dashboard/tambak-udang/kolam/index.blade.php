@@ -29,7 +29,7 @@
                             <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700">
                                 @foreach($kolam as $row)
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->nama }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap"><a href="{{ route('kolam.show', $row->id) }}">{{ $row->nama }}</a></td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->lokasi }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->tipe }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->luas }}</td>
