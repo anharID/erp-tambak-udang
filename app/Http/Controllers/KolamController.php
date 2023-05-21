@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kolam;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class KolamController extends Controller
 {
@@ -57,8 +58,6 @@ class KolamController extends Controller
         ]);
 
         return redirect()->route('kolam.index')->with('success', "Data berhasil ditambahkan");
-
-
     }
 
     /**
@@ -71,9 +70,23 @@ class KolamController extends Controller
     {
 
         // Ambil siklus saat ini
-        $siklusSaatIni = $kolam->siklus()->whereNull('tanggal_selesai')->first();
+        $siklusSaatIni = $kolam->siklus->whereNull('tanggal_selesai')->first();
 
-        return view('dashboard.tambak-udang.kolam.show', compact('kolam', 'siklusSaatIni'));
+        if ($siklusSaatIni) {
+            // Ubah tanggal mulai menjadi objek Carbon
+            $tanggalMulai = Carbon::parse($siklusSaatIni->tanggal_mulai);
+
+            // Hitung DOC saat ini
+            $tanggalSaatIni = Carbon::now();
+            $docSaatIni = $tanggalMulai->diffInDays($tanggalSaatIni);
+
+            //update ke tabel siklus
+            $siklusSaatIni->update(['doc' => $docSaatIni]);
+        } else {
+            $docSaatIni = null;
+        }
+
+        return view('dashboard.tambak-udang.kolam.show', compact('kolam', 'siklusSaatIni', 'docSaatIni'));
     }
 
     /**
@@ -125,7 +138,6 @@ class KolamController extends Controller
      */
     public function destroy(Kolam $kolam)
     {
-        //
         $kolam->delete();
 
         return redirect()->route('kolam.index')->with('success', "Kolam berhasil dihapus");

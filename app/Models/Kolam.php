@@ -12,7 +12,13 @@ class Kolam extends Model
     protected $guarded = ['id'];
     protected $table = 'kolam';
 
-    public function siklus(){
+    public function siklus()
+    {
         return $this->hasMany(Siklus::class);
+    }
+
+    public function monitoring()
+    {
+        return $this->hasMany(Monitoring::class);
     }
 }
