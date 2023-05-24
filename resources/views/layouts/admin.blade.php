@@ -104,7 +104,7 @@ app()->getLocale()) }}">
                 </div>
             </header>
 
-            <main class="h-full overflow-y-auto">
+            <main class="h-full overflow-y-auto bg-gray-100 dark:bg-gray-900">
                 {{ $slot }}
             </main>
 

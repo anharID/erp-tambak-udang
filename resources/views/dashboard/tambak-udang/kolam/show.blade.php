@@ -1,29 +1,113 @@
 <x-admin>
     <div class="container grid py-12">
         <div class="w-full mx-auto px-4 sm:px-6 lg:px-8 text-gray-900 dark:text-gray-100 overflow-hidden">
-            <h1 class="mb-4 font-bold text-2xl">Kolam {{ $kolam->nama }}</h1>
-            @if ($siklusSaatIni)
-            <span class="p-1 bg-blue-300 text-sm rounded-lg dark:bg-blue-500">DoC : {{ $docSaatIni }}</span>
-            <div class="my-4 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="w-full p-6">
 
-                    {{-- Alert  --}}
-                    @if(session('success'))
-                    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4" role="alert">
-                        <p class="font-bold">Success</p>
-                        <p>{{ session('success') }}</p>
+            {{-- Alert --}}
+            @if(session('success'))
+            <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4" role="alert">
+                <p class="font-bold">Success</p>
+                <p>{{ session('success') }}</p>
+            </div>
+            @endif
+
+            {{-- Nama Kolam --}}
+            <div>
+                <h1 class="mb-4 font-bold text-2xl">Kolam {{ $kolam->nama }}</h1>
+            </div>
+
+            {{-- Informasi siklus dan kolam --}}
+            <div class="grid gap-6 my-8 md:grid-cols-2">
+                <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
+                    <h1 class="text-2xl font-bold mb-1">Siklus</h1>
+
+                    @if ($kolam->siklus->count()>0)
+                    <h2>Pilih Siklus</h2>
+                    <select onchange="location = this.value;">
+                        <option value="" selected disabled>Silahkan Pilih Siklus</option>
+                        @if ($siklusSaatIni)
+                        <option value="{{ route('data_kolam', ['kolam'=>$kolam->id, 'siklus'=>$siklusSaatIni->id]) }}">
+                            Siklus Aktif - {{ $siklusSaatIni->tanggal_mulai }}</option>
+                        @endif
+                        @foreach ($siklusSelesai as $item)
+                        <option value="{{ route('data_kolam', [$kolam->id, $item->id]) }}">Siklus {{
+                            $item->tanggal_mulai }}</option>
+                        @endforeach
+                    </select>
+
+                    @if ( $siklusTerpilih || $siklusTerpilih->id = $siklusSaatIni->id)
+                    <p>Tanggal Mulai : {{ $siklusTerpilih->tanggal_mulai }}</p>
+                    <p>Doc : {{ $siklusTerpilih->doc }}</p>
+                    <p>Total Tebar : {{ $siklusTerpilih->total_tebar }}</p>
+                    @if ($siklusSaatIni)
+                    <form action="{{ route('tutup_siklus', ['kolamId' => $kolam->id]) }}" method="POST">
+                        @csrf
+                        <button type="submit"
+                            class="my-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded "
+                            onclick="return confirm('Apakah Anda yakin ingin menutup siklus saat ini?')">Tutup
+                            Siklus</button>
+                    </form>
+                    @else
+                    <p class="text-red-500 mb-4">siklus telah selesai</p>
+                    <a href="{{ route('tambah_siklus', ['kolamId' => $kolam->id]) }}"
+                        class=" px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+                        Buat Siklus Kolam
+                    </a>
+                    @endif
+                    @endif
+
+                    @else
+                    <div class="m-4 flex flex-col items-center justify-center">
+                        <h1 class="text-lg font-bold mb-4">Tidak ada siklus yang berjalan</h1>
+                        <a href="{{ route('tambah_siklus', ['kolamId' => $kolam->id]) }}"
+                            class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+                            Buat Siklus Kolam
+                        </a>
                     </div>
                     @endif
 
 
-                    <h3>Siklus Saat Ini</h3>
-                    <p>Tanggal Mulai: {{ $siklusSaatIni->tanggal_mulai }}</p>
-                    <p>Doc : {{ $docSaatIni }}</p>
+
+                    {{-- @if ($siklusSaatIni)
+
+
+                    @else
+                    <div class="m-4 flex flex-col items-center justify-center">
+                        <h1 class="text-lg font-bold mb-4">Tidak ada siklus yang berjalan</h1>
+
+                    </div>
+
+                    @endif --}}
+
+                </div>
+
+                <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
+                    <h1 class="text-2xl font-bold mb-1">Profil Kolam</h1>
+                    <p>Nama Kolam : {{ $kolam->nama }}</p>
+                    <p>Lokasi : {{ $kolam->lokasi }}</p>
+                    <p>Luas : {{ $kolam->luas }}</p>
+                    <p>Kedalaman : {{ $kolam->kedalaman }}</p>
                 </div>
             </div>
 
+            {{-- Fitur Manajemen Kolam --}}
+            @if ($kolam->siklus->count()>0)
             <h1 class="mb-4 font-bold text-2xl">Fitur Manajemen Kolam</h1>
             <div class="grid gap-6 mb-8 md:grid-cols-2">
+                <a href="{{ route('monitoring', ['kolamId' => $kolam->id]) }}"
+                    class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
+                    <h1 class="text-2xl font-bold">Monitoring</h1>
+                    <div class="grid">
+                        @if ($monitoring->isNotEmpty())
+                        <div class="grid-cols-3/4">
+                            <p>Suhu: {{ $monitoring->last()->suhu }}</p>
+                            <p>PH: {{ $monitoring->last()->ph }}</p>
+                            <p>DO: {{ $monitoring->last()->do }}</p>
+                        </div>
+                        @else
+                        <p>Belum ada catatan monitoring.</p>
+                        @endif
+                    </div>
+                </a>
                 <a href="" class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
                     <h1 class="text-2xl font-bold">Pakan</h1>
                     <div class="grid">
@@ -35,20 +119,7 @@
                         </div>
                     </div>
                 </a>
-                <a href="{{ route('monitoring', ['kolamId' => $kolam->id]) }}" class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
-                    <h1 class="text-2xl font-bold">Monitoring</h1>
-                    <div class="grid">
-                        @if ($kolam->monitoring->isNotEmpty())
-                        <div class="grid-cols-3/4">
-                            <p>Suhu: {{ $kolam->monitoring->last()->suhu }}</p>
-                            <p>PH: {{ $kolam->monitoring->last()->ph }}</p>
-                            <p>DO: {{ $kolam->monitoring->last()->do }}</p>
-                        </div>
-                        @else
-                        <p>Belum ada catatan monitoring.</p>
-                        @endif
-                    </div>
-                </a>
+
                 <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
                     <h1>Sampling</h1>
                 </div>
@@ -62,20 +133,6 @@
                     <h1>Energi</h1>
                 </div>
             </div>
-
-            @else
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="w-full p-6">
-                    <div class="m-4 flex flex-col items-center justify-center">
-                        <h1 class="text-lg font-bold mb-4">Tidak ada siklus yang berjalan</h1>
-                        <a href="{{ route('tambah_siklus', ['kolamId' => $kolam->id]) }}" class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                            Buat Siklus Kolam
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-
             @endif
         </div>
     </div>
