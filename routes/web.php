@@ -31,14 +31,19 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    //Silus
+
+
+    //Siklus
     Route::get('/dashboard/kolam/{kolamId}/tambah-siklus', [SiklusController::class, 'create'])->name('tambah_siklus');
     Route::post('/dashboard/kolam/{kolamId}/tambah-siklus/store', [SiklusController::class, 'addSiklus'])->name('store_siklus');
+    Route::post('/dashboard/kolam/{kolamId}/tutup-siklus', [SiklusController::class, 'tutupSiklus'])->name('tutup_siklus');
 
     //Monitoring
     Route::get('/dashboard/kolam/{kolamId}/monitoring', [MonitoringController::class, 'index'])->name('monitoring');
     Route::get('/dashboard/kolam/{kolamId}/monitoring/create', [MonitoringController::class, 'create'])->name('monitoring.create');
     Route::post('/dashboard/kolam/{kolamId}/monitoring/store', [MonitoringController::class, 'store'])->name('monitoring.store');
+
+    Route::get('/dashboard/kolam/{kolam}/{siklus}', [KolamController::class, 'dataKolam'])->name('data_kolam');
 
     Route::resource('/dashboard/users', UserController::class);
     Route::resource('/dashboard/karyawan', KaryawanController::class);

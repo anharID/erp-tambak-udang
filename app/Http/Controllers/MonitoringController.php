@@ -13,28 +13,15 @@ class MonitoringController extends Controller
     {
         $kolam = Kolam::findOrFail($kolamId);
 
-        $siklusSaatIni = $kolam->siklus->whereNull('tanggal_selesai')->first();
-
-        $monitoring = $kolam->monitoring()->get();
+        $siklusSaatIni = $kolam->siklus()->whereNull('tanggal_selesai')->first();
 
         if ($siklusSaatIni) {
-            // Ubah tanggal mulai menjadi objek Carbon
-            $tanggalMulai = Carbon::parse($siklusSaatIni->tanggal_mulai);
-
-            // Hitung DOC saat ini
-            $tanggalSaatIni = Carbon::now();
-            $docSaatIni = $tanggalMulai->diffInDays($tanggalSaatIni);
-
-            //update ke tabel siklus
-            $siklusSaatIni->update(['doc' => $docSaatIni]);
-
+            $monitoring = $kolam->monitoring()->get();
             $monitoringsAktif = $siklusSaatIni->monitoring;
-        } else {
-            $monitoringsAktif = null;
+
+            return view('dashboard.tambak-udang.monitoring.index', compact('kolam', 'siklusSaatIni', 'monitoringsAktif'));
         }
-
-
-        return view('dashboard.tambak-udang.monitoring.index', compact('kolam', 'siklusSaatIni', 'docSaatIni', 'monitoring'));
+        return view('dashboard.tambak-udang.monitoring.index', compact('kolam', 'siklusSaatIni'));
     }
 
     public function create($kolamId)
@@ -59,6 +46,8 @@ class MonitoringController extends Controller
         ]);
 
         $kolam = Kolam::findOrFail($kolamId);
+
+        $siklusSaatIni = $kolam->siklus()->whereNull('tanggal_selesai')->first();
 
         $user = auth()->user();
 
@@ -91,6 +80,7 @@ class MonitoringController extends Controller
         $monitoring->waktu_pengukuran = $validation['waktu_pengukuran'];
 
         $monitoring->user()->associate($user);
+        $monitoring->siklus()->associate($siklusSaatIni);
 
         $kolam->monitoring()->save($monitoring);
 

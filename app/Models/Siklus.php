@@ -12,7 +12,18 @@ class Siklus extends Model
     protected $guarded = ['id'];
     protected $table = 'siklus';
 
-    public function kolam(){
+    public function kolam()
+    {
         return $this->belongsTo(Kolam::class, 'kolam_id');
     }
+
+    public function monitoring()
+    {
+        return $this->hasMany(Monitoring::class);
+    }
+
+    // public function getRouteKeyName()
+    // {
+    //     return 'tanggal_mulai';
+    // }
 }

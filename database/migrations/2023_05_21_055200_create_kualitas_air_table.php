@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('kualitas_air', function (Blueprint $table) {
             $table->id();
             $table->foreignId('kolam_id');
+            $table->foreignId('siklus_id');
             $table->foreignId('user_id');
             $table->float('suhu');
             $table->float('ph');

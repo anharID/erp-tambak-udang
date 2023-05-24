@@ -21,4 +21,8 @@ class Monitoring extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function siklus()
+    {
+        return $this->belongsTo(Siklus::class);
+    }
 }
