@@ -5,19 +5,19 @@
             <div class="grid gap-6 mb-8 md:grid-cols-2">
                 <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
                     <p class="text-base mb-2">Saldo Hari Ini</p>
-                    <p class="text-2xl">{{ 'Rp ' . number_format($finansial->last()->total_saldo, 2, ',', '.') }}</p>
+                    <p class="text-2xl">{{ 'Rp ' . number_format($finansial->last()->total_saldo ?? 0, 2, ',', '.') }}</p>
                 </div>
                 <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
                     <p class="text-base mb-2">Laba/Rugi</p>
-                    <p class="text-2xl">{{ 'Rp ' . number_format($totalPemasukan-$totalPengeluaran, 2, ',', '.') }}</p>
+                    <p class="text-2xl">{{ 'Rp ' . number_format($totalPemasukan-$totalPengeluaran ?? 0, 2, ',', '.') }}</p>
                 </div>
                 <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
                     <p class="text-base mb-2">Pemasukan</p>
-                    <p class="text-2xl">{{ 'Rp ' . number_format($totalPemasukan, 2, ',', '.') }}</p>
+                    <p class="text-2xl">{{ 'Rp ' . number_format($totalPemasukan ?? 0, 2, ',', '.') }}</p>
                 </div>
                 <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
                     <p class="text-base mb-2">Pengeluaran</p>
-                    <p class="text-2xl">{{ 'Rp ' . number_format($totalPengeluaran, 2, ',', '.') }}</p>
+                    <p class="text-2xl">{{ 'Rp ' . number_format($totalPengeluaran ?? 0, 2, ',', '.') }}</p>
                 </div>
             </div>
             <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg">
