@@ -2,70 +2,58 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 text-gray-900 dark:text-gray-100">
-            <h1 class="mb-4 text-xl font-bold">Tambah Karyawan</h1>
+            <h1 class="mb-4 text-xl font-bold">Tambah Catatan Finansial</h1>
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 ">
-                    <form method="POST" action="{{ route('karyawan.store') }}">
+                    <form method="POST" action="{{ route('finansial.store') }}">
                         @csrf
 
-                        <!-- Nama -->
+                        <!-- Tanggal -->
                         <div>
-                            <x-input-label for="nama" :value="__('Nama')" />
-                            <x-text-input id="nama" class="block mt-1 w-full" type="text" name="nama" :value="old('nama')" required autofocus autocomplete="nama" />
-                            <x-input-error :messages="$errors->get('nama')" class="mt-2" />
+                            <x-input-label for="tanggal" :value="__('Tanggal')" />
+                            <x-text-input id="tanggal" class="block mt-1 w-full" type="date" name="tanggal" :value="old('tanggal')" required autofocus autocomplete="tanggal" />
+                            <x-input-error :messages="$errors->get('tanggal')" class="mt-2" />
                         </div>
 
-                        <!-- Alamat -->
+                        <!-- Jenis Transaksi -->
                         <div class="mt-4">
-                            <x-input-label for="alamat" :value="__('Alamat')" />
-                            <x-text-input id="alamat" class="block mt-1 w-full" type="text" name="alamat" :value="old('alamat')" required autocomplete="alamat" />
-                            <x-input-error :messages="$errors->get('alamat')" class="mt-2" />
-                        </div>
-
-                        <!-- Nomor HP -->
-                        <div class="mt-4">
-                            <x-input-label for="no_hp" :value="__('Nomor HP')" />
-                            <x-text-input id="no_hp" class="block mt-1 w-full" type="text" name="no_hp" :value="old('no_hp')" required autocomplete="no_hp" />
-                            <x-input-error :messages="$errors->get('no_hp')" class="mt-2" />
-                        </div>
-
-                        <!-- Email -->
-                        <div class="mt-4">
-                            <x-input-label for="email" :value="__('Email Address')" />
-                            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="email" />
-                            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-                        </div>
-
-                        <!-- Jabatan -->
-                        <div class="mt-4">
-                            <x-input-label for="jabatan" :value="__('Jabatan')" />
-                            <select name="jabatan" class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2">
+                            <x-input-label for="jenis_transaksi" :value="__('Jenis Transaksi')" />
+                            <select name="jenis_transaksi" class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2">
                                 <option value="" disabled selected>Pilih satu opsi</option>
-                                <option value="superadmin">Super Admin</option>
-                                <option value="direktur">Direktur</option>
-                                <option value="manajer keuangan">Manajer Keuangan</option>
-                                <option value="teknisi">Teknisi</option>
-                                <option value="admin">Admin</option>
+                                <option value="Pemasukan">Pemasukan</option>
+                                <option value="Pengeluaran">Pengeluaran</option>
+                                <option value="Gaji Karyawan">Gaji Karyawan</option>
                             </select>
 
-                            <x-input-error :messages="$errors->get('jabatan')" class="mt-2" />
+                            <x-input-error :messages="$errors->get('jenis_transaksi')" class="mt-2" />
                         </div>
 
-                        <!-- Status -->
+                        <!-- Keterangan -->
+                        <div class="mt-4">
+                            <x-input-label for="keterangan" :value="__('Keterangan')" />
+                            <x-text-input id="keterangan" class="block mt-1 w-full" type="text" name="keterangan" :value="old('keterangan')" required autocomplete="keterangan" />
+                            <x-input-error :messages="$errors->get('keterangan')" class="mt-2" />
+                        </div>
+
+                        <!-- Jumlah -->
+                        <div class="mt-4">
+                            <x-input-label for="jumlah" :value="__('Jumlah')" />
+                            <x-text-input id="jumlah" class="block mt-1 w-full" type="number" name="jumlah" min="0" :value="old('jumlah')" required autocomplete="jumlah" />
+                            <x-input-error :messages="$errors->get('jumlah')" class="mt-2" />
+                        </div>
+
+                        <!-- Catatan-->
+                        <div class="mt-4">
+                            <x-input-label for="catatan" :value="__('Catatan')" />
+                            <x-text-input id="catatan" class="block mt-1 w-full" type="text" name="catatan" :value="old('catatan')" required autocomplete="catatan" />
+                            <x-input-error :messages="$errors->get('catatan')" class="mt-2" />
+                        </div>
+
+                        <!-- Status-->
                         <div class="mt-4">
                             <x-input-label for="status" :value="__('Status')" />
-                            <input type="radio" id="cuti" name="status" value="0" class="form-radio h-3 w-3 mx-1">
-                            <x-input-label for="cuti" class="inline font-normal">Cuti</x-input-label><br>
-                            <input type="radio" id="bekerja" name="status" value="1" class="form-radio h-3 w-3 mx-1">
-                            <x-input-label for="cuti" class="inline font-normal" for="bekerja">Bekerja</x-input-label><br>
+                            <x-text-input id="status" class="block mt-1 w-full" type="text" name="status" :value="old('status')" required autocomplete="status" />
                             <x-input-error :messages="$errors->get('status')" class="mt-2" />
-                        </div>
-
-                        <!-- Gaji -->
-                        <div class="mt-4">
-                            <x-input-label for="gaji" :value="__('Gaji')" />
-                            <x-text-input id="gaji" class="block mt-1 w-full" type="number" name="gaji" min="0" :value="old('gaji')" required autocomplete="gaji" />
-                            <x-input-error :messages="$errors->get('gaji')" class="mt-2" />
                         </div>
 
                         <div class="flex items-center justify-end mt-4">

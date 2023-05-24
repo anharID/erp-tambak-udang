@@ -2,11 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\KolamController;
+use App\Http\Controllers\SiklusController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\KaryawanController;
-use App\Http\Controllers\KolamController;
+use App\Http\Controllers\FinansialController;
 use App\Http\Controllers\MonitoringController;
-use App\Http\Controllers\SiklusController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('/dashboard/users', UserController::class);
     Route::resource('/dashboard/karyawan', KaryawanController::class);
+    Route::resource('/dashboard/finansial', FinansialController::class);
     Route::resource('/dashboard/kolam', KolamController::class);
 });
 
