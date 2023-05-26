@@ -4,34 +4,34 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Kolam;
+use App\Models\Siklus;
 use App\Models\Monitoring;
 use Illuminate\Http\Request;
 
 class MonitoringController extends Controller
 {
-    public function index($kolamId)
+    public function index($kolamId, $siklusId)
     {
         $kolam = Kolam::findOrFail($kolamId);
+        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
 
-        $siklusSaatIni = $kolam->siklus()->whereNull('tanggal_selesai')->first();
+        $siklusTerpilih = $siklus->monitoring;
 
-        if ($siklusSaatIni) {
-            $monitoring = $kolam->monitoring()->get();
-            $monitoringsAktif = $siklusSaatIni->monitoring;
+        $siklusBerjalan = ($siklus->tanggal_selesai === null);
 
-            return view('dashboard.tambak-udang.monitoring.index', compact('kolam', 'siklusSaatIni', 'monitoringsAktif'));
-        }
-        return view('dashboard.tambak-udang.monitoring.index', compact('kolam', 'siklusSaatIni'));
+        return view('dashboard.tambak-udang.monitoring.index', compact('kolam', 'siklus', 'siklusTerpilih', 'siklusBerjalan'));
     }
 
-    public function create($kolamId)
+    public function create($kolamId, $siklusId)
     {
 
         $kolam = Kolam::findOrFail($kolamId);
-        return view('dashboard.tambak-udang.monitoring.create', compact('kolam'));
+        $siklus = Siklus::findOrFail($siklusId);
+
+        return view('dashboard.tambak-udang.monitoring.create', compact('kolam', 'siklus'));
     }
 
-    public function store(Request $request, $kolamId)
+    public function store(Request $request, $kolamId, $siklusId)
     {
         $validation = $request->validate([
             'suhu' => 'required|numeric',
@@ -50,20 +50,6 @@ class MonitoringController extends Controller
         $siklusSaatIni = $kolam->siklus()->whereNull('tanggal_selesai')->first();
 
         $user = auth()->user();
-
-        // $kolam->monitoring()->create([
-        //     $validation['suhu'],
-        //     $validation['ph'],
-        //     $validation['do'],
-        //     $validation['salinitas'],
-        //     $validation['kecerahan'],
-        //     $validation['tinggi_air'],
-        //     $validation['warna_air'],
-        //     $request->nitrit,
-        //     $request->amonia,
-        //     $validation['tanggal'],
-        //     $validation['waktu_pengukuran'],
-        // ]);
 
         $monitoring = new Monitoring();
 
@@ -84,6 +70,62 @@ class MonitoringController extends Controller
 
         $kolam->monitoring()->save($monitoring);
 
-        return redirect()->route('monitoring', $kolamId)->with('success', 'Data monitoring berhasil disimpan.');
+        return redirect()->route('monitoring', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data monitoring berhasil disimpan.');
+    }
+
+    public function edit($kolamId, $siklusId, $monitoringId)
+    {
+        $kolam = Kolam::findOrFail($kolamId);
+        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $monitoring = $siklus->monitoring()->findOrFail($monitoringId);
+
+        return view('dashboard.tambak-udang.monitoring.edit', compact('kolam', 'siklus', 'monitoring'));
+    }
+
+    public function update(Request $request, $kolamId, $siklusId, $monitoringId)
+    {
+        $request->validate([
+            'suhu' => 'required|numeric',
+            'ph' => 'required|numeric',
+            'do' => 'required|numeric',
+            'salinitas' => 'required|numeric',
+            'kecerahan' => 'required|numeric',
+            'tinggi_air' => 'required|numeric',
+            'warna_air' => 'required',
+            'tanggal' => 'required|date',
+            'waktu_pengukuran' => 'required',
+        ]);
+
+        $kolam = Kolam::findOrFail($kolamId);
+        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $monitoring = $siklus->monitoring()->findOrFail($monitoringId);
+
+        $monitoring->update([
+            'suhu' => $request->suhu,
+            'ph' => $request->ph,
+            'do' => $request->do,
+            'salinitas' => $request->salinitas,
+            'kecerahan' => $request->kecerahan,
+            'tinggi_air' => $request->tinggi_air,
+            'warna_air' => $request->warna_air,
+            'nitrit' => $request->nitrit,
+            'amonia' => $request->amonia,
+            'tanggal' => $request->tanggal,
+            'waktu_pengukuran' => $request->waktu_pengukuran,
+            'user_id' => auth()->user()->id,
+        ]);
+
+        return redirect()->route('monitoring', ['kolamId' => $kolam->id, 'siklus' => $siklus->id])->with('success', 'Data berhasil diubah');
+    }
+
+    public function destroy($kolamId, $siklusId, $monitoringId)
+    {
+        $kolam = Kolam::findOrFail($kolamId);
+        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $monitoring = $siklus->monitoring()->findOrFail($monitoringId);
+
+        $monitoring->delete();
+
+        return redirect()->route('monitoring', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data berhasil dihapus');
     }
 }

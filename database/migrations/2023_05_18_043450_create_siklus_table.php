@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('siklus', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('kolam_id');
+            $table->foreignId('kolam_id')->constrained('kolam');
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai')->nullable();
             $table->integer('total_tebar');
