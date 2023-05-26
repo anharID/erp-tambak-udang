@@ -145,7 +145,7 @@ class KolamController extends Controller
         // $siklusTerpilih = $kolam->siklus()->where('id', $siklus)->first(); 
         $siklusTerpilih = $kolam->siklus()->find($siklus);
 
-        $siklusId = $siklusSaatIni->id ?? null;
+        $siklusId = $siklusTerpilih->id ?? null;
         if (request()->has('siklus_id')) {
             $siklusId = request('siklus_id');
         }
