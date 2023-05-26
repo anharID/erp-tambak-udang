@@ -60,14 +60,49 @@ class FinansialController extends Controller
             'status' => ['required', 'string', 'max:255'],
         ]);
 
-        $finansial = Finansial::create([
-            'tanggal' => $request->tanggal,
-            'jenis_transaksi' => $request->jenis_transaksi,
-            'keterangan' => $request->keterangan,
-            'jumlah' => $request->jumlah,
-            'catatan' => $request->catatan,
-            'status' => $request->status,
-        ]);
+        $jenisTransaksi = $request->input('jenis_transaksi');
+        $finansial = new Finansial();
+
+        if ($jenisTransaksi === 'Gaji Karyawan') {
+            $karyawanID = $request->input('karyawan');
+            // Simpan data ke dalam tabel finansial
+            $finansial->karyawan_id = $karyawanID;
+            $finansial->tanggal = $request->tanggal;
+            $finansial->jenis_transaksi = $jenisTransaksi;
+            $finansial->jumlah = $request->jumlah;
+            $finansial->keterangan = $request->keterangan;
+            $finansial->catatan = $request->catatan;
+            $finansial->status = $request->status;
+            $finansial->save();
+        } else {
+            // Simpan data ke dalam tabel finansial
+            $finansial->tanggal = $request->input('tanggal');
+            $finansial->jenis_transaksi = $jenisTransaksi;
+            $finansial->jumlah = $request->input('jumlah');
+            $finansial->keterangan = $request->input('keterangan');
+            $finansial->catatan = $request->catatan;
+            $finansial->status = $request->status;
+            $finansial->save();
+        }
+
+        // $finansial->create([
+        //     'karyawan_id' => $karyawanID,
+        //     'tanggal' => $request->tanggal,
+        //     'jenis_transaksi' => $jenisTransaksi,
+        //     'jumlah' => $request->jumlah,
+        //     'keterangan' => $karyawan->nama,
+        //     'catatan' => $request->catatan,
+        //     'status' => $request->status,
+        // ]);
+
+        // $finansial = Finansial::create([
+        //     'tanggal' => $request->tanggal,
+        //     'jenis_transaksi' => $request->jenis_transaksi,
+        //     'keterangan' => $request->keterangan,
+        //     'jumlah' => $request->jumlah,
+        //     'catatan' => $request->catatan,
+        //     'status' => $request->status,
+        // ]);
 
         // Hitung total saldo berdasarkan transaksi sebelumnya
         $totalSaldoSebelumnya = 0;
@@ -114,7 +149,8 @@ class FinansialController extends Controller
      */
     public function edit(Finansial $finansial)
     {
-        return view("dashboard.finansial.edit", compact('finansial'));
+        $karyawan = Karyawan::all();
+        return view("dashboard.finansial.edit", compact('finansial', 'karyawan'));
     }
 
     /**
@@ -136,6 +172,29 @@ class FinansialController extends Controller
         ]);
 
         $data = $request->all();
+        $jenisTransaksi = $request->input('jenis_transaksi');
+
+        if ($jenisTransaksi === 'Gaji Karyawan') {
+            $karyawanID = $request->input('karyawan');
+            // Simpan data ke dalam tabel finansial
+            $finansial->karyawan_id = $karyawanID;
+            $finansial->tanggal = $request->tanggal;
+            $finansial->jenis_transaksi = $jenisTransaksi;
+            $finansial->jumlah = $request->jumlah;
+            $finansial->keterangan = $request->keterangan;
+            $finansial->catatan = $request->catatan;
+            $finansial->status = $request->status;
+            $finansial->save();
+        } else {
+            // Simpan data ke dalam tabel finansial
+            $finansial->tanggal = $request->input('tanggal');
+            $finansial->jenis_transaksi = $jenisTransaksi;
+            $finansial->jumlah = $request->input('jumlah');
+            $finansial->keterangan = $request->input('keterangan');
+            $finansial->catatan = $request->catatan;
+            $finansial->status = $request->status;
+            $finansial->save();
+        }
 
         // Hitung total saldo berdasarkan transaksi sebelumnya
         $totalSaldoSebelumnya = 0;
@@ -188,7 +247,6 @@ class FinansialController extends Controller
                     'total_saldo' => $totalSaldoBaru
                 ]);
             }
-            
         }
 
         return redirect()->route('finansial.index')->with('success', "Data Catatan Finansial Berhasil Diubah");
@@ -206,5 +264,4 @@ class FinansialController extends Controller
 
         return redirect()->route('finansial.index')->with('success', "Data Catatan Finansial Berhasil Dihapus");
     }
-    
 }

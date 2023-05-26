@@ -15,8 +15,10 @@ return new class extends Migration
     {
         Schema::create('finansial', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("karyawan_id")->nullable();
-            $table->foreignId("logistik_id")->nullable();
+            $table->unsignedBigInteger("karyawan_id")->nullable();
+            $table->foreign('karyawan_id')->references('id')->on('karyawan');
+            // $table->unsignedBigInteger("logistik_id")->nullable();
+            // $table->foreign('logistik_id')->references('id')->on('logistik');
             $table->string("keterangan");
             $table->string("jenis_transaksi");
             $table->integer("jumlah");
