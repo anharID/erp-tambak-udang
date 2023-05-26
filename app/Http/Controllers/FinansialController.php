@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Finansial;
+use App\Models\Karyawan;
 use Illuminate\Http\Request;
 
 class FinansialController extends Controller
@@ -38,7 +39,8 @@ class FinansialController extends Controller
      */
     public function create()
     {
-        return view("dashboard.finansial.create");
+        $karyawan = Karyawan::all();
+        return view("dashboard.finansial.create", compact('karyawan'));
     }
 
     /**
@@ -58,35 +60,35 @@ class FinansialController extends Controller
             'status' => ['required', 'string', 'max:255'],
         ]);
 
-        $data = $request->all();
-
-        // Hitung total saldo berdasarkan transaksi sebelumnya
-        $totalSaldoSebelumnya = 0;
-
-        // Cek apakah ada transaksi sebelumnya
-        $dataSebelumnya = Finansial::where('id', '<', $request->id)->orderBy('id', 'desc')->first();
-
-
-        if ($dataSebelumnya) {
-            $totalSaldoSebelumnya = $dataSebelumnya->total_saldo;
-        }
-
-        // Periksa jenis transaksi dan update total saldo
-        if ($data['jenis_transaksi'] === 'Pemasukan') {
-            $totalSaldo = $totalSaldoSebelumnya + $data['jumlah'];
-        } elseif ($data['jenis_transaksi'] === 'Pengeluaran' || $data['jenis_transaksi'] === 'Gaji Karyawan') {
-            $totalSaldo = $totalSaldoSebelumnya - $data['jumlah'];
-        } else {
-            $totalSaldo = $totalSaldoSebelumnya;
-        }
-
-        Finansial::create([
+        $finansial = Finansial::create([
             'tanggal' => $request->tanggal,
             'jenis_transaksi' => $request->jenis_transaksi,
             'keterangan' => $request->keterangan,
             'jumlah' => $request->jumlah,
             'catatan' => $request->catatan,
             'status' => $request->status,
+        ]);
+
+        // Hitung total saldo berdasarkan transaksi sebelumnya
+        $totalSaldoSebelumnya = 0;
+
+        // Cek apakah ada transaksi sebelumnya
+        $dataSebelumnya = Finansial::where('id', '<', $finansial->id)->orderBy('id', 'desc')->first();
+
+        if ($dataSebelumnya) {
+            $totalSaldoSebelumnya = $dataSebelumnya->total_saldo;
+        }
+
+        // Periksa jenis transaksi dan update total saldo
+        if ($request->jenis_transaksi === 'Pemasukan') {
+            $totalSaldo = $totalSaldoSebelumnya + $request->jumlah;
+        } elseif ($request->jenis_transaksi === 'Pengeluaran' || $request->jenis_transaksi === 'Gaji Karyawan') {
+            $totalSaldo = $totalSaldoSebelumnya - $request->jumlah;
+        } else {
+            $totalSaldo = $totalSaldoSebelumnya;
+        }
+
+        $finansial->update([
             'total_saldo' => $totalSaldo
         ]);
 
@@ -204,4 +206,5 @@ class FinansialController extends Controller
 
         return redirect()->route('finansial.index')->with('success', "Data Catatan Finansial Berhasil Dihapus");
     }
+    
 }
