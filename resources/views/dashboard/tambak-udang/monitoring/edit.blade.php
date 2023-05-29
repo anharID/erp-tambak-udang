@@ -9,6 +9,23 @@
                         @csrf
                         @method('put')
                         <div class="grid gap-4 mb-4 md:grid-cols-2">
+                            <!-- Tanggal -->
+                            <div>
+                                <x-input-label for="tanggal" :value="__('Tanggal')" />
+                                <x-text-input id="tanggal" class="block mt-1 w-full" type="date" name="tanggal"
+                                    :value="$monitoring->tanggal ?? old('tanggal')" required autofocus
+                                    autocomplete="tanggal" />
+                                <x-input-error :messages="$errors->get('tanggal')" class="mt-2" />
+                            </div>
+                            <!-- Waktu -->
+                            <div>
+                                <x-input-label for="waktu_pengukuran" :value="__('Waktu Pengukuran')" />
+                                <x-text-input id="waktu_pengukuran" class="block mt-1 w-full" type="time"
+                                    name="waktu_pengukuran"
+                                    :value="$monitoring->waktu_pengukuran ?? old('waktu_pengukuran')" required autofocus
+                                    autocomplete="waktu_pengukuran" />
+                                <x-input-error :messages="$errors->get('waktu_pengukuran')" class="mt-2" />
+                            </div>
                             <!-- Suhu -->
                             <div>
                                 <x-input-label for="suhu" :value="__('Suhu')" />
@@ -87,24 +104,13 @@
                                 <x-input-error :messages="$errors->get('nitrit')" class="mt-2" />
                             </div>
                         </div>
-                        <div class="grid gap-4 mb-4 md:grid-cols-2">
-                            <!-- Tanggal -->
-                            <div>
-                                <x-input-label for="tanggal" :value="__('Tanggal')" />
-                                <x-text-input id="tanggal" class="block mt-1 w-full" type="date" name="tanggal"
-                                    :value="$monitoring->tanggal ?? old('tanggal')" required autofocus
-                                    autocomplete="tanggal" />
-                                <x-input-error :messages="$errors->get('tanggal')" class="mt-2" />
-                            </div>
-                            <!-- Waktu -->
-                            <div>
-                                <x-input-label for="waktu_pengukuran" :value="__('Waktu Pengukuran')" />
-                                <x-text-input id="waktu_pengukuran" class="block mt-1 w-full" type="time"
-                                    name="waktu_pengukuran"
-                                    :value="$monitoring->waktu_pengukuran ?? old('waktu_pengukuran')" required autofocus
-                                    autocomplete="waktu_pengukuran" />
-                                <x-input-error :messages="$errors->get('waktu_pengukuran')" class="mt-2" />
-                            </div>
+
+                        <!-- Catatan -->
+                        <div>
+                            <x-input-label for="catatan" :value="__('Catatan')" />
+                            <x-text-input id="catatan" class="block mt-1 w-full" type="text" name="catatan"
+                                :value="$monitoring->catatan ?? old('catatan')" autofocus autocomplete="catatan" />
+                            <x-input-error :messages="$errors->get('catatan')" class="mt-2" />
                         </div>
 
 

@@ -3,6 +3,12 @@
         <div class="w-full mx-auto px-4 sm:px-6 lg:px-8 text-gray-900 dark:text-gray-100 overflow-hidden">
             <h1 class="mb-4 font-bold text-2xl">Monitoring Kualitas Air Kolam {{ $kolam->nama }}</h1>
 
+            {{-- Kembali --}}
+            <a href="{{ route('data_kolam', ['kolam'=>$kolam->id, 'siklus'=>$siklus->id]) }}"
+                class="mr-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Kembali
+            </a>
+
             @if ($siklusTerpilih)
             <div class="my-4 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="w-full p-6">
@@ -59,6 +65,9 @@
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                         Nitrit</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        Catatan</th>
                                     @if ($siklusBerjalan)
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
@@ -80,6 +89,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->tinggi_air }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->amonia }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->nitrit }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->catatan }}</td>
                                     @if ($siklusBerjalan)
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <a href="{{ route('monitoring.edit', ['kolamId'=>$kolam->id, 'siklus'=>$siklus->id, 'monitoring'=>$row->id]) }}"

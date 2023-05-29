@@ -42,7 +42,7 @@ class MonitoringController extends Controller
             'tinggi_air' => 'required|numeric',
             'warna_air' => 'required',
             'tanggal' => 'required|date',
-            'waktu_pengukuran' => 'required|date_format:H:i',
+            'waktu_pengukuran' => 'required',
         ]);
 
         $kolam = Kolam::findOrFail($kolamId);
@@ -64,6 +64,7 @@ class MonitoringController extends Controller
         $monitoring->amonia = $request->amonia;
         $monitoring->tanggal = $validation['tanggal'];
         $monitoring->waktu_pengukuran = $validation['waktu_pengukuran'];
+        $monitoring->catatan = $request->catatan;
 
         $monitoring->user()->associate($user);
         $monitoring->siklus()->associate($siklusSaatIni);
@@ -110,6 +111,7 @@ class MonitoringController extends Controller
             'warna_air' => $request->warna_air,
             'nitrit' => $request->nitrit,
             'amonia' => $request->amonia,
+            'catatan' => $request->catatan,
             'tanggal' => $request->tanggal,
             'waktu_pengukuran' => $request->waktu_pengukuran,
             'user_id' => auth()->user()->id,

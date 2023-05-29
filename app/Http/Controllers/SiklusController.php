@@ -25,7 +25,8 @@ class SiklusController extends Controller
         $newSiklus = Siklus::create([
             'kolam_id' => $kolamId,
             'tanggal_mulai' => $request->tanggal_mulai,
-            'total_tebar' => $request->total_tebar
+            'total_tebar' => $request->total_tebar,
+            'catatan' => $request->catatan
         ]);
         $siklusId = $newSiklus->id;
 

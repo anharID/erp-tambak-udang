@@ -21,16 +21,12 @@
                 Daftar Kolam
             </a>
 
-
-
-
             {{-- Informasi siklus dan kolam --}}
             <div class="grid gap-6 my-8 md:grid-cols-2">
                 <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
                     <h1 class="text-2xl font-bold mb-1">Siklus</h1>
 
                     @if ($kolam->siklus->count()>0)
-                    {{-- <h2>Pilih Siklus</h2> --}}
                     <select
                         class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2"
                         onchange="location = this.value;">
@@ -49,6 +45,7 @@
                     <p>Siklus Mulai : {{ $siklusTerpilih->tanggal_mulai }}</p>
                     <p>Doc : {{ $siklusTerpilih->doc }}</p>
                     <p>Total Tebar : {{ $siklusTerpilih->total_tebar }}</p>
+                    <p>Catatan : {{ $siklusTerpilih->catatan ? $siklusTerpilih->catatan : 'tidak ada'}}</p>
                     @if ($siklusSaatIni == $siklusTerpilih)
                     <form action="{{ route('tutup_siklus', ['kolamId' => $kolam->id]) }}" method="POST">
                         @csrf
