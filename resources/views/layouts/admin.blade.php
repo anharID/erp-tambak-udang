@@ -16,8 +16,8 @@ app()->getLocale()) }}">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
 
-    <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -150,12 +150,12 @@ app()->getLocale()) }}">
 
         </div>
     </div>
-    <script>
+    {{-- <script>
         $(document).ready(function() {
             $('.datatable').DataTable();
         });
 
-    </script>
+    </script> --}}
 </body>
 
 </html>
