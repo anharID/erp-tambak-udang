@@ -10,22 +10,21 @@
             </div>
             @endif
 
-            {{-- Nama Kolam --}}
-            <div>
-                <h1 class="mb-4 font-bold text-2xl">Kolam {{ $kolam->nama }}</h1>
+            {{-- Kembali --}}
+            <div class="mt-4">
+                <a href="{{ route('kolam.index') }}"
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Daftar Kolam
+                </a>
             </div>
 
-            {{-- Kembali --}}
-            <a href="{{ route('kolam.index') }}"
-                class="mr-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Daftar Kolam
-            </a>
 
-            {{-- Informasi siklus dan kolam --}}
-            <div class="grid gap-6 my-8 md:grid-cols-2">
-                <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
-                    <h1 class="text-2xl font-bold mb-1">Siklus</h1>
-
+            {{-- Nama Kolam --}}
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-4">
+                <div class="col-span-1 md:col-span-2">
+                    <h1 class="font-bold text-2xl">Kolam {{ $kolam->nama }}</h1>
+                </div>
+                <div class="col-span-1">
                     @if ($kolam->siklus->count()>0)
                     <select
                         class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2"
@@ -40,100 +39,166 @@
                             $item->tanggal_mulai }}</option>
                         @endforeach
                     </select>
-
-                    @if ( $siklusTerpilih || $siklusTerpilih->id == $siklusSaatIni->id)
-                    <p>Siklus Mulai : {{ $siklusTerpilih->tanggal_mulai }}</p>
-                    <p>Doc : {{ $siklusTerpilih->doc }}</p>
-                    <p>Total Tebar : {{ $siklusTerpilih->total_tebar }}</p>
-                    <p>Catatan : {{ $siklusTerpilih->catatan ? $siklusTerpilih->catatan : 'tidak ada'}}</p>
-                    @if ($siklusSaatIni == $siklusTerpilih)
-                    <form action="{{ route('tutup_siklus', ['kolamId' => $kolam->id]) }}" method="POST">
-                        @csrf
-                        <button type="submit"
-                            class="my-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded "
-                            onclick="return confirm('Apakah Anda yakin ingin menutup siklus saat ini?')">Tutup
-                            Siklus</button>
-                    </form>
-                    @else
-                    <p>Siklus Selesai {{ $siklusTerpilih->tanggal_selesai }}</p>
                     @endif
-                    @endif
-
-                    @if ($siklusSaatIni==null)
-                    <div class="flex flex-col items-center justify-center border-t-2">
-                        <h1 class="text-lg font-bold mb-4">Tidak ada siklus yang berjalan</h1>
-                        <a href="{{ route('tambah_siklus', ['kolamId' => $kolam->id]) }}"
-                            class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                            Buat Siklus Kolam
-                        </a>
-                    </div>
-                    @endif
-
-                    @else
-                    <div class="m-4 flex flex-col items-center justify-center">
-                        <h1 class="text-lg font-bold mb-4">Tidak ada siklus yang berjalan</h1>
-                        <a href="{{ route('tambah_siklus', ['kolamId' => $kolam->id]) }}"
-                            class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                            Buat Siklus Kolam
-                        </a>
-                    </div>
-                    @endif
-                </div>
-                {{-- Informasi Kolam --}}
-                <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
-                    <h1 class="text-2xl font-bold mb-1">Profil Kolam</h1>
-                    <p>Nama Kolam : {{ $kolam->nama }}</p>
-                    <p>Lokasi : {{ $kolam->lokasi }}</p>
-                    <p>Luas : {{ $kolam->luas }}</p>
-                    <p>Kedalaman : {{ $kolam->kedalaman }}</p>
                 </div>
             </div>
 
-            {{-- Fitur Manajemen Kolam --}}
             @if ($kolam->siklus->count()>0)
-            <h1 class="mb-4 font-bold text-2xl">Fitur Manajemen Kolam</h1>
-            <div class="grid gap-6 mb-8 md:grid-cols-2">
-                <a href="{{ route('monitoring', ['kolamId' => $kolam->id, 'siklus'=>$siklusTerpilih->id]) }}"
-                    class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
-                    <h1 class="text-2xl font-bold">Monitoring</h1>
-                    <div class="grid">
-                        @if ($monitoring->isNotEmpty())
-                        <div class="grid-cols-3/4">
-                            <p>Suhu: {{ $monitoring->last()->suhu }}</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                <div class="col-span-1 md:col-span-2">
+                    {{-- Fitur Manajemen Kolam --}}
+                    <div class="grid grid-cols-1 gap-6 mb-8">
+                        <a href="{{ route('monitoring', ['kolamId' => $kolam->id, 'siklus'=>$siklusTerpilih->id]) }}"
+                            class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
+                            <h1 class="text-xl font-bold border-b-2 border-gray-300 mb-2">Monitoring</h1>
+                            @if ($monitoring->isNotEmpty())
+                            <p>Suhu: {{ $monitoring->last()->suhu }} &deg;C</p>
                             <p>PH: {{ $monitoring->last()->ph }}</p>
                             <p>DO: {{ $monitoring->last()->do }}</p>
-                        </div>
-                        @else
-                        <p>Belum ada catatan monitoring.</p>
-                        @endif
-                    </div>
-                </a>
-                <a href="" class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
-                    <h1 class="text-2xl font-bold">Pakan</h1>
-                    <div class="grid">
-                        <div class="grid-cols-3/4">
+                            @else
+                            <p>Belum ada catatan monitoring.</p>
+                            @endif
+                        </a>
+                        <a href="" class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
+                            <h1 class="text-xl font-bold border-b-2 border-gray-300 mb-2">Pakan</h1>
                             <p>Waktu pemberian pakan terakhir</p>
                             <p>Pakan terpakai hari ini</p>
                             <p>Pakan terpakai Komulatif</p>
+                        </a>
 
+                        <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
+                            <h1>Sampling</h1>
+                        </div>
+                        <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
+                            <h1>Perlakuan</h1>
+                        </div>
+                        <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
+                            <h1>Panen</h1>
+                        </div>
+                        <div class="min-w-0 p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
+                            <h1>Energi</h1>
                         </div>
                     </div>
-                </a>
+                </div>
 
-                <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
-                    <h1>Sampling</h1>
-                </div>
-                <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
-                    <h1>Perlakuan</h1>
-                </div>
-                <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
-                    <h1>Panen</h1>
-                </div>
-                <div class="min-w-0 p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
-                    <h1>Energi</h1>
+                <div cl ass="col-span-1">
+                    {{-- Informasi siklus dan kolam --}}
+                    <div class="grid gap-6 grid-cols-1">
+                        @if ($siklusSaatIni==null)
+                        <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
+                            <div class="flex flex-col items-center justify-center">
+                                <h1 class="text-lg font-bold mb-4">Tidak ada siklus yang berjalan</h1>
+                                <a href="{{ route('tambah_siklus', ['kolamId' => $kolam->id]) }}"
+                                    class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+                                    Buat Siklus Kolam
+                                </a>
+                            </div>
+                        </div>
+                        @endif
+                        {{-- Informasi Kolam --}}
+                        <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
+                            <h1 class="text-2xl font-bold mb-1">Profil Kolam</h1>
+                            <p class="flex justify-between">
+                                <span>Nama Kolam</span>
+                                <span class="text-right">{{ $kolam->nama }}</span>
+                            </p>
+                            <p class="flex justify-between">
+                                <span>Lokasi</span>
+                                <span class="text-right">{{ $kolam->lokasi }}</span>
+                            </p>
+                            <p class="flex justify-between">
+                                <span>Luas</span>
+                                <span class="text-right">{{ $kolam->luas }} m&sup2;</span>
+                            </p>
+                            <p class="flex justify-between">
+                                <span>Kedalaman</span>
+                                <span class="text-right">{{ $kolam->kedalaman }} m</span>
+                            </p>
+                        </div>
+                        <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
+                            <h1 class="text-2xl font-bold mb-1">Siklus</h1>
+                            @if ( $siklusTerpilih || $siklusTerpilih->id == $siklusSaatIni->id)
+                            <p class="flex justify-between">
+                                <span>Siklus Mulai</span>
+                                <span class="text-right">{{ $siklusTerpilih->tanggal_mulai }}</span>
+                            </p>
+                            <p class="flex justify-between">
+                                <span>Doc</span>
+                                <span class="text-right">{{ $siklusTerpilih->doc }}</span>
+                            </p>
+                            <p class="flex justify-between">
+                                <span>Total Tebar</span>
+                                <span class="text-right">{{ $siklusTerpilih->total_tebar }}</span>
+                            </p>
+                            <p class="flex justify-between">
+                                <span>Catatan</span>
+                                <span class="text-right">{{ $siklusTerpilih->catatan ? $siklusTerpilih->catatan :
+                                    '-'}}</span>
+                            </p>
+                            <p class="flex justify-between">
+                                <span>
+                                    Siklus Selesai
+                                </span>
+                                <span class="text-right">
+                                    {{ $siklusTerpilih->tanggal_selesai ? $siklusTerpilih->tanggal_selesai : 'Siklus
+                                    berjalan' }}
+                                </span>
+                            </p>
+                            <div class="mt-4 flex items-center justify-center">
+                                <a href="{{ route('edit_siklus', ['kolamId'=>$kolam->id, 'siklus'=>$siklusTerpilih->id]) }}"
+                                    class="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Edit
+                                    Siklus</a>
+                                @if ($siklusSaatIni == $siklusTerpilih)
+
+                                <form action="{{ route('tutup_siklus', ['kolamId' => $kolam->id]) }}" method="POST">
+                                    @csrf
+                                    @method('put')
+                                    <button type="submit"
+                                        class="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded "
+                                        onclick="return confirm('Apakah Anda yakin ingin menutup siklus saat ini?')">Tutup
+                                        Siklus</button>
+                                </form>
+                            </div>
+                            @endif
+                            @endif
+                        </div>
+                    </div>
+
                 </div>
             </div>
-            @endif
         </div>
+        @else
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
+                <div class="m-4 flex flex-col items-center justify-center">
+                    <h1 class="text-lg font-bold mb-4">Tidak ada siklus yang berjalan</h1>
+                    <a href="{{ route('tambah_siklus', ['kolamId' => $kolam->id]) }}"
+                        class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+                        Buat Siklus Kolam
+                    </a>
+                </div>
+            </div>
+            <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
+                <h1 class="text-2xl font-bold mb-1">Profil Kolam</h1>
+                <p class="flex justify-between">
+                    <span>Nama Kolam</span>
+                    <span class="text-right">{{ $kolam->nama }}</span>
+                </p>
+                <p class="flex justify-between">
+                    <span>Lokasi</span>
+                    <span class="text-right">{{ $kolam->lokasi }}</span>
+                </p>
+                <p class="flex justify-between">
+                    <span>Luas</span>
+                    <span class="text-right">{{ $kolam->luas }} m&sup2;</span>
+                </p>
+                <p class="flex justify-between">
+                    <span>Kedalaman</span>
+                    <span class="text-right">{{ $kolam->kedalaman }}</span>
+                </p>
+            </div>
+        </div>
+        @endif
     </div>
 </x-admin>

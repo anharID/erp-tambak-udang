@@ -14,7 +14,7 @@ class SiklusController extends Controller
         return view('dashboard.tambak-udang.kolam.addsiklus', compact('kolamId'));
     }
 
-    public function addSiklus(Request $request, $kolamId)
+    public function tambahSiklus(Request $request, $kolamId)
     {
         $request->validate([
             'tanggal_mulai' => 'required|date',
@@ -49,5 +49,45 @@ class SiklusController extends Controller
             // Redirect ke halaman detail kolam
             return redirect()->route('data_kolam', ['kolam' => $kolamId, 'siklus' => $siklusBerjalan->id])->with('success', 'Siklus berhasil ditutup.');
         }
+    }
+
+    public function edit($kolamId, $siklusId)
+    {
+        $kolam = Kolam::findOrFail($kolamId);
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
+
+        return view('dashboard.tambak-udang.kolam.editsiklus', compact('kolam', 'siklus'));
+    }
+
+    public function updateSiklus(Request $request, $kolamId, $siklusId)
+    {
+        $request->validate([
+            'tanggal_mulai' => 'required|date',
+            'total_tebar' => 'required',
+        ]);
+
+        $kolam = Kolam::findOrFail($kolamId);
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
+
+        $siklus->update([
+            'tanggal_mulai' => $request->tanggal_mulai,
+            'total_tebar' => $request->total_tebar,
+            'catatan' => $request->catatan,
+        ]);
+        return redirect()->route('data_kolam', ['kolam' => $kolam->id, 'siklus' => $siklus->id])->with('success', 'Data siklus berhasil diperbarui');
+    }
+
+    public function destroy($kolamId, $siklusId)
+    {
+        $kolam = Kolam::findOrFail($kolamId);
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
+
+        $siklus->monitoring()->delete();
+
+        $siklus->delete();
+
+        $idSiklusTerkait = $kolam->siklus()->pluck('id')->last();
+
+        return redirect()->route('data_kolam', ['kolam' => $kolam->id, 'siklus' => $idSiklusTerkait])->with('success', 'Data siklus berhasil dihapus');
     }
 }

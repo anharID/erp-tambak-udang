@@ -29,7 +29,7 @@ return new class extends Migration
             $table->float('nitrit')->nullable();
             $table->time('waktu_pengukuran');
             $table->date('tanggal');
-            $table->string('catatan');
+            $table->string('catatan')->nullable();
             $table->timestamps();
         });
     }
