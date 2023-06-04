@@ -34,9 +34,12 @@ Route::middleware('auth')->group(function () {
 
     //Siklus
     Route::get('/dashboard/kolam/{kolamId}/tambah-siklus', [SiklusController::class, 'create'])->name('tambah_siklus');
-    Route::post('/dashboard/kolam/{kolamId}/tambah-siklus/store', [SiklusController::class, 'addSiklus'])->name('store_siklus');
-    Route::post('/dashboard/kolam/{kolamId}/tutup-siklus', [SiklusController::class, 'tutupSiklus'])->name('tutup_siklus');
-    
+    Route::post('/dashboard/kolam/{kolamId}/tambah-siklus/store', [SiklusController::class, 'tambahSiklus'])->name('store_siklus');
+    Route::get('/dashboard/kolam/{kolamId}/siklus/{siklus}/edit', [SiklusController::class, 'edit'])->name('edit_siklus');
+    Route::put('/dashboard/kolam/{kolamId}/siklus/{siklus}/update', [SiklusController::class, 'updateSiklus'])->name('update_siklus');
+    Route::delete('/dashboard/kolam/{kolamId}/siklus/{siklus}/delete', [SiklusController::class, 'destroy'])->name('hapus_siklus');
+    Route::put('/dashboard/kolam/{kolamId}/tutup-siklus', [SiklusController::class, 'tutupSiklus'])->name('tutup_siklus');
+
     //Monitoring
     Route::get('/dashboard/kolam/{kolamId}/siklus/{siklus}/monitoring', [MonitoringController::class, 'index'])->name('monitoring');
     Route::get('/dashboard/kolam/{kolamId}/siklus/{siklus}/monitoring/create', [MonitoringController::class, 'create'])->name('monitoring.create');

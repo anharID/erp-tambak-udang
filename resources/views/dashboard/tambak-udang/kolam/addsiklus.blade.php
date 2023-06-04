@@ -16,15 +16,26 @@ $today = now()->format('Y-m-d');
                         <!-- Tanggal Tebar -->
                         <div>
                             <x-input-label for="tanggal_mulai" :value="__('Taanggal Tebar')" />
-                            <x-text-input id="tanggal_mulai" class="block mt-1 w-full" type="date" name="tanggal_mulai" :value="$today ?? old('tanggal_mulai')" required autofocus autocomplete="tanggal_mulai" />
+                            <x-text-input id="tanggal_mulai" class="block mt-1 w-full" type="date" name="tanggal_mulai"
+                                :value="$today ?? old('tanggal_mulai')" required autofocus
+                                autocomplete="tanggal_mulai" />
                             <x-input-error :messages="$errors->get('tanggal_mulai')" class="mt-2" />
                         </div>
 
                         <!-- Jumlah Tebar -->
                         <div class="mt-4">
                             <x-input-label for="total_tebar" :value="__('Total Tebar')" />
-                            <x-text-input id="total_tebar" class="block mt-1 w-full" type="number" name="total_tebar" :value="old('total_tebar')" required autocomplete="total_tebar" />
+                            <x-text-input id="total_tebar" class="block mt-1 w-full" type="number" name="total_tebar"
+                                :value="old('total_tebar')" required autocomplete="total_tebar" />
                             <x-input-error :messages="$errors->get('total_tebar')" class="mt-2" />
+                        </div>
+
+                        <!-- Catatan -->
+                        <div class="mt-4">
+                            <x-input-label for="catatan" :value="__('Catatan')" />
+                            <x-text-input id="catatan" class="block mt-1 w-full" type="text" name="catatan"
+                                :value="old('catatan')" autocomplete="catatan" />
+                            <x-input-error :messages="$errors->get('catatan')" class="mt-2" />
                         </div>
 
 
