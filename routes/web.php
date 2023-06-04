@@ -7,6 +7,7 @@ use App\Http\Controllers\SiklusController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\FinansialController;
+use App\Http\Controllers\PeralatanController;
 use App\Http\Controllers\MonitoringController;
 
 /*
@@ -55,6 +56,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/dashboard/users', UserController::class);
     Route::resource('/dashboard/karyawan', KaryawanController::class);
     Route::resource('/dashboard/finansial', FinansialController::class);
+    Route::resource('/dashboard/finansial', PeralatanController::class);
 });
 
 require __DIR__ . '/auth.php';
