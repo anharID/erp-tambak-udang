@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use App\Models\Kolam;
+use App\Models\Pakan;
+use App\Models\Sampling;
+use App\Models\Monitoring;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -20,6 +23,14 @@ class Siklus extends Model
     public function monitoring()
     {
         return $this->hasMany(Monitoring::class);
+    }
+    public function sampling()
+    {
+        return $this->hasMany(Sampling::class);
+    }
+    public function pakan()
+    {
+        return $this->hasMany(Pakan::class);
     }
 
     // public function getRouteKeyName()

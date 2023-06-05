@@ -15,7 +15,7 @@ class MonitoringController extends Controller
         $kolam = Kolam::findOrFail($kolamId);
         $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
 
-        $siklusTerpilih = $siklus->monitoring;
+        $siklusTerpilih = $siklus->monitoring()->orderBy('created_at', 'desc')->get();
 
         $siklusBerjalan = ($siklus->tanggal_selesai === null);
 
@@ -71,7 +71,7 @@ class MonitoringController extends Controller
 
         $kolam->monitoring()->save($monitoring);
 
-        return redirect()->route('monitoring', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data monitoring berhasil disimpan.');
+        return redirect()->route('monitoring.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data monitoring berhasil disimpan.');
     }
 
     public function edit($kolamId, $siklusId, $monitoringId)
@@ -117,7 +117,7 @@ class MonitoringController extends Controller
             'user_id' => auth()->user()->id,
         ]);
 
-        return redirect()->route('monitoring', ['kolamId' => $kolam->id, 'siklus' => $siklus->id])->with('success', 'Data berhasil diubah');
+        return redirect()->route('monitoring.index', ['kolamId' => $kolam->id, 'siklus' => $siklus->id])->with('success', 'Data berhasil diubah');
     }
 
     public function destroy($kolamId, $siklusId, $monitoringId)
@@ -128,6 +128,6 @@ class MonitoringController extends Controller
 
         $monitoring->delete();
 
-        return redirect()->route('monitoring', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data berhasil dihapus');
+        return redirect()->route('monitoring.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data berhasil dihapus');
     }
 }
