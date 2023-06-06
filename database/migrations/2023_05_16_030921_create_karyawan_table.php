@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string("nama");
             $table->string("alamat");
+            $table->string("tempat_lahir");
+            $table->date("tanggal_lahir");
             $table->string("no_hp");
             $table->string("email")->unique();
             $table->string("jabatan");

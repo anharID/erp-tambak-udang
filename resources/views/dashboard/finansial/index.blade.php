@@ -17,7 +17,7 @@
                 </div>
                 <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
                     <p class="text-base mb-2">Pengeluaran</p>
-                    <p class="text-2xl">{{ 'Rp ' . number_format($totalPengeluaran ?? 0, 2, ',', '.') }}</p>
+                    <p class="text-2xl">{{ 'Rp ' . number_format($totalPengeluaran+$totalGaji ?? 0, 2, ',', '.') }}</p>
                 </div>
             </div>
             <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg">
@@ -33,8 +33,8 @@
                         class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
                         Tambah Catatan Finansial
                     </a>
-                    <div class="w-full overflow-x-auto">
-                        <table class="w-full table-auto mt-4 datatable">
+                    <div class="w-full mt-4">
+                        <table class="w-full table-auto mt-4 datatable hover display nowrap">
                             <thead class="bg-gray-50 dark:bg-gray-800">
                                 <tr>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Tanggal</th>
@@ -43,6 +43,7 @@
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Jumlah</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Catatan</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700">

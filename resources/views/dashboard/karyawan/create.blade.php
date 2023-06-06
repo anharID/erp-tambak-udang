@@ -22,6 +22,20 @@
                             <x-input-error :messages="$errors->get('alamat')" class="mt-2" />
                         </div>
 
+                        <!-- Tempat Lahir -->
+                        <div class="mt-4">
+                            <x-input-label for="tempat_lahir" :value="__('Tempat Lahir')" />
+                            <x-text-input id="tempat_lahir" class="block mt-1 w-full" type="text" name="tempat_lahir" :value="old('tempat_lahir')" required autocomplete="tempat_lahir" />
+                            <x-input-error :messages="$errors->get('tempat_lahir')" class="mt-2" />
+                        </div>
+
+                        <!-- Tanggal Lahir -->
+                        <div class="mt-4">
+                            <x-input-label for="tanggal_lahir" :value="__('Tanggal Lahir')" />
+                            <x-text-input id="tanggal_lahir" class="block mt-1 w-full" type="date" name="tanggal_lahir" :value="old('tanggal_lahir')" required autocomplete="tanggal_lahir" />
+                            <x-input-error :messages="$errors->get('tanggal_lahir')" class="mt-2" />
+                        </div>
+
                         <!-- Nomor HP -->
                         <div class="mt-4">
                             <x-input-label for="no_hp" :value="__('Nomor HP')" />

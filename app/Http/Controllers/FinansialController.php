@@ -29,7 +29,13 @@ class FinansialController extends Controller
         foreach ($pengeluaran as $row) {
             $totalPengeluaran += $row->jumlah;
         }
-        return view("dashboard.finansial.index", compact('finansial'), ['totalPemasukan' => $totalPemasukan, 'totalPengeluaran' => $totalPengeluaran]);
+        // Total Gaji Karyawan
+        $gaji = Finansial::where('jenis_transaksi', 'Gaji Karyawan')->get();
+        $totalGaji = 0;
+        foreach ($gaji as $row) {
+            $totalGaji += $row->jumlah;
+        }
+        return view("dashboard.finansial.index", compact('finansial'), ['totalPemasukan' => $totalPemasukan, 'totalPengeluaran' => $totalPengeluaran, 'totalGaji' => $totalGaji]);
     }
 
     /**

@@ -1,3 +1,6 @@
+@php
+$today = now()->format('Y-m-d');
+@endphp
 <x-admin>
 
     <div class="py-12">
@@ -12,7 +15,7 @@
                         <div>
                             <x-input-label for="tanggal" :value="__('Tanggal')" />
                             <x-text-input id="tanggal" class="block mt-1 w-full" type="date" name="tanggal"
-                                :value="old('tanggal')" required autofocus autocomplete="tanggal" />
+                            :value="$today ?? old('tanggal')" required autofocus autocomplete="tanggal" />
                             <x-input-error :messages="$errors->get('tanggal')" class="mt-2" />
                         </div>
 

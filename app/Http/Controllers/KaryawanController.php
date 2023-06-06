@@ -39,6 +39,8 @@ class KaryawanController extends Controller
         $request->validate([
             'nama' => ['required', 'string', 'max:255'],
             'alamat' => ['required', 'string', 'max:255'],
+            'tempat_lahir' => ['required', 'string', 'max:255'],
+            'tanggal_lahir' => ['required', 'date'],
             'no_hp' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255'],
             'jabatan' => ['required', 'string', 'max:255'],
@@ -49,6 +51,8 @@ class KaryawanController extends Controller
         Karyawan::create([
             'nama' => $request->nama,
             'alamat' => $request->alamat,
+            'tempat_lahir' => $request->tempat_lahir,
+            'tanggal_lahir' => $request->tanggal_lahir,
             'no_hp' => $request->no_hp,
             'email' => $request->email,
             'jabatan' => $request->jabatan,
@@ -93,6 +97,8 @@ class KaryawanController extends Controller
         $request->validate([
             'nama' => ['required', 'string', 'max:255'],
             'alamat' => ['required', 'string', 'max:255'],
+            'tempat_lahir' => ['required', 'string', 'max:255'],
+            'tanggal_lahir' => ['required', 'date'],
             'no_hp' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255'],
             'jabatan' => ['required', 'string', 'max:255'],
@@ -104,6 +110,8 @@ class KaryawanController extends Controller
         Karyawan::where('id', $karyawan->id)->update([
             'nama' => $request->nama,
             'alamat' => $request->alamat,
+            'tempat_lahir' => $request->tempat_lahir,
+            'tanggal_lahir' => $request->tanggal_lahir,
             'no_hp' => $request->no_hp,
             'email' => $request->email,
             'jabatan' => $request->jabatan,
