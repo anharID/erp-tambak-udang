@@ -1,7 +1,7 @@
 <x-admin>
     <div class="container grid py-12">
         <div class="w-full mx-auto px-4 sm:px-6 lg:px-8 text-gray-900 dark:text-gray-100 overflow-hidden">
-            <h1 class="mb-4 font-bold text-2xl">Monitoring Kualitas Air Kolam {{ $kolam->nama }}</h1>
+            <h1 class="mb-4 font-bold text-2xl">Sampling Udang</h1>
 
             {{-- Kembali --}}
             <a href="{{ route('data_kolam', ['kolam'=>$kolam->id, 'siklus'=>$siklus->id]) }}"
@@ -22,14 +22,16 @@
                     @endif
 
                     @if ($siklusBerjalan)
-                    <a href="{{ route('monitoring.create',  ['kolamId' => $kolam->id,'siklus'=>$siklus->id]) }}"
+                    <a href="{{ route('sampling.create',  ['kolamId' => $kolam->id,'siklus'=>$siklus->id]) }}"
                         class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
                         Tambah Catatan
                     </a>
                     @endif
 
+
+
                     <div class="w-full overflow-x-auto mt-4">
-                        <table class="min-w-full table-auto mt-4 datatable hover">
+                        <table class="min-w-full table-auto mt-4 datatable">
                             <thead class="bg-gray-50 dark:bg-gray-800">
                                 <tr>
                                     <th
@@ -37,34 +39,28 @@
                                         Tanggal</th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                        Waktu</th>
+                                        Umur</th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                        Suhu</th>
+                                        ABW</th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                        pH</th>
+                                        ADG</th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                        DO</th>
+                                        Size</th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                        Salinitas</th>
+                                        FR %</th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                        Kecerahan Air</th>
+                                        SR %</th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                        Warna Air</th>
+                                        Biomassa</th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                        Tinggi Air</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                        Amonia</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                        Nitrit</th>
+                                        FCR</th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                         Catatan</th>
@@ -79,23 +75,21 @@
                                 @foreach($siklusTerpilih as $row)
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->tanggal }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->waktu_pengukuran }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->suhu }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->ph }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->do }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->salinitas }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->kecerahan }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->warna_air }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->tinggi_air }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->amonia }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->nitrit }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->umur }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->abw }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->adg }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->size }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->fr }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->sr }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->biomas }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->fcr }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->catatan }}</td>
                                     @if ($siklusBerjalan)
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <a href="{{ route('monitoring.edit', ['kolamId'=>$kolam->id, 'siklus'=>$siklus->id, 'monitoring'=>$row->id]) }}"
+                                        <a href="{{ route('sampling.edit', ['kolamId'=>$kolam->id, 'siklus'=>$siklus->id, 'sampling'=>$row->id]) }}"
                                             class="text-yellow-600">Edit</a>
                                         <form
-                                            action="{{ route('monitoring.destroy', ['kolamId'=>$kolam->id,'siklus'=>$siklus->id,'monitoring'=>$row->id]) }}"
+                                            action="{{ route('sampling.destroy', ['kolamId'=>$kolam->id,'siklus'=>$siklus->id,'sampling'=>$row->id]) }}"
                                             method="POST">
                                             @csrf
                                             @method('DELETE')

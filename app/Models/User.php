@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Pakan;
+use App\Models\Sampling;
 use App\Models\Monitoring;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -42,5 +44,13 @@ class User extends Authenticatable
     public function monitoring()
     {
         return $this->hasMany(Monitoring::class);
+    }
+    public function sampling()
+    {
+        return $this->hasMany(Sampling::class);
+    }
+    public function pakan()
+    {
+        return $this->hasMany(Pakan::class);
     }
 }

@@ -7,7 +7,9 @@ window.Alpine = Alpine;
 Alpine.start();
 
 $(window).ready(function () {
-    $(".datatable").DataTable();
+    $(".datatable").DataTable({
+        order: [],
+    });
 });
 
 const jenisTransaksi = document.getElementById("jenis_transaksi");

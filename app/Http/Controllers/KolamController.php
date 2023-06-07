@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Kolam;
+use App\Models\Pakan;
 use App\Models\Siklus;
 use App\Models\Monitoring;
+use App\Models\Sampling;
 use Illuminate\Http\Request;
 
 class KolamController extends Controller
@@ -46,8 +48,8 @@ class KolamController extends Controller
             'nama' => ['required', 'string', 'max:255'],
             'lokasi' => ['required', 'string', 'max:255'],
             'tipe' => ['required', 'string', 'max:255'],
-            'luas' => ['required', 'numeric', 'max:255'],
-            'kedalaman' => ['required', 'numeric', 'max:255'],
+            'luas' => ['required', 'numeric'],
+            'kedalaman' => ['required', 'numeric'],
         ]);
 
         // Kolam::create($validation);
@@ -133,26 +135,22 @@ class KolamController extends Controller
 
     public function dataKolam(Kolam $kolam, $siklus)
     {
-        // $siklusSaatIni = $kolam->siklus()->whereNull('tanggal_selesai')->first();
-
-        // $siklusSelesai = $kolam->siklus()->whereNotNull('tanggal_selesai')->orderBy('tanggal_mulai', 'desc')->get();
-
         // Ambil siklus berjalan saat ini
         $siklusSaatIni = $kolam->siklus()->whereNull('tanggal_selesai')->first();
         // Ambil siklus selesai
         $siklusSelesai = $kolam->siklus()->whereNotNull('tanggal_selesai')->orderBy('tanggal_mulai', 'desc')->get();
 
-        // $siklusTerpilih = $kolam->siklus()->where('id', $siklus)->first(); 
         $siklusTerpilih = $kolam->siklus()->find($siklus);
 
-        $siklusId = $siklusTerpilih->id ?? null;
-        if (request()->has('siklus_id')) {
-            $siklusId = request('siklus_id');
-        }
+        $monitoring = Monitoring::where('siklus_id', $siklus)->get();
 
-        $monitoring = Monitoring::where('siklus_id', $siklusId)->get();
+        $pakan = Pakan::where('siklus_id', $siklus)->get();
+        $jumlahPakanTerpakaiHariIni = $pakan->where('tanggal', Carbon::now()->toDateString())->sum('jumlah_kg');
 
-        if ($siklusSaatIni) {
+        $sampling = Sampling::where('siklus_id',  $siklus)->get();
+
+
+        if ($siklusSaatIni == $siklusTerpilih) {
             // Ubah tanggal mulai menjadi objek Carbon
             $tanggalMulai = Carbon::parse($siklusSaatIni->tanggal_mulai);
             // Hitung DOC saat ini
@@ -160,11 +158,22 @@ class KolamController extends Controller
             $docSaatIni = $tanggalMulai->diffInDays($tanggalSaatIni);
             //update ke tabel siklus
             $siklusSaatIni->update(['doc' => $docSaatIni]);
-        } else {
-            $docSaatIni = null;
         }
 
-        return view('dashboard.tambak-udang.kolam.show', compact('kolam', 'siklus', 'siklusSaatIni', 'docSaatIni', 'siklusSelesai', 'siklusTerpilih', 'monitoring'));
+        $data = [
+            'kolam' => $kolam,
+            'siklusSaatIni' => $siklusSaatIni,
+            'siklusTerpilih' => $siklusTerpilih,
+            'siklusSelesai' => $siklusSelesai,
+            'siklusTerpilih' => $siklusTerpilih,
+            'monitoring' => $monitoring,
+            'pakan' => $pakan,
+            'jumlahPakanTerpakaiHariIni' => $jumlahPakanTerpakaiHariIni,
+            'sampling' => $sampling,
+
+        ];
+
+        return view('dashboard.tambak-udang.kolam.show', $data);
 
         // return view('dashboard.tambak-udang.kolam.show', compact('kolam', 'siklusSaatIni'));
     }
