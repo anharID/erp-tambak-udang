@@ -9,9 +9,9 @@
                 Kembali
             </a>
 
-            @if ($siklusTerpilih)
+            @if ($dataPakan)
             <div class="my-4 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="w-full p-6">
+                <div class="w-full p-6" x-data="{ activeTab: 'data' }">
 
                     {{-- Alert --}}
                     @if(session('success'))
@@ -21,6 +21,15 @@
                     </div>
                     @endif
 
+                    <div class="mb-4">
+                        <button x-on:click="activeTab = 'data'"
+                            :class="{ 'bg-blue-500 text-white': activeTab === 'data' }"
+                            class="px-4 py-2 rounded-l">Data</button>
+                        <button x-on:click="activeTab = 'ringkasan'"
+                            :class="{ 'bg-blue-500 text-white': activeTab === 'ringkasan' }"
+                            class="px-4 py-2 rounded-r">Ringkasan</button>
+                    </div>
+
                     @if ($siklusBerjalan)
                     <a href="{{ route('pakan.create',  ['kolamId' => $kolam->id,'siklus'=>$siklus->id]) }}"
                         class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
@@ -28,7 +37,7 @@
                     </a>
                     @endif
 
-                    <div class="w-full overflow-x-auto mt-4">
+                    <div class="w-full overflow-x-auto mt-4" x-show="activeTab === 'data'">
                         <table class="min-w-full table-auto mt-4 datatable">
                             <thead class="bg-gray-50 dark:bg-gray-800">
                                 <tr>
@@ -55,7 +64,7 @@
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700">
-                                @foreach($siklusTerpilih as $row)
+                                @foreach($dataPakan as $row)
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->tanggal }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->waktu_pemberian }}</td>
@@ -64,10 +73,10 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->catatan }}</td>
                                     @if ($siklusBerjalan)
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <a href="{{ route('monitoring.edit', ['kolamId'=>$kolam->id, 'siklus'=>$siklus->id, 'monitoring'=>$row->id]) }}"
+                                        <a href="{{ route('pakan.edit', ['kolamId'=>$kolam->id, 'siklus'=>$siklus->id, 'pakan'=>$row->id]) }}"
                                             class="text-yellow-600">Edit</a>
                                         <form
-                                            action="{{ route('monitoring.destroy', ['kolamId'=>$kolam->id,'siklus'=>$siklus->id,'monitoring'=>$row->id]) }}"
+                                            action="{{ route('pakan.destroy', ['kolamId'=>$kolam->id,'siklus'=>$siklus->id,'pakan'=>$row->id]) }}"
                                             method="POST">
                                             @csrf
                                             @method('DELETE')
@@ -78,6 +87,32 @@
 
                                     </td>
                                     @endif
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="w-full overflow-x-auto mt-4" x-show="activeTab === 'ringkasan'">
+                        <table class="min-w-full table-auto mt-4 datatable">
+                            <thead class="bg-gray-50 dark:bg-gray-800">
+                                <tr>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        Tanggal</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        Pakan Harian(Kg)</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        Pakan Komulatif (Kg)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700">
+                                @foreach($ringkasan as $row)
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->tanggal }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->total_pakan }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->total_pakan_kumulatif }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>

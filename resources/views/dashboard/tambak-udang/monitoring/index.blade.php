@@ -29,7 +29,7 @@
                     @endif
 
                     <div class="w-full overflow-x-auto mt-4">
-                        <table class="min-w-full table-auto mt-4 datatable">
+                        <table class="min-w-full table-auto mt-4 datatable hover">
                             <thead class="bg-gray-50 dark:bg-gray-800">
                                 <tr>
                                     <th

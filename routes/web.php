@@ -53,7 +53,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/dashboard/users', UserController::class);
     Route::resource('/dashboard/karyawan', KaryawanController::class);
     Route::resource('/dashboard/finansial', FinansialController::class);
-    Route::resource('/dashboard/finansial', PeralatanController::class);
+    // Route::resource('/dashboard/finansial', PeralatanController::class);
 });
 
 require __DIR__ . '/auth.php';
