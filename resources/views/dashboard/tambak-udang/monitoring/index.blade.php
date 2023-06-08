@@ -55,10 +55,13 @@
                                         Kecerahan Air</th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        Tinggi Air</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                         Warna Air</th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                        Tinggi Air</th>
+                                        Cuaca</th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                         Amonia</th>
@@ -85,8 +88,9 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->do }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->salinitas }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->kecerahan }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->warna_air }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->tinggi_air }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->warna_air }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->cuaca }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->amonia }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->nitrit }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->catatan }}</td>

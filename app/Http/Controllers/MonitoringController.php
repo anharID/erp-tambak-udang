@@ -41,6 +41,7 @@ class MonitoringController extends Controller
             'kecerahan' => 'required|numeric',
             'tinggi_air' => 'required|numeric',
             'warna_air' => 'required',
+            'cuaca' => 'required',
             'tanggal' => 'required|date',
             'waktu_pengukuran' => 'required',
         ]);
@@ -60,6 +61,7 @@ class MonitoringController extends Controller
         $monitoring->kecerahan = $validation['kecerahan'];
         $monitoring->tinggi_air = $validation['tinggi_air'];
         $monitoring->warna_air = $validation['warna_air'];
+        $monitoring->cuaca = $validation['cuaca'];
         $monitoring->nitrit = $request->nitrit;
         $monitoring->amonia = $request->amonia;
         $monitoring->tanggal = $validation['tanggal'];
@@ -93,6 +95,7 @@ class MonitoringController extends Controller
             'kecerahan' => 'required|numeric',
             'tinggi_air' => 'required|numeric',
             'warna_air' => 'required',
+            'cuaca' => 'required',
             'tanggal' => 'required|date',
             'waktu_pengukuran' => 'required',
         ]);
@@ -109,6 +112,7 @@ class MonitoringController extends Controller
             'kecerahan' => $request->kecerahan,
             'tinggi_air' => $request->tinggi_air,
             'warna_air' => $request->warna_air,
+            'cuaca' => $request->cuaca,
             'nitrit' => $request->nitrit,
             'amonia' => $request->amonia,
             'catatan' => $request->catatan,

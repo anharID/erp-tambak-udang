@@ -25,6 +25,7 @@ return new class extends Migration
             $table->float('kecerahan');
             $table->string('warna_air');
             $table->float('tinggi_air');
+            $table->string('cuaca');
             $table->float('amonia')->nullable();
             $table->float('nitrit')->nullable();
             $table->time('waktu_pengukuran');
