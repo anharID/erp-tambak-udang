@@ -7,6 +7,7 @@ use App\Models\Kolam;
 use App\Models\Pakan;
 use App\Models\Siklus;
 use App\Models\Monitoring;
+use App\Models\Sampling;
 use Illuminate\Http\Request;
 
 class KolamController extends Controller
@@ -146,6 +147,8 @@ class KolamController extends Controller
         $pakan = Pakan::where('siklus_id', $siklus)->get();
         $jumlahPakanTerpakaiHariIni = $pakan->where('tanggal', Carbon::now()->toDateString())->sum('jumlah_kg');
 
+        $sampling = Sampling::where('siklus_id',  $siklus)->get();
+
 
         if ($siklusSaatIni == $siklusTerpilih) {
             // Ubah tanggal mulai menjadi objek Carbon
@@ -166,6 +169,7 @@ class KolamController extends Controller
             'monitoring' => $monitoring,
             'pakan' => $pakan,
             'jumlahPakanTerpakaiHariIni' => $jumlahPakanTerpakaiHariIni,
+            'sampling' => $sampling,
 
         ];
 

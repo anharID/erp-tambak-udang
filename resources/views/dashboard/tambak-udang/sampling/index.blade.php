@@ -60,6 +60,9 @@
                                         Biomassa</th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        FCR</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                         Catatan</th>
                                     @if ($siklusBerjalan)
                                     <th
@@ -73,19 +76,20 @@
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->tanggal }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->umur }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->berat_sampling }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->abw }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->adg }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->size }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->fr }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->sr }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->biomas }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->fcr }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->catatan }}</td>
                                     @if ($siklusBerjalan)
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <a href="{{ route('monitoring.edit', ['kolamId'=>$kolam->id, 'siklus'=>$siklus->id, 'monitoring'=>$row->id]) }}"
+                                        <a href="{{ route('sampling.edit', ['kolamId'=>$kolam->id, 'siklus'=>$siklus->id, 'sampling'=>$row->id]) }}"
                                             class="text-yellow-600">Edit</a>
                                         <form
-                                            action="{{ route('monitoring.destroy', ['kolamId'=>$kolam->id,'siklus'=>$siklus->id,'monitoring'=>$row->id]) }}"
+                                            action="{{ route('sampling.destroy', ['kolamId'=>$kolam->id,'siklus'=>$siklus->id,'sampling'=>$row->id]) }}"
                                             method="POST">
                                             @csrf
                                             @method('DELETE')

@@ -49,8 +49,8 @@ class SamplingController extends Controller
     {
         $validation = $request->validate([
             'tanggal' => 'required|date',
-            'berat' => 'required',
-            'jumlah_udang' => 'required'
+            'berat_sampling' => 'required',
+            'banyak_sampling' => 'required'
         ]);
 
         //Data yang diperlukan
@@ -58,8 +58,9 @@ class SamplingController extends Controller
         $siklusSaatIni = $kolam->siklus()->whereNull('tanggal_selesai')->first();
         $user = auth()->user();
         $tanggalSebelumSampling = date('Y-m-d', strtotime('-1 day', strtotime($validation['tanggal'])));
-        $pakan = $siklusSaatIni->pakan()->where('tanggal', $tanggalSebelumSampling)->get();
-        $totalPakan = $pakan->sum('jumlah_kg');
+        $pakanKemarin = $siklusSaatIni->pakan()->where('tanggal', $tanggalSebelumSampling)->get();
+        $totalPakan = $pakanKemarin->sum('jumlah_kg');
+        $pakanKomulatif = $siklusSaatIni->pakan()->where('tanggal', '<', now()->subDay())->sum('jumlah_kg');
 
 
         //UMUR
@@ -68,23 +69,22 @@ class SamplingController extends Controller
         $umur = $tanggalMulai->diffInDays($tanggalSampling);
 
         //ABW
-        $berat_sampling = $validation['berat'] / $validation['jumlah_udang'];
-
-        $lastSampling = $siklusSaatIni->sampling()->latest()->first();
+        $abw = $validation['berat_sampling'] / $validation['banyak_sampling'];
 
         //ADG
+        $lastSampling = $siklusSaatIni->sampling()->latest()->first();
         if ($lastSampling) {
-            $beratSebelumnya = $lastSampling->berat_sampling;
-            $adg = ($berat_sampling - $beratSebelumnya) / 7;
+            $abwSebelumnya = $lastSampling->abw;
+            $adg = ($abw - $abwSebelumnya) / 7;
         } else {
-            $adg = $berat_sampling / $umur;
+            $adg = $abw / $umur;
         }
 
         //SIZE
-        $size = 1000 / $berat_sampling;
+        $size = 1000 / $abw;
 
         //FR
-        $feedingRate = pow(10, (-0.899 - 0.561 * log10($berat_sampling))) * 100;
+        $feedingRate = pow(10, (-0.899 - 0.561 * log10($abw))) * 100;
 
         //BIOMASSA
         $biomassa = $totalPakan / $feedingRate * 100;
@@ -93,16 +93,22 @@ class SamplingController extends Controller
         $totalTebar = $siklusSaatIni->total_tebar;
         $survivalRate = (($biomassa * $size) / $totalTebar) * 100;
 
+        //FCR
+        $fcr = $pakanKomulatif / $biomassa;
+
         //Store Data
         $sampling = new Sampling();
         $sampling->tanggal = $validation['tanggal'];
+        $sampling->berat_sampling = $validation['berat_sampling'];
+        $sampling->banyak_sampling = $validation['banyak_sampling'];
         $sampling->umur = $umur;
-        $sampling->berat_sampling = $berat_sampling;
+        $sampling->abw = $abw;
         $sampling->adg = $adg;
         $sampling->size = $size;
         $sampling->sr = $survivalRate;
         $sampling->fr = $feedingRate;
         $sampling->biomas = $biomassa;
+        $sampling->fcr = $fcr;
         $sampling->catatan = $request->catatan;
 
         $sampling->user()->associate($user);
@@ -130,31 +136,106 @@ class SamplingController extends Controller
      * @param  \App\Models\Sampling  $sampling
      * @return \Illuminate\Http\Response
      */
-    public function edit(Sampling $sampling)
+    public function edit($kolamId, $siklusId, $samplingId)
     {
-        //
+        $kolam = Kolam::findOrFail($kolamId);
+        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $sampling = $siklus->sampling()->findOrFail($samplingId);
+
+        return view('dashboard.tambak-udang.sampling.edit', compact('kolam', 'siklus', 'sampling'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Sampling  $sampling
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Sampling $sampling)
+    public function update(Request $request, $kolamId, $siklusId, $samplingId)
     {
-        //
+        $validation = $request->validate([
+            'tanggal' => 'required|date',
+            'berat_sampling' => 'required',
+            'banyak_sampling' => 'required'
+        ]);
+
+        //Data yang diperlukan
+        $kolam = Kolam::findOrFail($kolamId);
+        $siklusSaatIni = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $sampling = $siklusSaatIni->sampling()->findOrFail($samplingId);
+
+        $user = auth()->user();
+        $tanggalSebelumSampling = date('Y-m-d', strtotime('-1 day', strtotime($validation['tanggal'])));
+        $pakanKemarin = $siklusSaatIni->pakan()->where('tanggal', $tanggalSebelumSampling)->get();
+        $totalPakan = $pakanKemarin->sum('jumlah_kg');
+        $pakanKomulatif = $siklusSaatIni->pakan()->where('tanggal', '<', now()->subDay())->sum('jumlah_kg');
+
+
+        //UMUR
+        $tanggalMulai = Carbon::parse($siklusSaatIni->tanggal_mulai);
+        $tanggalSampling = Carbon::parse($validation['tanggal']);
+        $umur = $tanggalMulai->diffInDays($tanggalSampling);
+
+        //ABW
+        $abw = $validation['berat_sampling'] / $validation['banyak_sampling'];
+
+        //ADG
+        $lastSampling = $siklusSaatIni->sampling()->where('id', '<', $samplingId)->latest()->first();
+        if ($lastSampling) {
+            $abwSebelumnya = $lastSampling->abw;
+            $adg = ($abw - $abwSebelumnya) / 7;
+        } else {
+            $adg = $abw / $umur;
+        }
+
+        //SIZE
+        $size = 1000 / $abw;
+
+        //FR
+        $feedingRate = pow(10, (-0.899 - 0.561 * log10($abw))) * 100;
+
+        //BIOMASSA
+        $biomassa = $totalPakan / $feedingRate * 100;
+
+        //SR
+        $totalTebar = $siklusSaatIni->total_tebar;
+        $survivalRate = (($biomassa * $size) / $totalTebar) * 100;
+
+        //FCR
+        $fcr = $pakanKomulatif / $biomassa;
+
+        //Update Data
+        $sampling->update([
+            'tanggal' => $validation['tanggal'],
+            'berat_sampling' => $validation['berat_sampling'],
+            'banyak_sampling' => $validation['banyak_sampling'],
+            'umur' => $umur,
+            'abw' => $abw,
+            'adg' => $adg,
+            'size' => $size,
+            'fr' => $feedingRate,
+            'sr' => $survivalRate,
+            'biomas' => $biomassa,
+            'fcr' => $fcr,
+            'catatan' => $request->catatan
+        ]);
+
+        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data sampling berhasil diubah.');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Sampling  $sampling
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Sampling $sampling)
+    public function destroy($kolamId, $siklusId, $samplingId)
     {
-        //
+        $kolam = Kolam::findOrFail($kolamId);
+        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $sampling = $siklus->sampling()->findOrFail($samplingId);
+
+        $sampling->delete();
+
+        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data sampling berhasil dihapus.');
     }
 }

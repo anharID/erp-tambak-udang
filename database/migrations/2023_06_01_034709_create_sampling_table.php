@@ -21,11 +21,14 @@ return new class extends Migration
             $table->date('tanggal');
             $table->integer('umur');
             $table->float('berat_sampling');
+            $table->float('banyak_sampling');
+            $table->float('abw');
             $table->float('adg');
             $table->float('size');
             $table->float('sr');
             $table->float('fr');
             $table->float('biomas');
+            $table->float('fcr');
             $table->string('catatan')->nullable();
             $table->timestamps();
         });

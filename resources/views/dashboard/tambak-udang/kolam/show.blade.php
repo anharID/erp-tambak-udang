@@ -71,13 +71,18 @@
                             <p>Belum ada catatan pakan.</p>
                             @endif
                         </a>
+                        <a href="{{ route('sampling.index', ['kolamId' => $kolam->id, 'siklus'=>$siklusTerpilih->id]) }}"
+                            class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
+                            <h1 class="text-xl font-bold border-b-2 border-gray-300 mb-2">Sampling</h1>
+                            @if ($sampling->isNotEmpty())
+                            <p>Terakhir ditambahkan {{ $sampling->last()->created_at->diffForHumans() }}</p>
+                            <p>ADG : {{ $sampling->last()->adg }}</p>
+                            <p>SR : {{ $sampling->last()->sr }} %</p>
+                            @else
+                            <p>Belum ada catatan sampling.</p>
+                            @endif
 
-                        <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
-                            <a
-                                href="{{ route('sampling.index', ['kolamId' => $kolam->id, 'siklus'=>$siklusTerpilih->id]) }}">
-                                <h1>Sampling</h1>
-                            </a>
-                        </div>
+                        </a>
                         <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
                             <h1>Perlakuan</h1>
                         </div>
@@ -157,7 +162,7 @@
                                 <a href="{{ route('edit_siklus', ['kolamId'=>$kolam->id, 'siklus'=>$siklusTerpilih->id]) }}"
                                     class="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Edit
                                     Siklus</a>
-                                @if ($siklusSaatIni == $siklusTerpilih)
+                                @if ($siklusTerpilih == $siklusSaatIni)
                                 <form action="{{ route('tutup_siklus', ['kolamId' => $kolam->id]) }}" method="POST">
                                     @csrf
                                     @method('put')
