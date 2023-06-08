@@ -71,24 +71,35 @@
                                     autocomplete="tinggi_air" />
                                 <x-input-error :messages="$errors->get('tinggi_air')" class="mt-2" />
                             </div>
-                        </div>
+                            <!-- Warna Air -->
+                            <div>
+                                <x-input-label for="warna_air" :value="__('Warna Air')" />
+                                <select name="warna_air"
+                                    class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2">
+                                    <option value="" disabled selected>Pilih satu opsi</option>
+                                    <option value="H" {{ $monitoring->warna_air=='H' ? 'selected' : '' }}>H</option>
+                                    <option value="HC" {{ $monitoring->warna_air=='HC' ? 'selected' : '' }}>HC</option>
+                                    <option value="C" {{ $monitoring->warna_air=='C' ? 'selected' : '' }}>C</option>
+                                    <option value="HM" {{ $monitoring->warna_air=='HM' ? 'selected' : '' }}>HM</option>
+                                </select>
 
-                        <!-- Warna Air -->
-                        <div class="mb-4">
-                            <x-input-label for="warna_air" :value="__('Warna Air')" />
-                            <select name="warna_air"
-                                class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2">
-                                <option value="" disabled selected>Pilih satu opsi</option>
-                                <option value="H" {{ $monitoring->warna_air=='H' ? 'selected' : '' }}>H</option>
-                                <option value="HC" {{ $monitoring->warna_air=='HC' ? 'selected' : '' }}>HC</option>
-                                <option value="C" {{ $monitoring->warna_air=='C' ? 'selected' : '' }}>C</option>
-                                <option value="HM" {{ $monitoring->warna_air=='HM' ? 'selected' : '' }}>HM</option>
-                            </select>
-
-                            <x-input-error :messages="$errors->get('warna_air')" class="mt-2" />
-                        </div>
-
-                        <div class="grid gap-4 mb-4 md:grid-cols-2">
+                                <x-input-error :messages="$errors->get('warna_air')" class="mt-2" />
+                            </div>
+                            <div>
+                                <x-input-label for="cuaca" :value="__('Warna Air')" />
+                                <select name="cuaca"
+                                    class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2">
+                                    <option value="" disabled selected>Pilih satu opsi</option>
+                                    <option value="Cerah" {{ $monitoring->cuaca=='Cerah' ? 'selected' : '' }}>Cerah
+                                    </option>
+                                    <option value="Mendung" {{ $monitoring->cuaca=='Mendung' ? 'selected' : ''
+                                        }}>Mendung
+                                    </option>
+                                    <option value="Hujan" {{ $monitoring->cuaca=='Hujan' ? 'selected' : '' }}>Hujan
+                                    </option>
+                                </select>
+                                <x-input-error :messages="$errors->get('warna_air')" class="mt-2" />
+                            </div>
                             <!-- Amonia -->
                             <div>
                                 <x-input-label for="amonia" :value="__('Amonia')" />

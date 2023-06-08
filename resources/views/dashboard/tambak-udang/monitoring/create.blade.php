@@ -69,23 +69,32 @@ $today = now()->format('Y-m-d');
                                     :value="old('tinggi_air')" required autofocus autocomplete="tinggi_air" />
                                 <x-input-error :messages="$errors->get('tinggi_air')" class="mt-2" />
                             </div>
-                        </div>
 
-                        <!-- Warna Air -->
-                        <div class="mb-4">
-                            <x-input-label for="warna_air" :value="__('Warna Air')" />
-                            <select name="warna_air"
-                                class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2">
-                                <option value="" disabled selected>Pilih satu opsi</option>
-                                <option value="H">H</option>
-                                <option value="HC">HC</option>
-                                <option value="C">C</option>
-                                <option value="HM">HM</option>
-                            </select>
-                            <x-input-error :messages="$errors->get('warna_air')" class="mt-2" />
-                        </div>
+                            <div>
+                                <x-input-label for="warna_air" :value="__('Warna Air')" />
+                                <select name="warna_air"
+                                    class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2">
+                                    <option value="" disabled selected>Pilih satu opsi</option>
+                                    <option value="H">H</option>
+                                    <option value="HC">HC</option>
+                                    <option value="C">C</option>
+                                    <option value="HM">HM</option>
+                                </select>
+                                <x-input-error :messages="$errors->get('warna_air')" class="mt-2" />
+                            </div>
+                            <div>
+                                <x-input-label for="cuaca" :value="__('Cuaca')" />
+                                <select name="cuaca"
+                                    class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2">
+                                    <option value="" disabled selected>Pilih satu opsi</option>
+                                    <option value="Cerah">Cerah</option>
+                                    <option value="Mendung">Mendung</option>
+                                    <option value="Hujan">Hujan</option>
+                                </select>
+                                <x-input-error :messages="$errors->get('cuaca')" class="mt-2" />
+                            </div>
 
-                        <div class="grid gap-4 mb-4 md:grid-cols-2">
+
                             <!-- Amonia -->
                             <div>
                                 <x-input-label for="amonia" :value="__('Amonia')" />
