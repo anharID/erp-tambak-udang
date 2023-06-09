@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer("jumlah_alat");
             $table->string("kondisi_alat");
             $table->boolean("maintenance");
-            $table->string("catatan");
+            $table->string("catatan")->nullable();
             $table->timestamps();
         });
     }

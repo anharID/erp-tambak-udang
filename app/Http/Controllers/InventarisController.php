@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Peralatan;
+use App\Models\Inventaris;
 use Illuminate\Http\Request;
 
-class PeralatanController extends Controller
+class InventarisController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,8 @@ class PeralatanController extends Controller
      */
     public function index()
     {
-        $peralatan = Peralatan::all();
-        return view("dashboard.peralatan.index", compact('peralatan'));
+        $inventaris = Inventaris::all();
+        return view("dashboard.inventaris.index", compact('inventaris'));
     }
 
     /**
@@ -41,6 +41,7 @@ class PeralatanController extends Controller
             'jumlah_alat' => ['required', 'numeric'],
             'kondisi_alat' => ['required', 'string', 'max:255'],
             'maintenance' => ['required', 'boolean'],
+            'catatan' => ['required', 'string', 'max:255'],
         ]);
 
         Peralatan::create([
@@ -90,6 +91,7 @@ class PeralatanController extends Controller
             'jumlah_alat' => ['required', 'numeric'],
             'kondisi_alat' => ['required', 'string', 'max:255'],
             'maintenance' => ['required', 'boolean'],
+            'catatan' => ['required', 'string', 'max:255'],
         ]);
 
 

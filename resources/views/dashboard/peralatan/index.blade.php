@@ -32,7 +32,11 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->nama_alat }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->jumlah_alat }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->kondisi_alat }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->maintenance }}</td>
+                                        @if ($row->maintenance)
+                                        <td class="px-6 py-4 whitespace-nowrap">Sedang Maintenance</td>
+                                        @else
+                                        <td class="px-6 py-4 whitespace-nowrap">Tidak Sedang Maintenance</td>
+                                        @endif
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->catatan }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <a href="{{ route('peralatan.edit', $row->id) }}" class="text-yellow-600">Edit</a>
