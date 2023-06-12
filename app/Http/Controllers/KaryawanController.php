@@ -45,7 +45,7 @@ class KaryawanController extends Controller
             'email' => ['required', 'string', 'email', 'max:255'],
             'jabatan' => ['required', 'string', 'max:255'],
             'status' => ['required', 'boolean'],
-            'gaji' => 'required',
+            'gaji' => ['required', 'numeric', 'digits_between:1,11'],
         ]);
 
         Karyawan::create([
@@ -103,7 +103,7 @@ class KaryawanController extends Controller
             'email' => ['required', 'string', 'email', 'max:255'],
             'jabatan' => ['required', 'string', 'max:255'],
             'status' => ['required', 'boolean'],
-            'gaji' => 'required',
+            'gaji' => ['required', 'numeric', 'digits_between:1,11'],
         ]);
 
 

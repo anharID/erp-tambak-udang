@@ -37,7 +37,7 @@
                     </a>
                     @endif
 
-                    <div class="w-full overflow-x-auto mt-4" x-show="activeTab === 'data'">
+                    <div class="w-full mt-4" x-show="activeTab === 'data'">
                         <table class="min-w-full table-auto mt-4 datatable">
                             <thead class="bg-gray-50 dark:bg-gray-800">
                                 <tr>
@@ -92,7 +92,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="w-full overflow-x-auto mt-4" x-show="activeTab === 'ringkasan'">
+                    <div class="w-full mt-4" x-show="activeTab === 'ringkasan'">
                         <table class="min-w-full table-auto mt-4 datatable">
                             <thead class="bg-gray-50 dark:bg-gray-800">
                                 <tr>
