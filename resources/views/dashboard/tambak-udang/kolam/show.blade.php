@@ -86,9 +86,18 @@
                         <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
                             <h1>Perlakuan</h1>
                         </div>
-                        <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
-                            <h1>Panen</h1>
-                        </div>
+                        <a href="{{ route('panen.index', ['kolamId' => $kolam->id, 'siklus'=>$siklusTerpilih->id]) }}"
+                            class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
+                            <h1 class="text-xl font-bold border-b-2 border-gray-300 mb-2">Panen</h1>
+                            {{-- @if ($panen->isNotEmpty())
+                            <p>Terakhir ditambahkan {{ $panen->last()->created_at->diffForHumans() }}</p>
+                            <p>ADG : {{ $sampling->last()->adg }}</p>
+                            <p>SR : {{ $sampling->last()->sr }} %</p>
+                            @else --}}
+                            <p>Belum ada catatan sampling.</p>
+                            {{-- @endif --}}
+
+                        </a>
                         <div class="min-w-0 p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
                             <h1>Energi</h1>
                         </div>

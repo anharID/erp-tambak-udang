@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Kolam;
 use App\Models\Pakan;
+use App\Models\Panen;
 use App\Models\Sampling;
 use App\Models\Monitoring;
 use Illuminate\Database\Eloquent\Model;
@@ -31,6 +32,10 @@ class Siklus extends Model
     public function pakan()
     {
         return $this->hasMany(Pakan::class);
+    }
+    public function panen()
+    {
+        return $this->hasMany(Panen::class);
     }
 
     // public function getRouteKeyName()

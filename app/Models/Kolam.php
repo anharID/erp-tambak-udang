@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Pakan;
+use App\Models\Panen;
 use App\Models\Siklus;
 use App\Models\Sampling;
 use App\Models\Monitoring;
@@ -31,5 +32,9 @@ class Kolam extends Model
     public function pakan()
     {
         return $this->hasMany(Pakan::class);
+    }
+    public function panen()
+    {
+        return $this->hasMany(Panen::class);
     }
 }
