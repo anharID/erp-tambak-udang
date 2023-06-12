@@ -25,7 +25,7 @@ class InventarisController extends Controller
      */
     public function create()
     {
-        return view("dashboard.peralatan.create");
+        return view("dashboard.inventaris.create");
     }
 
     /**
@@ -37,31 +37,34 @@ class InventarisController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_alat' => ['required', 'string', 'max:255'],
-            'jumlah_alat' => ['required', 'numeric'],
-            'kondisi_alat' => ['required', 'string', 'max:255'],
-            'maintenance' => ['required', 'boolean'],
-            'catatan' => ['required', 'string', 'max:255'],
+            'nama_barang' => ['required', 'string', 'max:100'],
+            'jenis_barang' => ['required', 'string', 'max:100'],
+            'tanggal_peroleh' => ['required', 'date'],
+            'stok' => ['required', 'numeric'],
+            'lokasi' => ['required', 'string', 'max:100'],
+            'status' => ['required', 'string', 'max:100'],
         ]);
 
-        Peralatan::create([
-            'nama_alat' => $request->nama_alat,
-            'jumlah_alat' => $request->jumlah_alat,
-            'kondisi_alat' => $request->kondisi_alat,
-            'maintenance' => $request->maintenance,
+        Inventaris::create([
+            'nama_barang' => $request->nama_barang,
+            'jenis_barang' => $request->jenis_barang,
+            'tanggal_peroleh' => $request->tanggal_peroleh,
+            'stok' => $request->stok,
+            'lokasi' => $request->lokasi,
+            'status' => $request->status,
             'catatan' => $request->catatan,
         ]);
 
-        return redirect()->route('peralatan.index')->with('success', "Data berhasil ditambahkan");
+        return redirect()->route('inventaris.index')->with('success', "Data berhasil ditambahkan");
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Peralatan  $peralatan
+     * @param  \App\Models\Inventaris  $inventaris
      * @return \Illuminate\Http\Response
      */
-    public function show(Peralatan $peralatan)
+    public function show(Inventaris $inventaris)
     {
         //
     }
@@ -69,53 +72,56 @@ class InventarisController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Peralatan  $peralatan
+     * @param  \App\Models\Inventaris  $inventaris
      * @return \Illuminate\Http\Response
      */
-    public function edit(Peralatan $peralatan)
+    public function edit(Inventaris $inventari)
     {
-        return view("dashboard.peralatan.edit", compact('peralatan'));
+        return view("dashboard.inventaris.edit", compact('inventari'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Peralatan  $peralatan
+     * @param  \App\Models\Inventaris  $inventaris
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Peralatan $peralatan)
+    public function update(Request $request, Inventaris $inventari)
     {
         $request->validate([
-            'nama_alat' => ['required', 'string', 'max:255'],
-            'jumlah_alat' => ['required', 'numeric'],
-            'kondisi_alat' => ['required', 'string', 'max:255'],
-            'maintenance' => ['required', 'boolean'],
-            'catatan' => ['required', 'string', 'max:255'],
+            'nama_barang' => ['required', 'string', 'max:100'],
+            'jenis_barang' => ['required', 'string', 'max:100'],
+            'tanggal_peroleh' => ['required', 'date'],
+            'stok' => ['required', 'numeric'],
+            'lokasi' => ['required', 'string', 'max:100'],
+            'status' => ['required', 'string', 'max:100'],
         ]);
 
 
-        Peralatan::where('id', $peralatan->id)->update([
-            'nama_alat' => $request->nama_alat,
-            'jumlah_alat' => $request->jumlah_alat,
-            'kondisi_alat' => $request->kondisi_alat,
-            'maintenance' => $request->maintenance,
+        Inventaris::where('id', $inventari->id)->update([
+            'nama_barang' => $request->nama_barang,
+            'jenis_barang' => $request->jenis_barang,
+            'tanggal_peroleh' => $request->tanggal_peroleh,
+            'stok' => $request->stok,
+            'lokasi' => $request->lokasi,
+            'status' => $request->status,
             'catatan' => $request->catatan,
         ]);
 
-        return redirect()->route('peralatan.index')->with('success', "Data berhasil diubah");
+        return redirect()->route('inventaris.index')->with('success', "Data berhasil diubah");
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Peralatan  $peralatan
+     * @param  \App\Models\Inventaris  $inventaris
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Peralatan $peralatan)
+    public function destroy(Inventaris $inventari)
     {
-        $peralatan->delete();
+        $inventari->delete();
 
-        return redirect()->route('peralatan.index')->with('success', "Data berhasil dihapus");
+        return redirect()->route('inventaris.index')->with('success', "Data berhasil dihapus");
     }
 }
