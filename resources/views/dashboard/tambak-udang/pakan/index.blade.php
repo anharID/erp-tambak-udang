@@ -32,7 +32,7 @@
 
                     @if ($siklusBerjalan)
                     <a href="{{ route('pakan.create',  ['kolamId' => $kolam->id,'siklus'=>$siklus->id]) }}"
-                        class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+                        class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
                         Tambah Catatan
                     </a>
                     @endif
@@ -72,9 +72,9 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->jumlah_kg }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->catatan }}</td>
                                     @if ($siklusBerjalan)
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-6 py-4 whitespace-nowrap flex">
                                         <a href="{{ route('pakan.edit', ['kolamId'=>$kolam->id, 'siklus'=>$siklus->id, 'pakan'=>$row->id]) }}"
-                                            class="text-yellow-600">Edit</a>
+                                            class="text-yellow-600 mr-4"><x-tabler-edit class="w-6 h-6" /></a>
                                         <form
                                             action="{{ route('pakan.destroy', ['kolamId'=>$kolam->id,'siklus'=>$siklus->id,'pakan'=>$row->id]) }}"
                                             method="POST">
@@ -82,7 +82,7 @@
                                             @method('DELETE')
                                             <button type="submit"
                                                 onclick="return confirm('Aksi ini tidak dapat dibatalkan! Apakah Anda yakin ingin menghapus kolam ini? ')"
-                                                class="text-red-600">Hapus Data</button>
+                                                class="text-red-600"><x-tabler-trash class="w-6 h-6" /></button>
                                         </form>
 
                                     </td>
