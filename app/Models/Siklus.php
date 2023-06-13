@@ -33,9 +33,14 @@ class Siklus extends Model
     {
         return $this->hasMany(Pakan::class);
     }
+
     public function panen()
     {
         return $this->hasMany(Panen::class);
+    }
+    public function perlakuan()
+    {
+        return $this->hasMany(Perlakuan::class);
     }
 
     // public function getRouteKeyName()
