@@ -6,6 +6,7 @@ use App\Models\Pakan;
 use App\Models\Panen;
 use App\Models\Siklus;
 use App\Models\Sampling;
+use App\Models\Perlakuan;
 use App\Models\Monitoring;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -36,5 +37,10 @@ class Kolam extends Model
     public function panen()
     {
         return $this->hasMany(Panen::class);
+
+    public function perlakuan()
+    {
+        return $this->hasMany(Perlakuan::class);
+
     }
 }

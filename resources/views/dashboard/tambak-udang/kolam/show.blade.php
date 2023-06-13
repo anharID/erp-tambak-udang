@@ -83,6 +83,7 @@
                             @endif
 
                         </a>
+
                         <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
                             <h1>Perlakuan</h1>
                         </div>
@@ -98,6 +99,24 @@
                             {{-- @endif --}}
 
                         </a>
+
+                        <a href="{{ route('perlakuan.index', ['kolamId' => $kolam->id, 'siklus'=>$siklusTerpilih->id]) }}"
+                            class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
+                            <h1 class="text-xl font-bold border-b-2 border-gray-300 mb-2">Perlakuan</h1>
+                            @if ($perlakuan->isNotEmpty())
+                            <p>Terakhir ditambahkan {{ $perlakuan->last()->created_at->diffForHumans() }}</p>
+                            <div class="min-w-0 p-2 mt-2 bg-gray-100 rounded-lg shadow-sm dark:bg-gray-700">
+                                <p>{!! nl2br(e($perlakuan->last()->catatan)) !!}</p>
+                            </div>
+                            @else
+                            <p>Belum ada catatan perlakuan.</p>
+                            @endif
+
+                        </a>
+                        <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
+                            <h1>Panen</h1>
+                        </div>
+
                         <div class="min-w-0 p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
                             <h1>Energi</h1>
                         </div>

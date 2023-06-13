@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Pakan;
 use App\Models\Sampling;
+use App\Models\Perlakuan;
 use App\Models\Monitoring;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -52,5 +53,9 @@ class User extends Authenticatable
     public function pakan()
     {
         return $this->hasMany(Pakan::class);
+    }
+    public function perlakuan()
+    {
+        return $this->hasMany(Perlakuan::class);
     }
 }
