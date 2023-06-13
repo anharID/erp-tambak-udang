@@ -8,7 +8,7 @@
 
 .dark input[type="time"]::-webkit-calendar-picker-indicator {
     filter: invert(1);
-}  
+}
 
 .dataTables_wrapper {
     width: 100%;
