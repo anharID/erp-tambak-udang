@@ -1,7 +1,7 @@
 <x-admin>
     <div class="container grid py-12">
         <div class="w-full mx-auto px-4 sm:px-6 lg:px-8 text-gray-900 dark:text-gray-100 overflow-hidden">
-            <h1 class="mb-4 font-bold text-2xl">Sampling Udang</h1>
+            <h1 class="mb-4 font-bold text-2xl">Sampling Udang Kolam {{ $kolam->nama }}</h1>
 
             {{-- Kembali --}}
             <a href="{{ route('data_kolam', ['kolam'=>$kolam->id, 'siklus'=>$siklus->id]) }}"
