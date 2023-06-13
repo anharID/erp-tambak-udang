@@ -37,10 +37,9 @@ class Kolam extends Model
     public function panen()
     {
         return $this->hasMany(Panen::class);
-
+    }
     public function perlakuan()
     {
         return $this->hasMany(Perlakuan::class);
-
     }
 }

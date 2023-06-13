@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\KolamController;
-use App\Http\Controllers\PakanController;
 use App\Http\Controllers\SiklusController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\KaryawanController;
@@ -14,7 +13,6 @@ use App\Http\Controllers\PerlakuanController;
 use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\PakanController;
 use App\Http\Controllers\PanenController;
-use App\Http\Controllers\SamplingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,7 +50,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/dashboard/kolam', KolamController::class);
     Route::resource('/dashboard/kolam/{kolamId}/siklus/{siklus}/monitoring', MonitoringController::class);
     Route::resource('/dashboard/kolam/{kolamId}/siklus/{siklus}/sampling', SamplingController::class);
-    Route::resource('/dashboard/kolam/{kolamId}/siklus/{siklus}/pakan', PakanController::class);  
+    Route::resource('/dashboard/kolam/{kolamId}/siklus/{siklus}/pakan', PakanController::class);
     Route::resource('/dashboard/kolam/{kolamId}/siklus/{siklus}/panen', PanenController::class);
     Route::resource('/dashboard/kolam/{kolamId}/siklus/{siklus}/perlakuan', PerlakuanController::class);
 
