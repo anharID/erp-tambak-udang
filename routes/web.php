@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\FinansialController;
 use App\Http\Controllers\InventarisController;
+use App\Http\Controllers\LogistikController;
 use App\Http\Controllers\PeralatanController;
 use App\Http\Controllers\MonitoringController;
 use App\Http\Controllers\PakanController;
@@ -55,6 +56,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/dashboard/karyawan', KaryawanController::class);
     Route::resource('/dashboard/finansial', FinansialController::class);
     Route::resource('/dashboard/inventaris', InventarisController::class);
+    Route::resource('/dashboard/logistik', LogistikController::class);
     Route::resource('/dashboard/peralatan', PeralatanController::class);
 });
 
