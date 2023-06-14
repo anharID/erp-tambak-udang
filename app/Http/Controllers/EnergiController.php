@@ -30,9 +30,7 @@ class EnergiController extends Controller
     public function store(Request $request, $kolamId, $siklusId)
     {
         $kolam = Kolam::findOrFail($kolamId);
-
         $siklusSaatIni = $kolam->siklus()->whereNull('tanggal_selesai')->first();
-
         $user = auth()->user();
 
         $validation = $request->validate([
@@ -61,5 +59,56 @@ class EnergiController extends Controller
         $kolam->energi()->save($energi);
 
         return redirect()->route('energi.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data perlakuan berhasil disimpan.');
+    }
+
+    public function edit($kolamId, $siklusId, $energiId)
+    {
+        $kolam = Kolam::findOrFail($kolamId);
+        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $energi = $siklus->energi()->findOrFail($energiId);
+
+        return view('dashboard.tambak-udang.energi.edit', compact('kolam', 'siklus', 'energi'));
+    }
+
+    public function update(Request $request, $kolamId, $siklusId, $energiId)
+    {
+        $validation = $request->validate([
+            'tanggal' => 'required|date',
+            'penggunaan' => 'required',
+            'sumber_energi' => 'required',
+            'jumlah' => 'required|numeric',
+            'daya' => 'required|numeric',
+            'lama_penggunaan' => 'required|numeric',
+        ]);
+
+        $kolam = Kolam::findOrFail($kolamId);
+        $siklus = $kolam->siklus()->where('id', $siklusId)->first();
+        $energi = $siklus->energi()->findOrFail($energiId);
+
+        $kwh = ($validation['daya'] / 1000) * $validation['lama_penggunaan'] * $validation['jumlah'];
+
+        $energi->update([
+            'tanggal' => $validation['tanggal'],
+            'penggunaan' => $validation['penggunaan'],
+            'sumber_energi' => $validation['sumber_energi'],
+            'jumlah' => $validation['jumlah'],
+            'daya' => $validation['daya'],
+            'lama_penggunaan' => $validation['lama_penggunaan'],
+            'kwh' => $kwh,
+            'catatan' => $request->catatan
+        ]);
+
+        return redirect()->route('energi.index', ['kolamId' => $kolam->id, 'siklus' => $siklus->id])->with('success', 'Data berhasil diubah');
+    }
+
+    public function destroy($kolamId, $siklusId, $energiId)
+    {
+        $kolam = Kolam::findOrFail($kolamId);
+        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $energi = $siklus->energi()->findOrFail($energiId);
+
+        $energi->delete();
+
+        return redirect()->route('energi.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data berhasil dihapus');
     }
 }

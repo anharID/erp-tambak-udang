@@ -97,26 +97,26 @@
                         <a href="{{ route('panen.index', ['kolamId' => $kolam->id, 'siklus'=>$siklusTerpilih->id]) }}"
                             class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
                             <h1 class="text-xl font-bold border-b-2 border-gray-300 mb-2">Panen</h1>
-                            {{-- @if ($panen->isNotEmpty())
+                            @if ($panen->isNotEmpty())
                             <p>Terakhir ditambahkan {{ $panen->last()->created_at->diffForHumans() }}</p>
-                            <p>ADG : {{ $sampling->last()->adg }}</p>
-                            <p>SR : {{ $sampling->last()->sr }} %</p>
-                            @else --}}
+                            <p>Status Panen : {{ $panen->last()->status }}</p>
+                            <p>Tonase Panen : {{ $panen->last()->tonase_jumlah }} Kg</p>
+                            @else
                             <p>Belum ada catatan Panen.</p>
-                            {{-- @endif --}}
+                            @endif
 
                         </a>
 
                         <a href="{{ route('energi.index', ['kolamId' => $kolam->id, 'siklus'=>$siklusTerpilih->id]) }}"
                             class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
                             <h1 class="text-xl font-bold border-b-2 border-gray-300 mb-2">Energi</h1>
-                            {{-- @if ($panen->isNotEmpty())
-                            <p>Terakhir ditambahkan {{ $panen->last()->created_at->diffForHumans() }}</p>
-                            <p>ADG : {{ $sampling->last()->adg }}</p>
-                            <p>SR : {{ $sampling->last()->sr }} %</p>
-                            @else --}}
+                            @if ($energi->isNotEmpty())
+                            <p>Terakhir ditambahkan {{ $energi->last()->created_at->diffForHumans() }}</p>
+                            <p>penggunaan : {{ $energi->last()->penggunaan }}</p>
+                            <p>Konsumsi energi : {{ $energi->last()->kwh }} kWh</p>
+                            @else
                             <p>Belum ada catatan Energi.</p>
-                            {{-- @endif --}}
+                            @endif
 
                         </a>
                     </div>
