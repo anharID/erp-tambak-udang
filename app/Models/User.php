@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Pakan;
+use App\Models\Energi;
 use App\Models\Sampling;
 use App\Models\Perlakuan;
 use App\Models\Monitoring;
@@ -57,5 +58,9 @@ class User extends Authenticatable
     public function perlakuan()
     {
         return $this->hasMany(Perlakuan::class);
+    }
+    public function energi()
+    {
+        return $this->hasMany(Energi::class);
     }
 }
