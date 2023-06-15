@@ -23,7 +23,8 @@ $today = now()->format('Y-m-d');
                             <x-input-label for="catatan" :value="__('Perlakuan')" />
                             <textarea id="catatan"
                                 class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
-                                name="catatan" required autofocus autocomplete="catatan">{{ old('catatan') }}</textarea>
+                                name="catatan" rows="5" required autofocus
+                                autocomplete="catatan">{{ old('catatan') }}</textarea>
                             <x-input-error :messages="$errors->get('catatan')" class="mt-2" />
                         </div>
 
