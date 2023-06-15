@@ -11,7 +11,7 @@
                     </div>
                     @endif
 
-                    <a href="{{ route('users.create') }}" class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+                    <a href="{{ route('users.create') }}" class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
                         Tambah Pengguna
                     </a>
                     <div class="w-full overflow-x-auto">
@@ -30,12 +30,12 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $user->name }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $user->email }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $user->role }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <a href="{{ route('users.edit', $user->id) }}" class="text-yellow-600">Edit</a>
+                                    <td class="px-6 py-4 whitespace-nowrap flex">
+                                        <a href="{{ route('users.edit', $user->id) }}" class="text-yellow-600 mr-4"><i class="fa-solid fa-pen-to-square"></i></a>
                                         <form action="{{ route('users.destroy', $user->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus user ini?')" class="text-red-600">Hapus Data</button>
+                                            <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus user ini?')" class="text-red-600"><i class="fa-solid fa-trash"></i></button>
                                         </form>
                                     </td>
                                 </tr>

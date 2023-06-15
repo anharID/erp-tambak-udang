@@ -7,57 +7,64 @@
                   <ul class="mt-6">
                       <li class="relative px-6 py-3">
                           @if (request()->routeIs('dashboard'))
-                          <span class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
+                          <span class="absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
                           @endif
                           <a class=" {{ request()->routeIs('dashboard') ? 'text-gray-800 dark:text-gray-100' : ''  }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" href="{{ route('dashboard') }}">
-                              <span class=" ml-4">Dashboard</span>
+                            <i class="fa-solid fa-house"></i>  
+                            <span class=" ml-4">Dashboard</span>
                           </a>
                       </li>
                   </ul>
                   <ul>
                       <li class="relative px-6 py-3">
                           @if (request()->routeIs('users.index'))
-                          <span class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
+                          <span class="absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
                           @endif
                           <a class="{{ request()->routeIs('users.index') ? 'text-gray-800 dark:text-gray-100' : '' }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 " href="{{ route('users.index') }}">
-                              <span class="ml-4">Manajemen Akun</span>
+                            <i class="fa-solid fa-key"></i>  
+                            <span class="ml-4">Manajemen Akun</span>
                           </a>
                       </li>
                       <li class="relative px-6 py-3">
                           @if (request()->routeIs('karyawan.index'))
-                          <span class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
+                          <span class="absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
                           @endif
                           <a class="{{ request()->routeIs('karyawan.index') ? 'text-gray-800 dark:text-gray-100' : '' }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" href="{{ route('karyawan.index') }}">
-                              <span class="ml-4">Manajemen Karyawan</span>
+                            <i class="fa-solid fa-users"></i>
+                            <span class="ml-4">Manajemen Karyawan</span>
                           </a>
                       </li>
                       <li class="relative px-6 py-3">
                           @if (request()->routeIs('finansial.index'))
-                          <span class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
+                          <span class="absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
                           @endif
                           <a class="{{ request()->routeIs('finansial.index') ? 'text-gray-800 dark:text-gray-100' : '' }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" href="{{ route('finansial.index') }}">
-                              <span class="ml-4">Manajemen Finansial</span>
+                            <i class="fa-solid fa-money-bill"></i>  
+                            <span class="ml-4">Manajemen Finansial</span>
                           </a>
                       </li>
                       <li class="relative px-6 py-3">
                           <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" href="">
-                              <span class="ml-4">Manajemen Inventaris</span>
+                            <i class="fa-solid fa-warehouse fa-sm"></i> 
+                            <span class="ml-4">Manajemen Inventaris</span>
                           </a>
                       </li>
                       <li class="relative px-6 py-3">
                           @if (request()->routeIs('kolam.index'))
-                          <span class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
+                          <span class="absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
                           @endif
                           <a class="{{ request()->routeIs('kolam.index') ? 'text-gray-800 dark:text-gray-100' : '' }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" href="{{ route('kolam.index') }}">
-                              <span class="ml-4">Manajemen Tambak Udang</span>
+                            <i class="fa-solid fa-shrimp"></i>  
+                            <span class="ml-4">Manajemen Tambak Udang</span>
                           </a>
                       </li>
                       <li class="relative px-6 py-3">
                           @if (request()->routeIs('peralatan.index'))
-                          <span class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
+                          <span class="absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
                           @endif
                           <a class="{{ request()->routeIs('peralatan.index') ? 'text-gray-800 dark:text-gray-100' : '' }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" href="{{ route('peralatan.index') }}">
-                              <span class="ml-4">Manajemen Peralatan</span>
+                            <i class="fa-solid fa-wrench"></i>  
+                            <span class="ml-4">Manajemen Peralatan</span>
                           </a>
                       </li>
                   </ul>
@@ -80,58 +87,65 @@
                   <ul class="mt-6">
                       <li class="relative px-6 py-3">
                           {{-- <span
-                    class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg"
+                    class="absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg"
                     aria-hidden="true"
                   ></span> --}}
                           @if (request()->routeIs('dashboard'))
-                          <span class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
+                          <span class="absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
                           @endif
                           <a class="{{ request()->routeIs('dashboard') ? 'text-gray-800 dark:text-gray-100' : '' }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" href="{{ route('dashboard') }}">
-                              <span class="ml-4">Dashboard</span>
+                            <i class="fa-solid fa-house"></i>  
+                            <span class="ml-4">Dashboard</span>
                           </a>
                       </li>
                   </ul>
                   <ul>
                       <li class="relative px-6 py-3">
                           @if (request()->routeIs('users.index'))
-                          <span class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
+                          <span class="absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
                           @endif
                           <a class="{{ request()->routeIs('users.index') ? 'text-gray-800 dark:text-gray-100' : '' }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" href="{{ route('users.index') }}">
-                              <span class="ml-4">Manajemen User</span>
+                            <i class="fa-solid fa-key"></i>  
+                            <span class="ml-4">Manajemen User</span>
                           </a>
                       </li>
                       <li class="relative px-6 py-3">
                           @if (request()->routeIs('karyawan.index'))
-                          <span class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
+                          <span class="absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
                           @endif
                           <a class="{{ request()->routeIs('karyawan.index') ? 'text-gray-800 dark:text-gray-100' : '' }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" href="{{ route('karyawan.index') }}">
-                              <span class="ml-4">Manajemen Karyawan</span>
+                            <i class="fa-solid fa-users"></i>  
+                            <span class="ml-4">Manajemen Karyawan</span>
                           </a>
                       </li>
                       <li class="relative px-6 py-3">
                         @if (request()->routeIs('finansial.index'))
-                          <span class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
+                          <span class="absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
                           @endif
                           <a class="{{ request()->routeIs('finansial.index') ? 'text-gray-800 dark:text-gray-100' : '' }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" href="{{ route('finansial.index') }}">
-                              <span class="ml-4">Manajemen Finansial</span>
+                            <i class="fa-solid fa-money-bill"></i>  
+                            <span class="ml-4">Manajemen Finansial</span>
                           </a>
                       </li>
                       <li class="relative px-6 py-3">
                           <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" href="buttons.html">
-                              <span class="ml-4">Manajemen Inventaris</span>
+                            <i class="fa-solid fa-warehouse fa-sm"></i>  
+                            <span class="ml-4">Manajemen Inventaris</span>
                           </a>
                       </li>
                       <li class="relative px-6 py-3">
                           @if (request()->routeIs('kolam.index'))
-                          <span class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
+                          <span class="absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
                           @endif
                           <a class="{{ request()->routeIs('kolam.index') ? 'text-gray-800 dark:text-gray-100' : '' }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" href="{{ route('kolam.index') }}">
-                              <span class="ml-4">Manajemen Tambak Udang</span>
+                            <i class="fa-solid fa-shrimp"></i>  
+                            <span class="ml-4">Manajemen Tambak Udang</span>
                           </a>
                       </li>
                       <li class="relative px-6 py-3">
                           <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" href="tables.html">
-                              <span class="ml-4">Manajemen Peralatan</span>
+                            <i class="fa-solid fa-wrench"></i>   
+                            <span class="ml-4">Manajemen Peralatan</span>
                           </a>
                       </li>
                   </ul>
