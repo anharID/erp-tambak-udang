@@ -13,7 +13,7 @@
                     @endif
                     {{-- Tombol tambah kolam --}}
                     <a href="{{ route('kolam.create') }}"
-                        class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+                        class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
                         Tambah Kolam
                     </a>
                     <div class="w-full overflow-x-auto mt-4">
@@ -51,14 +51,14 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->tipe }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->luas }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->kedalaman }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <a href="{{ route('kolam.edit', $row->id) }}" class="text-yellow-600">Edit</a>
+                                    <td class="px-6 py-4 whitespace-nowrap flex">
+                                        <a href="{{ route('kolam.edit', $row->id) }}" class="text-yellow-600 mr-4"><i class="fa-solid fa-pen-to-square"></i></a>
                                         <form action="{{ route('kolam.destroy', $row->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
                                                 onclick="return confirm('Aksi ini tidak dapat dibatalkan! Apakah Anda yakin ingin menghapus kolam ini? ')"
-                                                class="text-red-600">Hapus Data</button>
+                                                class="text-red-600"><i class="fa-solid fa-trash"></i></button>
                                         </form>
                                     </td>
                                 </tr>

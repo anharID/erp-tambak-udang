@@ -35,8 +35,8 @@
                             <!-- Tonase Besar -->
                             <div>
                                 <x-input-label for="tonase_besar" :value="__('Tonase Besar')" class="font-light" />
-                                <x-text-input id="tonase_besar" class="block mt-1 w-full" type="number" step='0.01' min='0'
-                                    name="tonase_besar" :value="old('tonase_besar')" required autofocus
+                                <x-text-input id="tonase_besar" class="block mt-1 w-full" type="number" step='0.01'
+                                    min='0' name="tonase_besar" :value="old('tonase_besar')" required autofocus
                                     autocomplete="tonase_besar" />
                                 <x-input-error :messages="$errors->get('tonase_besar')" class="mt-2" />
                             </div>
@@ -44,8 +44,8 @@
                             <!-- Tonase Kecil -->
                             <div>
                                 <x-input-label for="tonase_kecil" :value="__('Tonase Kecil')" class="font-light" />
-                                <x-text-input id="tonase_kecil" class="block mt-1 w-full" type="number" step='0.01' min='0'
-                                    name="tonase_kecil" :value="old('tonase_kecil')" required autofocus
+                                <x-text-input id="tonase_kecil" class="block mt-1 w-full" type="number" step='0.01'
+                                    min='0' name="tonase_kecil" :value="old('tonase_kecil')" required autofocus
                                     autocomplete="tonase_kecil" />
                                 <x-input-error :messages="$errors->get('tonase_kecil')" class="mt-2" />
                             </div>
@@ -56,8 +56,8 @@
                             <!-- Size Besar -->
                             <div>
                                 <x-input-label for="size_besar" :value="__('Size Besar')" class="font-light" />
-                                <x-text-input id="size_besar" class="block mt-1 w-full" type="number" step='0.01' min='0'
-                                    name="size_besar" :value="old('size_besar')" required autofocus
+                                <x-text-input id="size_besar" class="block mt-1 w-full" type="number" step='0.01'
+                                    min='0' name="size_besar" :value="old('size_besar')" required autofocus
                                     autocomplete="size_besar" />
                                 <x-input-error :messages="$errors->get('size_besar')" class="mt-2" />
                             </div>
@@ -65,8 +65,8 @@
                             <!-- Size Kecil -->
                             <div>
                                 <x-input-label for="size_kecil" :value="__('Size Kecil')" class="font-light" />
-                                <x-text-input id="size_kecil" class="block mt-1 w-full" type="number" step='0.01' min='0'
-                                    name="size_kecil" :value="old('size_kecil')" required autofocus
+                                <x-text-input id="size_kecil" class="block mt-1 w-full" type="number" step='0.01'
+                                    min='0' name="size_kecil" :value="old('size_kecil')" required autofocus
                                     autocomplete="size_kecil" />
                                 <x-input-error :messages="$errors->get('size_kecil')" class="mt-2" />
                             </div>
@@ -75,8 +75,12 @@
                         <!-- Status -->
                         <div>
                             <x-input-label for="status" :value="__('Status')" />
-                            <x-text-input id="status" class="block mt-1 w-full" type="text" name="status"
-                                :value="old('status')" autofocus autocomplete="status" />
+                            <select name="status" id="status"
+                                class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2">
+                                <option value="" disabled selected>Pilih satu opsi</option>
+                                <option value="Parsial">Parsial</option>
+                                <option value="Total">Total</option>
+                            </select>
                             <x-input-error :messages="$errors->get('status')" class="mt-2" />
                         </div>
 
