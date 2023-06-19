@@ -90,5 +90,7 @@ $today = now()->format('Y-m-d');
             </div>
         </div>
     </div>
+    <script src="{{ Vite::asset('resources/js/finansial.js') }}" defer></script>
+
 
 </x-admin>
