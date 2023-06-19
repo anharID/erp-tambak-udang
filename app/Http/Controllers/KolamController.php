@@ -4,11 +4,6 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Kolam;
-use App\Models\Pakan;
-use App\Models\Siklus;
-use App\Models\Monitoring;
-use App\Models\Perlakuan;
-use App\Models\Sampling;
 use Illuminate\Http\Request;
 
 class KolamController extends Controller
@@ -143,14 +138,15 @@ class KolamController extends Controller
 
         $siklusTerpilih = $kolam->siklus()->find($siklus);
 
-        $monitoring = Monitoring::where('siklus_id', $siklus)->get();
+        $monitoring = $siklusTerpilih->monitoring()->get();
 
-        $pakan = Pakan::where('siklus_id', $siklus)->get();
+        $pakan = $siklusTerpilih->pakan()->get();
         $jumlahPakanTerpakaiHariIni = $pakan->where('tanggal', Carbon::now()->toDateString())->sum('jumlah_kg');
 
-        $sampling = Sampling::where('siklus_id',  $siklus)->get();
-
-        $perlakuan = Perlakuan::where('siklus_id',  $siklus)->get();
+        $sampling = $siklusTerpilih->sampling()->get();
+        $perlakuan = $siklusTerpilih->perlakuan()->get();
+        $panen = $siklusTerpilih->panen()->get();
+        $energi = $siklusTerpilih->energi()->get();
 
 
         if ($siklusSaatIni == $siklusTerpilih) {
@@ -174,6 +170,8 @@ class KolamController extends Controller
             'jumlahPakanTerpakaiHariIni' => $jumlahPakanTerpakaiHariIni,
             'sampling' => $sampling,
             'perlakuan' => $perlakuan,
+            'panen' => $panen,
+            'energi' => $energi,
 
         ];
 

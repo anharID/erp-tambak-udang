@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Pakan;
 use App\Models\Panen;
+use App\Models\Energi;
 use App\Models\Siklus;
 use App\Models\Sampling;
 use App\Models\Perlakuan;
@@ -41,5 +42,9 @@ class Kolam extends Model
     public function perlakuan()
     {
         return $this->hasMany(Perlakuan::class);
+    }
+    public function energi()
+    {
+        return $this->hasMany(Energi::class);
     }
 }

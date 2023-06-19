@@ -51,65 +51,92 @@
                     <div class="grid grid-cols-1 gap-6 mb-8">
                         <a href="{{ route('monitoring.index', ['kolamId' => $kolam->id, 'siklus'=>$siklusTerpilih->id]) }}"
                             class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
-                            <h1 class="text-xl font-bold border-b-2 border-gray-300 mb-2">Monitoring</h1>
+                            <h1 class="text-xl font-bold">Monitoring</h1>
                             @if ($monitoring->isNotEmpty())
-                            <p>Suhu: {{ $monitoring->last()->suhu }} &deg;C</p>
-                            <p>PH: {{ $monitoring->last()->ph }}</p>
-                            <p>DO: {{ $monitoring->last()->do }}</p>
+                            <p class="text-sm italic">Terakhir ditambahkan {{
+                                $monitoring->last()->created_at->diffForHumans() }}
+                            </p>
+                            <div class="min-w-0 p-2 mt-2 bg-gray-100 rounded-lg shadow-sm dark:bg-gray-700">
+                                <p>Suhu: {{ $monitoring->last()->suhu }} &deg;C</p>
+                                <p>PH: {{ $monitoring->last()->ph }}</p>
+                                <p>DO: {{ $monitoring->last()->do }}</p>
+                            </div>
                             @else
-                            <p>Belum ada catatan monitoring.</p>
+                            <p class="text-sm italic">Belum ada catatan monitoring.</p>
                             @endif
                         </a>
                         <a href="{{ route('pakan.index', ['kolamId' => $kolam->id, 'siklus'=>$siklusTerpilih->id]) }}"
                             class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
-                            <h1 class="text-xl font-bold border-b-2 border-gray-300 mb-2">Pakan</h1>
+                            <h1 class="text-xl font-bold">Pakan</h1>
                             @if ($pakan->isNotEmpty())
-                            <p>Terakhir ditambahkan {{ $pakan->last()->created_at->diffForHumans() }}</p>
-                            <p>Pakan terpakai hari ini {{ $jumlahPakanTerpakaiHariIni }} kg</p>
-                            <p>Pakan terpakai Komulatif {{ $pakan->sum('jumlah_kg') }} kg</p>
+                            <p class="text-sm italic">Terakhir ditambahkan {{
+                                $pakan->last()->created_at->diffForHumans() }}
+                            </p>
+                            <div class="min-w-0 p-2 mt-2 bg-gray-100 rounded-lg shadow-sm dark:bg-gray-700">
+                                <p>Pakan terpakai hari ini {{ $jumlahPakanTerpakaiHariIni }} kg</p>
+                                <p>Pakan terpakai Komulatif {{ $pakan->sum('jumlah_kg') }} kg</p>
+                            </div>
                             @else
-                            <p>Belum ada catatan pakan.</p>
+                            <p class="text-sm italic">Belum ada catatan pakan.</p>
                             @endif
                         </a>
                         <a href="{{ route('sampling.index', ['kolamId' => $kolam->id, 'siklus'=>$siklusTerpilih->id]) }}"
                             class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
-                            <h1 class="text-xl font-bold border-b-2 border-gray-300 mb-2">Sampling</h1>
+                            <h1 class="text-xl font-bold">Sampling</h1>
                             @if ($sampling->isNotEmpty())
                             <p>Terakhir ditambahkan {{ $sampling->last()->created_at->diffForHumans() }}</p>
-                            <p>ADG : {{ $sampling->last()->adg }}</p>
-                            <p>SR : {{ $sampling->last()->sr }} %</p>
+                            <div class="min-w-0 p-2 mt-2 bg-gray-100 rounded-lg shadow-sm dark:bg-gray-700">
+                                <p>ADG : {{ $sampling->last()->adg }} gram</p>
+                                <p>SR : {{ $sampling->last()->sr }} %</p>
+                            </div>
                             @else
-                            <p>Belum ada catatan sampling.</p>
+                            <p class="text-sm italic">Belum ada catatan sampling.</p>
                             @endif
                         </a>
                         <a href="{{ route('perlakuan.index', ['kolamId' => $kolam->id, 'siklus'=>$siklusTerpilih->id]) }}"
                             class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
-                            <h1 class="text-xl font-bold border-b-2 border-gray-300 mb-2">Perlakuan</h1>
+                            <h1 class="text-xl font-bold">Perlakuan</h1>
                             @if ($perlakuan->isNotEmpty())
-                            <p>Terakhir ditambahkan {{ $perlakuan->last()->created_at->diffForHumans() }}</p>
+                            <p class="text-sm italic">Terakhir ditambahkan {{
+                                $perlakuan->last()->created_at->diffForHumans() }}</p>
                             <div class="min-w-0 p-2 mt-2 bg-gray-100 rounded-lg shadow-sm dark:bg-gray-700">
                                 <p>{!! nl2br(e($perlakuan->last()->catatan)) !!}</p>
                             </div>
                             @else
-                            <p>Belum ada catatan perlakuan.</p>
+                            <p class="text-sm italic">Belum ada catatan perlakuan.</p>
                             @endif
                         </a>
                         <a href="{{ route('panen.index', ['kolamId' => $kolam->id, 'siklus'=>$siklusTerpilih->id]) }}"
                             class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
-                            <h1 class="text-xl font-bold border-b-2 border-gray-300 mb-2">Panen</h1>
-                            {{-- @if ($panen->isNotEmpty())
-                            <p>Terakhir ditambahkan {{ $panen->last()->created_at->diffForHumans() }}</p>
-                            <p>ADG : {{ $sampling->last()->adg }}</p>
-                            <p>SR : {{ $sampling->last()->sr }} %</p>
-                            @else --}}
-                            <p>Belum ada catatan sampling.</p>
-                            {{-- @endif --}}
+                            <h1 class="text-xl font-bold">Panen</h1>
+                            @if ($panen->isNotEmpty())
+                            <p class="text-sm italic">Terakhir ditambahkan {{
+                                $panen->last()->created_at->diffForHumans() }}</p>
+                            <div class="min-w-0 p-2 mt-2 bg-gray-100 rounded-lg shadow-sm dark:bg-gray-700">
+                                <p>Status Panen : {{ $panen->last()->status }}</p>
+                                <p>Tonase Panen : {{ $panen->last()->tonase_jumlah }} Kg</p>
+                            </div>
+                            @else
+                            <p class="text-sm italic">Belum ada catatan Panen.</p>
+                            @endif
 
                         </a>
 
-                        <div class="min-w-0 p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
-                            <h1>Energi</h1>
-                        </div>
+                        <a href="{{ route('energi.index', ['kolamId' => $kolam->id, 'siklus'=>$siklusTerpilih->id]) }}"
+                            class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
+                            <h1 class="text-xl font-bold">Energi</h1>
+                            @if ($energi->isNotEmpty())
+                            <p class="text-sm italic">Terakhir ditambahkan {{
+                                $energi->last()->created_at->diffForHumans() }}</p>
+                            <div class="min-w-0 p-2 mt-2 bg-gray-100 rounded-lg shadow-sm dark:bg-gray-700">
+                                <p>penggunaan : {{ $energi->last()->penggunaan }}</p>
+                                <p>Konsumsi energi : {{ $energi->last()->kwh }} kWh</p>
+                            </div>
+                            @else
+                            <p class="text-sm italic">Belum ada catatan Energi.</p>
+                            @endif
+
+                        </a>
                     </div>
                 </div>
 
@@ -129,7 +156,7 @@
                         @endif
                         {{-- Informasi Kolam --}}
                         <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
-                            <h1 class="text-2xl font-bold mb-1">Profil Kolam</h1>
+                            <h1 class="text-xl font-bold mb-1">Profil Kolam</h1>
                             <p class="flex justify-between">
                                 <span>Nama Kolam</span>
                                 <span class="text-right">{{ $kolam->nama }}</span>
@@ -148,7 +175,7 @@
                             </p>
                         </div>
                         <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
-                            <h1 class="text-2xl font-bold mb-1">Siklus</h1>
+                            <h1 class="text-xl font-bold mb-1">Siklus</h1>
                             @if ( $siklusTerpilih || $siklusTerpilih->id == $siklusSaatIni->id)
                             <p class="flex justify-between">
                                 <span>Siklus Mulai</span>
