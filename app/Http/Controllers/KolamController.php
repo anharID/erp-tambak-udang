@@ -137,19 +137,16 @@ class KolamController extends Controller
         $siklusSelesai = $kolam->siklus()->whereNotNull('tanggal_selesai')->orderBy('tanggal_mulai', 'desc')->get();
 
         $siklusTerpilih = $kolam->siklus()->find($siklus);
-
         $monitoring = $siklusTerpilih->monitoring()->get();
-
         $pakan = $siklusTerpilih->pakan()->get();
         $jumlahPakanTerpakaiHariIni = $pakan->where('tanggal', Carbon::now()->toDateString())->sum('jumlah_kg');
-
         $sampling = $siklusTerpilih->sampling()->get();
         $perlakuan = $siklusTerpilih->perlakuan()->get();
         $panen = $siklusTerpilih->panen()->get();
         $energi = $siklusTerpilih->energi()->get();
 
 
-        if ($siklusSaatIni == $siklusTerpilih) {
+        if ($siklusTerpilih == $siklusSaatIni) {
             // Ubah tanggal mulai menjadi objek Carbon
             $tanggalMulai = Carbon::parse($siklusSaatIni->tanggal_mulai);
             // Hitung DOC saat ini
