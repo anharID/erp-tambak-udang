@@ -63,16 +63,16 @@
 
 {{-- <label for="name" class="block text-sm text-gray-700 dark:text-gray-400">Name </label>
 <input type="text" name="name"
-    class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+    class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-blue-400 focus:outline-none focus:shadow-outline-blue dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
     placeholder="Jane Doe" />
 <label for="email" class="block mt-4 text-sm text-gray-700 dark:text-gray-400">Email </label>
 <input type="email" name="email"
-    class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+    class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-blue-400 focus:outline-none focus:shadow-outline-blue dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
     placeholder="Jane Doe" />
 
 <label for="role" class="block mt-4 text-sm text-gray-700 dark:text-gray-400">Role</label>
 <select name="role"
-    class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray">
+    class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-blue-400 focus:outline-none focus:shadow-outline-blue dark:focus:shadow-outline-gray">
     <option disabled selected>Pilih satu opsi</option>
     <option value="superadmin">Super Admin</option>
     <option value="direktur">Direktur</option>
