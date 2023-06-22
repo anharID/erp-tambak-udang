@@ -49,7 +49,7 @@ Route::middleware('auth')->group(function () {
 
     //Kolam
     Route::get('/dashboard/kolam/{kolam}/siklus/{siklus}', [KolamController::class, 'dataKolam'])->middleware('role:superadmin,admin,direktur,teknisi')->name('data_kolam');
-    Route::resource('/dashboard/kolam', KolamController::class)->middleware('role:superadmin,admin,direktur,teknisi');
+    Route::resource('/dashboard/kolam', KolamController::class)->middleware(['role:superadmin,admin,direktur,teknisi', 'detail-kolam']);
     Route::resource('/dashboard/kolam/{kolamId}/siklus/{siklus}/monitoring', MonitoringController::class)->middleware('role:superadmin,admin,direktur,teknisi');
     Route::resource('/dashboard/kolam/{kolamId}/siklus/{siklus}/sampling', SamplingController::class)->middleware('role:superadmin,admin,direktur,teknisi');
     Route::resource('/dashboard/kolam/{kolamId}/siklus/{siklus}/pakan', PakanController::class)->middleware('role:superadmin,admin,direktur,teknisi');
