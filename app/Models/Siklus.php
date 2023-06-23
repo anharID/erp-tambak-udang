@@ -19,7 +19,7 @@ class Siklus extends Model
 
     public function kolam()
     {
-        return $this->belongsTo(Kolam::class, 'kolam_id');
+        return $this->belongsToMany(Kolam::class, 'kolam_siklus')->withPivot('jumlah_tebar', 'doc');
     }
 
     public function monitoring()
