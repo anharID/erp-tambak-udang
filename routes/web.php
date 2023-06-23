@@ -33,34 +33,39 @@ Route::get('/dashboard', function () {
     return view('dashboard.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+//TODO perbbaiki route dan midleware
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     //Siklus
-    Route::get('/dashboard/kolam/{kolamId}/tambah-siklus', [SiklusController::class, 'create'])->name('tambah_siklus');
-    Route::post('/dashboard/kolam/{kolamId}/tambah-siklus/store', [SiklusController::class, 'tambahSiklus'])->name('store_siklus');
-    Route::get('/dashboard/kolam/{kolamId}/siklus/{siklus}/edit', [SiklusController::class, 'edit'])->name('edit_siklus');
-    Route::put('/dashboard/kolam/{kolamId}/siklus/{siklus}/update', [SiklusController::class, 'updateSiklus'])->name('update_siklus');
-    Route::delete('/dashboard/kolam/{kolamId}/siklus/{siklus}/delete', [SiklusController::class, 'destroy'])->name('hapus_siklus');
-    Route::put('/dashboard/kolam/{kolamId}/tutup-siklus', [SiklusController::class, 'tutupSiklus'])->name('tutup_siklus');
+    Route::get('/dashboard/kolam/{kolamId}/tambah-siklus', [SiklusController::class, 'create'])->middleware('role:superadmin,teknisi')->name('tambah_siklus');
+    Route::post('/dashboard/kolam/{kolamId}/tambah-siklus/store', [SiklusController::class, 'tambahSiklus'])->middleware('role:superadmin,teknisi')->name('store_siklus');
+    Route::get('/dashboard/kolam/{kolamId}/siklus/{siklus}/edit', [SiklusController::class, 'edit'])->middleware('role:superadmin,teknisi')->name('edit_siklus');
+    Route::put('/dashboard/kolam/{kolamId}/siklus/{siklus}/update', [SiklusController::class, 'updateSiklus'])->middleware('role:superadmin,teknisi')->name('update_siklus');
+    Route::delete('/dashboard/kolam/{kolamId}/siklus/{siklus}/delete', [SiklusController::class, 'destroy'])->middleware('role:superadmin,teknisi')->name('hapus_siklus');
+    Route::put('/dashboard/kolam/{kolamId}/tutup-siklus', [SiklusController::class, 'tutupSiklus'])->middleware('role:superadmin,teknisi')->name('tutup_siklus');
 
     //Kolam
-    Route::get('/dashboard/kolam/{kolam}/siklus/{siklus}', [KolamController::class, 'dataKolam'])->name('data_kolam');
-    Route::resource('/dashboard/kolam', KolamController::class);
-    Route::resource('/dashboard/kolam/{kolamId}/siklus/{siklus}/monitoring', MonitoringController::class);
-    Route::resource('/dashboard/kolam/{kolamId}/siklus/{siklus}/sampling', SamplingController::class);
-    Route::resource('/dashboard/kolam/{kolamId}/siklus/{siklus}/pakan', PakanController::class);
-    Route::resource('/dashboard/kolam/{kolamId}/siklus/{siklus}/panen', PanenController::class);
-    Route::resource('/dashboard/kolam/{kolamId}/siklus/{siklus}/perlakuan', PerlakuanController::class);
-    Route::resource('/dashboard/kolam/{kolamId}/siklus/{siklus}/energi', EnergiController::class);
+    Route::get('/dashboard/kolam/{kolam}/siklus/{siklus}', [KolamController::class, 'dataKolam'])->middleware('role:superadmin,admin,direktur,teknisi')->name('data_kolam');
+    Route::resource('/dashboard/kolam', KolamController::class)->middleware(['role:superadmin,admin,direktur,teknisi', 'detail-kolam']);
+    Route::resource('/dashboard/kolam/{kolamId}/siklus/{siklus}/monitoring', MonitoringController::class)->middleware('role:superadmin,admin,direktur,teknisi');
+    Route::resource('/dashboard/kolam/{kolamId}/siklus/{siklus}/sampling', SamplingController::class)->middleware('role:superadmin,admin,direktur,teknisi');
+    Route::resource('/dashboard/kolam/{kolamId}/siklus/{siklus}/pakan', PakanController::class)->middleware('role:superadmin,admin,direktur,teknisi');
+    Route::resource('/dashboard/kolam/{kolamId}/siklus/{siklus}/panen', PanenController::class)->middleware('role:superadmin,admin,direktur,teknisi');
+    Route::resource('/dashboard/kolam/{kolamId}/siklus/{siklus}/perlakuan', PerlakuanController::class)->middleware('role:superadmin,admin,direktur,teknisi');
+    Route::resource('/dashboard/kolam/{kolamId}/siklus/{siklus}/energi', EnergiController::class)->middleware('role:superadmin,admin,direktur,teknisi');
 
 
-    Route::resource('/dashboard/users', UserController::class);
-    Route::resource('/dashboard/karyawan', KaryawanController::class);
-    Route::resource('/dashboard/finansial', FinansialController::class);
-    Route::resource('/dashboard/peralatan', PeralatanController::class);
+    Route::resource('/dashboard/users', UserController::class)->middleware('role:superadmin');
+
+    Route::resource('/dashboard/karyawan', KaryawanController::class)->middleware('role:superadmin,admin,direktur');
+
+    Route::resource('/dashboard/finansial', FinansialController::class)->middleware('role:superadmin,admin,direktur,teknisi');
+
+    Route::resource('/dashboard/peralatan', PeralatanController::class)->middleware('role:superadmin,admin,direktur,teknisi');
 });
+
 
 require __DIR__ . '/auth.php';
