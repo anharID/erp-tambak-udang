@@ -20,7 +20,7 @@ class Kolam extends Model
 
     public function siklus()
     {
-        return $this->hasMany(Siklus::class);
+        return $this->belongsToMany(Siklus::class, 'kolam_siklus')->withPivot('jumlah_tebar', 'doc');
     }
 
     public function monitoring()

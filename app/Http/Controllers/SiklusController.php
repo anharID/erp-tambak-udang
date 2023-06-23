@@ -9,100 +9,131 @@ use Illuminate\Http\Request;
 
 class SiklusController extends Controller
 {
-    public function create($kolamId)
+    // public function create($kolamId)
+    // {
+    //     //
+    //     return view('dashboard.tambak-udang.kolam.addsiklus', compact('kolamId'));
+    // }
+
+    public function create()
     {
-        //
-        return view('dashboard.tambak-udang.kolam.addsiklus', compact('kolamId'));
+        $kolam = Kolam::where('status', true)->get();
+        return view('dashboard.tambak-udang.kolam.addnewsiklus', compact('kolam'));
     }
 
-    public function tambahSiklus(Request $request, $kolamId)
-    {
-        $request->validate([
-            'tanggal_mulai' => 'required|date',
-            'total_tebar' => 'required',
-            // tambahkan validasi lainnya sesuai kebutuhan
-
-        ]);
-        $newSiklus = Siklus::create([
-            'kolam_id' => $kolamId,
-            'tanggal_mulai' => $request->tanggal_mulai,
-            'total_tebar' => $request->total_tebar,
-            'catatan' => $request->catatan
-        ]);
-        $siklusId = $newSiklus->id;
-
-
-        return redirect()->route('data_kolam', ['kolam' => $kolamId, 'siklus' => $siklusId])->with('success', "Siklus berhasil ditambahkan");
-    }
-
-    public function tutupSiklus($kolamId)
-    {
-        $kolam = Kolam::findOrFail($kolamId);
-
-        // Cek apakah ada siklus yang sedang berjalan pada kolam
-        $siklusBerjalan = $kolam->siklus->whereNull('tanggal_selesai')->first();
-
-        if ($siklusBerjalan) {
-            // Update tanggal selesai siklus menjadi tanggal saat ini
-            $siklusBerjalan->tanggal_selesai = now();
-            $siklusBerjalan->save();
-
-            // Redirect ke halaman detail kolam
-            return redirect()->route('data_kolam', ['kolam' => $kolamId, 'siklus' => $siklusBerjalan->id])->with('success', 'Siklus berhasil ditutup.');
-        }
-    }
-
-    public function edit($kolamId, $siklusId)
-    {
-        $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->findOrFail($siklusId);
-
-        return view('dashboard.tambak-udang.kolam.editsiklus', compact('kolam', 'siklus'));
-    }
-
-    public function updateSiklus(Request $request, $kolamId, $siklusId)
+    public function store(Request $request)
     {
         $request->validate([
             'tanggal_mulai' => 'required|date',
-            'total_tebar' => 'required',
+            'kolam_list' => 'required|array',
+            'kolam_list.*' => 'exists:kolam,id', // Memastikan kolam yang dipilih tersedia dan memiliki status siap
+            'jumlah_tebar' => 'required|array',
+            'jumlah_tebar.*' => 'integer|min:0', // Memastikan jumlah tebar berupa bilangan bulat positif
+        ]);
+        // dd($request);
+
+
+        $siklus = Siklus::create([
+            'tanggal_mulai' => $request->input('tanggal_mulai'),
         ]);
 
-        $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->findOrFail($siklusId);
+        $kolamList = $request->input('kolam_list');
+        $jumlahTebar = $request->input('jumlah_tebar');
 
-        $tanggalMulai = Carbon::parse($request->tanggal_mulai);
-
-        if ($siklus->tanggal_selesai) {
-            $docSaatIni = $tanggalMulai->diffInDays($siklus->tanggal_selesai);
-        } else {
-            $tanggalSaatIni = Carbon::now();
-            $docSaatIni = $tanggalMulai->diffInDays($tanggalSaatIni);
+        foreach ($kolamList as $kolamId) {
+            $siklus->kolam()->attach($kolamId, [
+                'jumlah_tebar' => $jumlahTebar[$kolamId],
+            ]);
         }
 
-        $siklus->update([
-            'tanggal_mulai' => $request->tanggal_mulai,
-            'total_tebar' => $request->total_tebar,
-            'catatan' => $request->catatan,
-            'doc' => $docSaatIni
-        ]);
-        return redirect()->route('data_kolam', ['kolam' => $kolam->id, 'siklus' => $siklus->id])->with('success', 'Data siklus berhasil diperbarui');
+
+        return redirect()->route('kolam.index')->with('success', "Siklus berhasil ditambahkan");
     }
 
-    public function destroy($kolamId, $siklusId)
+    // public function tutupSiklus($kolamId)
+    // {
+    //     $kolam = Kolam::findOrFail($kolamId);
+
+    //     // Cek apakah ada siklus yang sedang berjalan pada kolam
+    //     $siklusBerjalan = $kolam->siklus->whereNull('tanggal_selesai')->first();
+
+    //     if ($siklusBerjalan) {
+    //         // Update tanggal selesai siklus menjadi tanggal saat ini
+    //         $siklusBerjalan->tanggal_selesai = now();
+    //         $siklusBerjalan->save();
+
+    //         // Redirect ke halaman detail kolam
+    //         return redirect()->route('data_kolam', ['kolam' => $kolamId, 'siklus' => $siklusBerjalan->id])->with('success', 'Siklus berhasil ditutup.');
+    //     }
+    // }
+
+    public function edit($siklusId)
     {
-        $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->findOrFail($siklusId);
+        $siklus = Siklus::findOrFail($siklusId);
+        $kolam = Kolam::where('status', 1)->get();
 
-        $siklus->monitoring()->delete();
-
-        $siklus->delete();
-
-        $idSiklusTerkait = $kolam->siklus()->pluck('id')->last();
-
-        if ($kolam->siklus->count() > 0) {
-            return redirect()->route('data_kolam', ['kolam' => $kolam->id, 'siklus' => $idSiklusTerkait])->with('success', 'Data siklus berhasil dihapus');
-        } else {
-            return redirect()->route('kolam.show', $kolam->id)->with('success', 'Data siklus berhasil dihapus');
-        }
+        return view('dashboard.tambak-udang.kolam.editsiklus', compact('siklus', 'kolam'));
     }
+
+    public function updateSiklus(Request $request, $siklusId)
+    {
+        $request->validate([
+            'tanggal_mulai' => 'required|date',
+            'kolam_list' => 'required|array',
+            'kolam_list.*' => 'exists:kolam,id', // Memastikan kolam yang dipilih tersedia
+            'jumlah_tebar' => 'required|array',
+            'jumlah_tebar.*' => 'required|integer|min:0', // Memastikan jumlah tebar berupa bilangan bulat positif
+        ]);
+
+        $siklus = Siklus::findOrFail($siklusId);
+        $siklus->tanggal_mulai = $request->input('tanggal_mulai');
+        $siklus->save();
+
+        $kolamList = $request->input('kolam_list');
+        $jumlahTebar = $request->input('jumlah_tebar');
+
+        $siklus->kolam()->detach(); // Menghapus semua relasi kolam pada siklus
+
+        foreach ($kolamList as $kolamId) {
+            $siklus->kolam()->attach($kolamId, [
+                'jumlah_tebar' => $jumlahTebar[$kolamId],
+            ]);
+        }
+
+        // $tanggalMulai = Carbon::parse($request->tanggal_mulai);
+
+        // if ($siklus->tanggal_selesai) {
+        //     $docSaatIni = $tanggalMulai->diffInDays($siklus->tanggal_selesai);
+        // } else {
+        //     $tanggalSaatIni = Carbon::now();
+        //     $docSaatIni = $tanggalMulai->diffInDays($tanggalSaatIni);
+        // }
+
+        // $siklus->update([
+        //     'tanggal_mulai' => $request->tanggal_mulai,
+        //     'total_tebar' => $request->total_tebar,
+        //     'catatan' => $request->catatan,
+        //     'doc' => $docSaatIni
+        // ]);
+
+        return redirect()->route('kolam.index')->with('success', "Siklus berhasil diubah");
+    }
+
+    // public function destroy($kolamId, $siklusId)
+    // {
+    //     $kolam = Kolam::findOrFail($kolamId);
+    //     $siklus = $kolam->siklus()->findOrFail($siklusId);
+
+    //     $siklus->monitoring()->delete();
+
+    //     $siklus->delete();
+
+    //     $idSiklusTerkait = $kolam->siklus()->pluck('id')->last();
+
+    //     if ($kolam->siklus->count() > 0) {
+    //         return redirect()->route('data_kolam', ['kolam' => $kolam->id, 'siklus' => $idSiklusTerkait])->with('success', 'Data siklus berhasil dihapus');
+    //     } else {
+    //         return redirect()->route('kolam.show', $kolam->id)->with('success', 'Data siklus berhasil dihapus');
+    //     }
+    // }
 }

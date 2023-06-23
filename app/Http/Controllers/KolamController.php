@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Kolam;
+use App\Models\Siklus;
 use Illuminate\Http\Request;
 
 class KolamController extends Controller
@@ -17,7 +18,8 @@ class KolamController extends Controller
     {
         //
         $kolam = Kolam::all();
-        return view('dashboard.tambak-udang.kolam.index', compact('kolam'));
+        $siklusAktif = Siklus::whereNull('tanggal_selesai')->first();
+        return view('dashboard.tambak-udang.kolam.index', compact('kolam', 'siklusAktif'));
     }
 
     /**
@@ -44,6 +46,7 @@ class KolamController extends Controller
             'nama' => ['required', 'string', 'max:255'],
             'lokasi' => ['required', 'string', 'max:255'],
             'tipe' => ['required', 'string', 'max:255'],
+            'status' => ['required'],
             'luas' => ['required', 'numeric'],
             'kedalaman' => ['required', 'numeric'],
         ]);
@@ -54,7 +57,9 @@ class KolamController extends Controller
             'lokasi' => $request->lokasi,
             'tipe' => $request->tipe,
             'luas' => $request->luas,
-            'kedalaman' => $request->kedalaman
+            'kedalaman' => $request->kedalaman,
+            'status' => $request->status,
+            'catatan' => $request->catatan
         ]);
 
         return redirect()->route('kolam.index')->with('success', "Data berhasil ditambahkan");
@@ -101,16 +106,19 @@ class KolamController extends Controller
             'nama' => ['required', 'string', 'max:255'],
             'lokasi' => ['required', 'string', 'max:255'],
             'tipe' => ['required', 'string', 'max:255'],
-            'luas' => ['required', 'numeric', 'max:255'],
-            'kedalaman' => ['required', 'numeric', 'max:255'],
+            'status' => ['required'],
+            'luas' => ['required', 'numeric'],
+            'kedalaman' => ['required', 'numeric'],
         ]);
 
         Kolam::where('id', $kolam->id)->update([
             'nama' => $request->nama,
             'lokasi' => $request->lokasi,
             'tipe' => $request->tipe,
+            'status' => $request->status,
             'luas' => $request->luas,
-            'kedalaman' => $request->kedalaman
+            'kedalaman' => $request->kedalaman,
+            'catatan' => $request->catatan
         ]);
 
         return redirect()->route('kolam.index')->with('success', "Data berhasil diperbarui");
@@ -131,13 +139,23 @@ class KolamController extends Controller
 
     public function dataKolam(Kolam $kolam, $siklus)
     {
+
         // Ambil siklus berjalan saat ini
         $siklusSaatIni = $kolam->siklus()->whereNull('tanggal_selesai')->first();
         // Ambil siklus selesai
         $siklusSelesai = $kolam->siklus()->whereNotNull('tanggal_selesai')->orderBy('tanggal_mulai', 'desc')->get();
 
         $siklusTerpilih = $kolam->siklus()->find($siklus);
-        $monitoring = $siklusTerpilih->monitoring()->get();
+
+        if ($siklusTerpilih) {
+            $doc = Carbon::now()->diffInDays($siklusTerpilih->tanggal_mulai);
+
+            // Update nilai 'doc' pada pivot tabel
+            $siklusTerpilih->kolam()->updateExistingPivot($kolam->id, ['doc' => $doc]);
+        }
+
+
+        $monitoring = $siklusTerpilih->monitoring()->where('kolam_id', $kolam->id)->get();
         $pakan = $siklusTerpilih->pakan()->get();
         $jumlahPakanTerpakaiHariIni = $pakan->where('tanggal', Carbon::now()->toDateString())->sum('jumlah_kg');
         $sampling = $siklusTerpilih->sampling()->get();

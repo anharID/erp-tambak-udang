@@ -174,6 +174,9 @@
                                 <span class="text-right">{{ $kolam->kedalaman }} m</span>
                             </p>
                         </div>
+
+                        //TODO tambahkan informasi siklus
+
                         <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
                             <h1 class="text-xl font-bold mb-1">Siklus</h1>
                             @if ( $siklusTerpilih || $siklusTerpilih->id == $siklusSaatIni->id)
@@ -183,11 +186,11 @@
                             </p>
                             <p class="flex justify-between">
                                 <span>Doc</span>
-                                <span class="text-right">{{ $siklusTerpilih->doc }}</span>
+                                <span class="text-right">{{ $siklusTerpilih->pivot->doc }}</span>
                             </p>
                             <p class="flex justify-between">
                                 <span>Total Tebar</span>
-                                <span class="text-right">{{ $siklusTerpilih->total_tebar }}</span>
+                                <span class="text-right">{{ $siklusTerpilih->pivot->jumlah_tebar }}</span>
                             </p>
                             <p class="flex justify-between">
                                 <span>Catatan</span>
@@ -203,21 +206,6 @@
                                     berjalan' }}
                                 </span>
                             </p>
-                            <div class="mt-4 flex items-center justify-center">
-                                <a href="{{ route('edit_siklus', ['kolamId'=>$kolam->id, 'siklus'=>$siklusTerpilih->id]) }}"
-                                    class="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Edit
-                                    Siklus</a>
-                                @if ($siklusTerpilih == $siklusSaatIni)
-                                <form action="{{ route('tutup_siklus', ['kolamId' => $kolam->id]) }}" method="POST">
-                                    @csrf
-                                    @method('put')
-                                    <button type="submit"
-                                        class="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded "
-                                        onclick="return confirm('Apakah Anda yakin ingin menutup siklus saat ini?')">Tutup
-                                        Siklus</button>
-                                </form>
-                            </div>
-                            @endif
                             @endif
                         </div>
                     </div>

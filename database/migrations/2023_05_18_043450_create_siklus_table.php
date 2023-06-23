@@ -15,12 +15,9 @@ return new class extends Migration
     {
         Schema::create('siklus', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('kolam_id')->constrained('kolam');
             $table->date('tanggal_mulai');
             $table->date('tanggal_selesai')->nullable();
-            $table->integer('total_tebar');
             $table->string('catatan')->nullable();
-            $table->integer('doc')->default(0);
             $table->timestamps();
         });
     }

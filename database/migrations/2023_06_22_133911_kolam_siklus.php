@@ -13,15 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('kolam', function (Blueprint $table) {
+        Schema::create('kolam_siklus', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->string('lokasi');
-            $table->string('tipe');
-            $table->float('luas');
-            $table->float('kedalaman');
-            $table->boolean('status')->default(1);
-            $table->string('catatan')->nullable();
+            $table->foreignId('kolam_id')->constrained('kolam');
+            $table->foreignId('siklus_id')->constrained('siklus');
+            $table->integer('jumlah_tebar')->nullable();
+            $table->integer('doc')->nullable();
             $table->timestamps();
         });
     }
@@ -33,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kolam');
+        Schema::dropIfExists('kolam_siklus');
     }
 };

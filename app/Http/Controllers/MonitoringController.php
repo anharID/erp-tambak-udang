@@ -12,10 +12,11 @@ class MonitoringController extends Controller
 {
     public function index($kolamId, $siklusId)
     {
-        $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $siklus = Siklus::findOrFail($siklusId);
+        $kolam = $siklus->kolam()->find($kolamId);
+        // dd($kolam);
 
-        $siklusTerpilih = $siklus->monitoring()->orderBy('created_at', 'desc')->get();
+        $siklusTerpilih = $kolam->monitoring()->orderBy('created_at', 'desc')->get();
 
         $siklusBerjalan = ($siklus->tanggal_selesai === null);
 
@@ -25,8 +26,8 @@ class MonitoringController extends Controller
     public function create($kolamId, $siklusId)
     {
 
-        $kolam = Kolam::findOrFail($kolamId);
         $siklus = Siklus::findOrFail($siklusId);
+        $kolam = $siklus->kolam()->find($kolamId);
 
         return view('dashboard.tambak-udang.monitoring.create', compact('kolam', 'siklus'));
     }
@@ -79,7 +80,7 @@ class MonitoringController extends Controller
     public function edit($kolamId, $siklusId, $monitoringId)
     {
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $siklus = $kolam->siklus()->where('siklus_id', $siklusId)->firstOrFail();
         $monitoring = $siklus->monitoring()->findOrFail($monitoringId);
 
         return view('dashboard.tambak-udang.monitoring.edit', compact('kolam', 'siklus', 'monitoring'));
@@ -101,7 +102,7 @@ class MonitoringController extends Controller
         ]);
 
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $siklus = $kolam->siklus()->where('siklus_id', $siklusId)->firstOrFail();
         $monitoring = $siklus->monitoring()->findOrFail($monitoringId);
 
         $monitoring->update([
@@ -127,7 +128,7 @@ class MonitoringController extends Controller
     public function destroy($kolamId, $siklusId, $monitoringId)
     {
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $siklus = $kolam->siklus()->where('siklus_id', $siklusId)->firstOrFail();
         $monitoring = $siklus->monitoring()->findOrFail($monitoringId);
 
         $monitoring->delete();

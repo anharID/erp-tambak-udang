@@ -4,48 +4,31 @@
             <h1 class="mb-4 text-xl font-bold">Edit Siklus Berjalan</h1>
             <div class="mb-4 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 ">
-                    <form method="POST"
-                        action="{{ route('update_siklus', ['kolamId'=>$kolam->id, 'siklus'=>$siklus->id]) }}">
+                    <form method="POST" action="{{ route('update_siklus', ['siklus'=>$siklus->id]) }}">
                         @csrf
                         @method('put')
 
                         <!-- Tanggal Tebar -->
-                        <div>
+                        <div class="mb-4">
                             <x-input-label for="tanggal_mulai" :value="__('Tanggal Tebar')" />
                             <x-text-input id="tanggal_mulai" class="block mt-1 w-full" type="date" name="tanggal_mulai"
                                 :value="$siklus->tanggal_mulai ?? old('tanggal_mulai')" required autofocus
                                 autocomplete="tanggal_mulai" />
                             <x-input-error :messages="$errors->get('tanggal_mulai')" class="mt-2" />
                         </div>
-                        @if ($siklus->tanggal_selesai)
-                        <!-- Tanggal Selesai -->
-                        <div class="mt-4">
-                            <x-input-label for="tanggal_selesai" :value="__('Tanggal Tebar')" />
-                            <x-text-input id="tanggal_selesai" class="block mt-1 w-full" type="date"
-                                name="tanggal_selesai" :value="$siklus->tanggal_selesai ?? old('tanggal_selesai')"
-                                required autofocus autocomplete="tanggal_selesai" />
-                            <x-input-error :messages="$errors->get('tanggal_selesai')" class="mt-2" />
-                        </div>
-                        @endif
 
-                        <!-- Jumlah Tebar -->
+                        <label class="text-sm">Daftar kolam yang sudah tebar</label><br>
+                        @foreach($kolam as $d)
                         <div class="mt-4">
-                            <x-input-label for="total_tebar" :value="__('Total Tebar')" />
-                            <x-text-input id="total_tebar" class="block mt-1 w-full" type="number" name="total_tebar"
-                                :value="$siklus->total_tebar ?? old('total_tebar')" required
-                                autocomplete="total_tebar" />
+                            <x-input-label for="kolam_{{ $d->id }}" :value="__($d->nama)" />
+                            <input type="hidden" id="kolam_{{ $d->id }}" name="kolam_list[]" value="{{ $d->id }}">
+                            <x-text-input id="total_tebar" class="block mt-1 w-full" type="number"
+                                name="jumlah_tebar[{{ $d->id }}]"
+                                :value="$siklus->kolam->find($d->id)->pivot->jumlah_tebar ?? old('total_tebar')"
+                                required autocomplete="total_tebar" />
                             <x-input-error :messages="$errors->get('total_tebar')" class="mt-2" />
                         </div>
-
-                        <!-- Catatan -->
-                        <div class="mt-4">
-                            <x-input-label for="catatan" :value="__('Catatan')" />
-                            <x-text-input id="catatan" class="block mt-1 w-full" type="text" name="catatan"
-                                :value="$siklus->catatan ?? old('catatan')" autocomplete="catatan" />
-                            <x-input-error :messages="$errors->get('catatan')" class="mt-2" />
-                        </div>
-
-
+                        @endforeach
 
                         <div class="flex items-center justify-end mt-4">
                             <x-primary-button class="ml-4">
@@ -57,7 +40,7 @@
                 </div>
             </div>
 
-            <h1 class="mb-4 text-xl font-bold">Hapus Siklus</h1>
+            {{-- <h1 class="mb-4 text-xl font-bold">Hapus Siklus</h1>
 
             <div class="mt-4 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 flex justify-between">
@@ -72,7 +55,7 @@
                             Siklus</button>
                     </form>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
 
