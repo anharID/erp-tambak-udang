@@ -96,7 +96,5 @@
             </div>
         </div>
     </div>
-
-    <script src="{{ Vite::asset('resources/js/finansial.js') }}" defer></script>
-
 </x-admin>
+<script src="{{ Vite::asset('resources/js/finansial.js') }}" defer></script>

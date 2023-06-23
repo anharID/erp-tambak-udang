@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Finansial;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class FinansialController extends Controller
 {
@@ -24,18 +25,59 @@ class FinansialController extends Controller
             $totalPemasukan += $row->jumlah;
         }
         // Total Pengeluaran
-        $pengeluaran = Finansial::where('jenis_transaksi', 'Pengeluaran')->get();
+        $pengeluaran = Finansial::whereIn('jenis_transaksi', ['Pengeluaran', 'Gaji Karyawan'])->get();
         $totalPengeluaran = 0;
         foreach ($pengeluaran as $row) {
             $totalPengeluaran += $row->jumlah;
         }
-        // Total Gaji Karyawan
-        $gaji = Finansial::where('jenis_transaksi', 'Gaji Karyawan')->get();
-        $totalGaji = 0;
-        foreach ($gaji as $row) {
-            $totalGaji += $row->jumlah;
-        }
-        return view("dashboard.finansial.index", compact('finansial'), ['totalPemasukan' => $totalPemasukan, 'totalPengeluaran' => $totalPengeluaran, 'totalGaji' => $totalGaji]);
+
+        // dd($totalPengeluaran);
+        // // Total Gaji Karyawan
+        // $gaji = Finansial::where('jenis_transaksi', 'Gaji Karyawan')->get();
+        // $totalGaji = 0;
+        // foreach ($gaji as $row) {
+        //     $totalGaji += $row->jumlah;
+        // }
+
+        // Bulan
+        $bulan = $finansial->groupby(function($item){
+            return Carbon::parse($item->tanggal)->format('F');
+        });
+        
+        // Pemasukan
+        $pemasukanBulanan = $pemasukan->groupBy(function ($item) {
+            return Carbon::parse($item->tanggal)->format('F');
+        })->map(function ($group) {
+            return $group->sum('jumlah');
+        });
+        
+        $labels = $bulan->keys();
+        
+        $valuesPemasukan = $pemasukanBulanan->values();
+        
+        $chartDataPemasukan = [
+            'labels' => $labels,
+            'values' => $valuesPemasukan,
+        ];
+
+        // Pengeluaran
+        $pengeluaranBulanan = $pengeluaran->groupBy(function ($item) {
+            return Carbon::parse($item->tanggal)->format('F');
+        })->map(function ($group) {
+            return $group->sum('jumlah');
+        });
+        
+        // $labels = $bulan->keys();
+        $valuesPengeluaran = $pengeluaranBulanan->values();
+        
+        $chartDataPengeluaran = [
+            'labels' => $labels,
+            'values' => $valuesPengeluaran,
+        ];
+
+        // dd($chartData);
+        
+        return view("dashboard.finansial.index", compact('finansial', 'chartDataPemasukan', 'chartDataPengeluaran'), ['totalPemasukan' => $totalPemasukan, 'totalPengeluaran' => $totalPengeluaran]);
     }
 
     /**
