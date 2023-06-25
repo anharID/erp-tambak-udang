@@ -11,8 +11,8 @@ class EnergiController extends Controller
     public function index($kolamId, $siklusId)
     {
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
-        $siklusTerpilih = $siklus->energi()->orderBy('created_at', 'desc')->get();
+        $siklus = $kolam->siklus()->findORFail($siklusId);
+        $siklusTerpilih = $siklus->energi()->where('kolam_id', $kolam->id)->orderBy('created_at', 'desc')->get();
         $siklusBerjalan = ($siklus->tanggal_selesai === null);
 
         return view('dashboard.tambak-udang.energi.index', compact('kolam', 'siklus', 'siklusTerpilih', 'siklusBerjalan'));
@@ -22,7 +22,7 @@ class EnergiController extends Controller
     {
 
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
 
         return view('dashboard.tambak-udang.energi.create', compact('kolam', 'siklus'));
     }
@@ -64,7 +64,7 @@ class EnergiController extends Controller
     public function edit($kolamId, $siklusId, $energiId)
     {
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
         $energi = $siklus->energi()->findOrFail($energiId);
 
         return view('dashboard.tambak-udang.energi.edit', compact('kolam', 'siklus', 'energi'));
@@ -82,7 +82,7 @@ class EnergiController extends Controller
         ]);
 
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->where('id', $siklusId)->first();
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
         $energi = $siklus->energi()->findOrFail($energiId);
 
         $kwh = ($validation['daya'] / 1000) * $validation['lama_penggunaan'] * $validation['jumlah'];
@@ -104,7 +104,7 @@ class EnergiController extends Controller
     public function destroy($kolamId, $siklusId, $energiId)
     {
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
         $energi = $siklus->energi()->findOrFail($energiId);
 
         $energi->delete();

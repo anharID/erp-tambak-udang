@@ -19,7 +19,13 @@ class KolamController extends Controller
         //
         $kolam = Kolam::all();
         $siklusAktif = Siklus::whereNull('tanggal_selesai')->first();
-        return view('dashboard.tambak-udang.kolam.index', compact('kolam', 'siklusAktif'));
+
+        if ($siklusAktif) {
+            $doc = Carbon::now()->diffInDays($siklusAktif->tanggal_mulai);
+        } else {
+            $doc = null;
+        }
+        return view('dashboard.tambak-udang.kolam.index', compact('kolam', 'siklusAktif', 'doc'));
     }
 
     /**
@@ -147,32 +153,34 @@ class KolamController extends Controller
 
         $siklusTerpilih = $kolam->siklus()->find($siklus);
 
-        if ($siklusTerpilih) {
+        if ($siklusTerpilih == $siklusSaatIni) {
             $doc = Carbon::now()->diffInDays($siklusTerpilih->tanggal_mulai);
 
             // Update nilai 'doc' pada pivot tabel
             $siklusTerpilih->kolam()->updateExistingPivot($kolam->id, ['doc' => $doc]);
         }
 
+        // dd($siklusTerpilih->pivot->doc);
+
 
         $monitoring = $siklusTerpilih->monitoring()->where('kolam_id', $kolam->id)->get();
-        $pakan = $siklusTerpilih->pakan()->get();
+        $pakan = $siklusTerpilih->pakan()->where('kolam_id', $kolam->id)->get();
         $jumlahPakanTerpakaiHariIni = $pakan->where('tanggal', Carbon::now()->toDateString())->sum('jumlah_kg');
-        $sampling = $siklusTerpilih->sampling()->get();
-        $perlakuan = $siklusTerpilih->perlakuan()->get();
-        $panen = $siklusTerpilih->panen()->get();
-        $energi = $siklusTerpilih->energi()->get();
+        $sampling = $siklusTerpilih->sampling()->where('kolam_id', $kolam->id)->get();
+        $perlakuan = $siklusTerpilih->perlakuan()->where('kolam_id', $kolam->id)->get();
+        $panen = $siklusTerpilih->panen()->where('kolam_id', $kolam->id)->get();
+        $energi = $siklusTerpilih->energi()->where('kolam_id', $kolam->id)->get();
 
 
-        if ($siklusTerpilih == $siklusSaatIni) {
-            // Ubah tanggal mulai menjadi objek Carbon
-            $tanggalMulai = Carbon::parse($siklusSaatIni->tanggal_mulai);
-            // Hitung DOC saat ini
-            $tanggalSaatIni = Carbon::now();
-            $docSaatIni = $tanggalMulai->diffInDays($tanggalSaatIni);
-            //update ke tabel siklus
-            $siklusSaatIni->update(['doc' => $docSaatIni]);
-        }
+        // if ($siklusTerpilih == $siklusSaatIni) {
+        //     // Ubah tanggal mulai menjadi objek Carbon
+        //     $tanggalMulai = Carbon::parse($siklusSaatIni->tanggal_mulai);
+        //     // Hitung DOC saat ini
+        //     $tanggalSaatIni = Carbon::now();
+        //     $docSaatIni = $tanggalMulai->diffInDays($tanggalSaatIni);
+        //     //update ke tabel siklus
+        //     $siklusSaatIni->update(['doc' => $docSaatIni]);
+        // }
 
         $data = [
             'kolam' => $kolam,

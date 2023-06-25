@@ -16,9 +16,9 @@ class PerlakuanController extends Controller
     public function index($kolamId, $siklusId)
     {
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $siklus = $kolam->siklus()->find($siklusId);
 
-        $siklusTerpilih = $siklus->perlakuan()->orderBy('created_at', 'desc')->get();
+        $siklusTerpilih = $siklus->perlakuan()->where('kolam_id', $kolam->id)->orderBy('created_at', 'desc')->get();
 
         $siklusBerjalan = ($siklus->tanggal_selesai === null);
         return view('dashboard.tambak-udang.perlakuan.index', compact('kolam', 'siklus', 'siklusTerpilih', 'siklusBerjalan'));
@@ -33,7 +33,7 @@ class PerlakuanController extends Controller
     {
 
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $siklus = $kolam->siklus()->find($siklusId);
 
         return view('dashboard.tambak-udang.perlakuan.create', compact('kolam', 'siklus'));
     }
@@ -48,7 +48,7 @@ class PerlakuanController extends Controller
     {
         $kolam = Kolam::findOrFail($kolamId);
 
-        $siklusSaatIni = $kolam->siklus()->whereNull('tanggal_selesai')->first();
+        $siklusSaatIni = $kolam->siklus()->where('kolam_id', $kolamId)->whereNull('tanggal_selesai')->first();
 
         $user = auth()->user();
 
@@ -86,7 +86,7 @@ class PerlakuanController extends Controller
     public function edit($kolamId, $siklusId, $perlakuanId)
     {
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $siklus = $kolam->siklus()->find($siklusId);
         $perlakuan = $siklus->perlakuan()->findOrFail($perlakuanId);
 
         return view('dashboard.tambak-udang.perlakuan.edit', compact('kolam', 'siklus', 'perlakuan'));
@@ -107,7 +107,7 @@ class PerlakuanController extends Controller
         ]);
 
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
         $perlakuan = $siklus->perlakuan()->findOrFail($perlakuanId);
 
         $perlakuan->update([
@@ -128,7 +128,7 @@ class PerlakuanController extends Controller
     public function destroy($kolamId, $siklusId, $perlakuanId)
     {
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $siklus = $kolam->siklus()->find($siklusId);
         $perlakuan = $siklus->perlakuan()->findOrFail($perlakuanId);
 
         $perlakuan->delete();

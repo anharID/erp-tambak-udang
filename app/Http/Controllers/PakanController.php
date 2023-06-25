@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kolam;
 use App\Models\Pakan;
+use App\Models\Siklus;
 use Illuminate\Http\Request;
 
 class PakanController extends Controller
@@ -15,13 +16,14 @@ class PakanController extends Controller
      */
     public function index($kolamId, $siklusId)
     {
+        // dd($siklusId);
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $siklus = $kolam->siklus()->find($siklusId);
         $siklusBerjalan = ($siklus->tanggal_selesai === null);
 
-        $dataPakan = $siklus->pakan()->orderBy('created_at', 'desc')->get();
+        $dataPakan = $siklus->pakan()->where('kolam_id', $kolamId)->orderBy('created_at', 'desc')->get();
 
-        $ringkasan = $siklus->pakan()
+        $ringkasan = $siklus->pakan()->where('kolam_id', $kolamId)
             ->selectRaw('tanggal, SUM(jumlah_kg) as total_pakan')
             ->groupBy('tanggal')
             // ->orderBy('tanggal', 'desc')
@@ -46,7 +48,7 @@ class PakanController extends Controller
     public function create($kolamId, $siklusId)
     {
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $siklus = $kolam->siklus()->find($siklusId);
         return view('dashboard.tambak-udang.pakan.create', compact('kolam', 'siklus'));
     }
 
@@ -115,7 +117,7 @@ class PakanController extends Controller
     public function edit($kolamId, $siklusId, $pakanId)
     {
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $siklus = $kolam->siklus()->find($siklusId);
         $pakan = $siklus->pakan()->findOrFail($pakanId);
 
         // dd($pakan);
@@ -139,7 +141,7 @@ class PakanController extends Controller
         ]);
 
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->where('id', $siklusId)->first();
+        $siklus = $kolam->siklus()->find($siklusId);
         $pakan = $siklus->pakan()->findOrFail($pakanId);
 
         $pakan->update([
@@ -162,7 +164,7 @@ class PakanController extends Controller
     public function destroy($kolamId, $siklusId, $pakanId)
     {
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $siklus = $kolam->siklus()->where('siklus_id', $siklusId)->firstOrFail();
         $pakan = $siklus->pakan()->findOrFail($pakanId);
 
         $pakan->delete();

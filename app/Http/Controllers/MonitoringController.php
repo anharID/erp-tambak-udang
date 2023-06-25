@@ -12,11 +12,11 @@ class MonitoringController extends Controller
 {
     public function index($kolamId, $siklusId)
     {
-        $siklus = Siklus::findOrFail($siklusId);
-        $kolam = $siklus->kolam()->find($kolamId);
+        $kolam = Kolam::findOrFail($kolamId);
+        $siklus = $kolam->siklus()->find($siklusId);
         // dd($kolam);
 
-        $siklusTerpilih = $kolam->monitoring()->orderBy('created_at', 'desc')->get();
+        $siklusTerpilih = $siklus->monitoring()->where('kolam_id', $kolam->id)->orderBy('created_at', 'desc')->get();
 
         $siklusBerjalan = ($siklus->tanggal_selesai === null);
 
@@ -26,8 +26,8 @@ class MonitoringController extends Controller
     public function create($kolamId, $siklusId)
     {
 
-        $siklus = Siklus::findOrFail($siklusId);
-        $kolam = $siklus->kolam()->find($kolamId);
+        $kolam = Kolam::findOrFail($kolamId);
+        $siklus = $kolam->siklus()->find($siklusId);
 
         return view('dashboard.tambak-udang.monitoring.create', compact('kolam', 'siklus'));
     }
@@ -102,7 +102,7 @@ class MonitoringController extends Controller
         ]);
 
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->where('siklus_id', $siklusId)->firstOrFail();
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
         $monitoring = $siklus->monitoring()->findOrFail($monitoringId);
 
         $monitoring->update([

@@ -131,6 +131,7 @@
                             <div class="min-w-0 p-2 mt-2 bg-gray-100 rounded-lg shadow-sm dark:bg-gray-700">
                                 <p>penggunaan : {{ $energi->last()->penggunaan }}</p>
                                 <p>Konsumsi energi : {{ $energi->last()->kwh }} kWh</p>
+                                <p>Total konsumsi energi : {{ $energi->sum('kwh') }} kWh</p>
                             </div>
                             @else
                             <p class="text-sm italic">Belum ada catatan Energi.</p>
@@ -217,11 +218,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
                 <div class="m-4 flex flex-col items-center justify-center">
-                    <h1 class="text-lg font-bold mb-4">Tidak ada siklus yang berjalan</h1>
-                    <a href="{{ route('tambah_siklus', ['kolamId' => $kolam->id]) }}"
-                        class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
-                        Buat Siklus Kolam
-                    </a>
+                    <h1 class="text-lg font-bold mb-4">Kolam tidak aktif atau belum memiliki siklus</h1>
                 </div>
             </div>
             <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
