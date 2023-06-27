@@ -9,12 +9,6 @@ use Illuminate\Http\Request;
 
 class SiklusController extends Controller
 {
-    // public function create($kolamId)
-    // {
-    //     //
-    //     return view('dashboard.tambak-udang.kolam.addsiklus', compact('kolamId'));
-    // }
-
     public function create()
     {
         $kolam = Kolam::where('status', true)->get();
@@ -30,7 +24,6 @@ class SiklusController extends Controller
             'jumlah_tebar' => 'required|array',
             'jumlah_tebar.*' => 'integer|min:0', // Memastikan jumlah tebar berupa bilangan bulat positif
         ]);
-        // dd($request);
 
 
         $siklus = Siklus::create([
@@ -50,22 +43,22 @@ class SiklusController extends Controller
         return redirect()->route('kolam.index')->with('success', "Siklus berhasil ditambahkan");
     }
 
-    // public function tutupSiklus($kolamId)
-    // {
-    //     $kolam = Kolam::findOrFail($kolamId);
+    public function tutupSiklus($siklusId)
+    {
+        $siklus = Siklus::findOrFail($siklusId);
 
-    //     // Cek apakah ada siklus yang sedang berjalan pada kolam
-    //     $siklusBerjalan = $kolam->siklus->whereNull('tanggal_selesai')->first();
+        // Cek apakah ada siklus yang sedang berjalan pada kolam
+        $siklusBerjalan = $siklus->whereNull('tanggal_selesai')->first();
 
-    //     if ($siklusBerjalan) {
-    //         // Update tanggal selesai siklus menjadi tanggal saat ini
-    //         $siklusBerjalan->tanggal_selesai = now();
-    //         $siklusBerjalan->save();
+        if ($siklusBerjalan) {
+            // Update tanggal selesai siklus menjadi tanggal saat ini
+            $siklusBerjalan->tanggal_selesai = now();
+            $siklusBerjalan->save();
 
-    //         // Redirect ke halaman detail kolam
-    //         return redirect()->route('data_kolam', ['kolam' => $kolamId, 'siklus' => $siklusBerjalan->id])->with('success', 'Siklus berhasil ditutup.');
-    //     }
-    // }
+            // Redirect ke halaman detail kolam
+            return redirect()->route('kolam.index')->with('success', 'Siklus berhasil ditutup.');
+        }
+    }
 
     public function edit($siklusId)
     {

@@ -16,9 +16,9 @@ class PanenController extends Controller
     public function index($kolamId, $siklusId)
     {
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
 
-        $siklusTerpilih = $siklus->panen()->orderBy('created_at', 'desc')->get();
+        $siklusTerpilih = $siklus->panen()->where('kolam_id', $kolam->id)->orderBy('created_at', 'desc')->get();
 
         $siklusBerjalan = ($siklus->tanggal_selesai === null);
 
@@ -33,7 +33,7 @@ class PanenController extends Controller
     public function create($kolamId, $siklusId)
     {
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
         return view('dashboard.tambak-udang.panen.create', compact('kolam', 'siklus'));
     }
 
@@ -61,7 +61,7 @@ class PanenController extends Controller
 
         //ABW
         $abw = 1000 / $validation['size_besar'];
-        
+
         //Tonase Jumlah
         $tonaseJumlah = $validation['tonase_besar'] + $validation['tonase_kecil'];
 
@@ -110,8 +110,10 @@ class PanenController extends Controller
     public function edit($kolamId, $siklusId, $panenId)
     {
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
         $panen = $siklus->panen()->findOrFail($panenId);
+
+        // dd($panen);
 
         return view('dashboard.tambak-udang.panen.edit', compact('kolam', 'siklus', 'panen'));
     }
@@ -123,7 +125,7 @@ class PanenController extends Controller
      * @param  \App\Models\Panen  $panen
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $panenId, $kolamId, $siklusId)
+    public function update(Request $request, $kolamId, $siklusId, $panenId)
     {
         $validation = $request->validate([
             'tanggal' => 'required|date',
@@ -136,12 +138,12 @@ class PanenController extends Controller
 
         //Data yang diperlukan
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->where('id', $siklusId)->first();
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
         $panen = $siklus->panen()->findOrFail($panenId);
 
         //ABW
         $abw = 1000 / $validation['size_besar'];
-        
+
         //Tonase Jumlah
         $tonaseJumlah = $validation['tonase_besar'] + $validation['tonase_kecil'];
 
@@ -150,7 +152,7 @@ class PanenController extends Controller
 
         //Update Data
         $panen->update([
-            'tanggal'=> $validation['tanggal'],
+            'tanggal' => $validation['tanggal'],
             'waktu_panen' => $validation['waktu_panen'],
             'size_besar' => $validation['size_besar'],
             'size_kecil' => $validation['size_kecil'],
@@ -175,7 +177,7 @@ class PanenController extends Controller
     public function destroy($kolamId, $siklusId, $panenId)
     {
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
         $panen = $siklus->panen()->findOrFail($panenId);
 
         $panen->delete();

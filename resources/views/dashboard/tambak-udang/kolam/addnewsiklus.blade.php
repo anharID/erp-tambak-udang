@@ -27,9 +27,10 @@ $today = now()->format('Y-m-d');
                         <div class="mt-4">
                             <x-input-label for="kolam_{{ $d->id }}" :value="__($d->nama)" />
                             <input type="hidden" id="kolam_{{ $d->id }}" name="kolam_list[]" value="{{ $d->id }}">
-                            <x-text-input id="total_tebar" class="block mt-1 w-full" type="number" name="total_tebar"
-                                :value="old('total_tebar')" required autocomplete="total_tebar" />
-                            <x-input-error :messages="$errors->get('total_tebar')" class="mt-2" />
+                            <x-text-input id="jumlah_tebar" class="block mt-1 w-full" type="number"
+                                name="jumlah_tebar[{{ $d->id }}]" :value="old('jumlah_tebar[{{ $d->id }}]')" required
+                                autocomplete="jumlah_tebar" />
+                            <x-input-error :messages="$errors->get('jumlah_tebar[{{ $d->id }}]')" class="mt-2" />
                         </div>
                         @endforeach
 

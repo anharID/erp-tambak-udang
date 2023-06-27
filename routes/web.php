@@ -33,7 +33,7 @@ Route::get('/dashboard', function () {
     return view('dashboard.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-//TODO perbbaiki route dan midleware
+//TODO perbaiki route dan midleware
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/tambah-siklus/store', [SiklusController::class, 'store'])->middleware('role:superadmin,teknisi')->name('siklus.store');
     Route::get('/siklus/{siklus}/edit', [SiklusController::class, 'edit'])->middleware('role:superadmin,teknisi')->name('edit_siklus');
     Route::put('/siklus/{siklus}/update', [SiklusController::class, 'updateSiklus'])->middleware('role:superadmin,teknisi')->name('update_siklus');
+    Route::put('/siklus/{siklus}/tutup-siklus', [SiklusController::class, 'tutupSiklus'])->middleware('role:superadmin,teknisi')->name('tutup_siklus');
 
 
 

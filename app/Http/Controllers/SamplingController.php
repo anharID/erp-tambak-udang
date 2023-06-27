@@ -17,9 +17,9 @@ class SamplingController extends Controller
     public function index($kolamId, $siklusId)
     {
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
 
-        $siklusTerpilih = $siklus->sampling()->orderBy('created_at', 'desc')->get();
+        $siklusTerpilih = $siklus->sampling()->where('kolam_id', $kolam->id)->orderBy('created_at', 'desc')->get();
 
         $siklusBerjalan = ($siklus->tanggal_selesai === null);
 
@@ -35,7 +35,7 @@ class SamplingController extends Controller
     {
 
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
         return view('dashboard.tambak-udang.sampling.create', compact('kolam', 'siklus'));
     }
 
@@ -55,7 +55,7 @@ class SamplingController extends Controller
 
         //Data yang diperlukan
         $kolam = Kolam::findOrFail($kolamId);
-        $siklusSaatIni = $kolam->siklus()->whereNull('tanggal_selesai')->first();
+        $siklusSaatIni = $kolam->siklus()->where('kolam_id', $kolamId)->whereNull('tanggal_selesai')->first();
         $user = auth()->user();
         $tanggalSebelumSampling = date('Y-m-d', strtotime('-1 day', strtotime($validation['tanggal'])));
         $pakanKemarin = $siklusSaatIni->pakan()->where('tanggal', $tanggalSebelumSampling)->get();
@@ -72,7 +72,7 @@ class SamplingController extends Controller
         $abw = $validation['berat_sampling'] / $validation['banyak_sampling'];
 
         //ADG
-        $lastSampling = $siklusSaatIni->sampling()->latest()->first();
+        $lastSampling = $siklusSaatIni->sampling()->where('kolam_id', $kolam->id)->latest()->first();
         if ($lastSampling) {
             $abwSebelumnya = $lastSampling->abw;
             $adg = ($abw - $abwSebelumnya) / 7;
@@ -90,7 +90,8 @@ class SamplingController extends Controller
         $biomassa = $totalPakan / $feedingRate * 100;
 
         //SR
-        $totalTebar = $siklusSaatIni->total_tebar;
+        $totalTebar = $siklusSaatIni->pivot->jumlah_tebar;
+        // dd($totalTebar);
         $survivalRate = (($biomassa * $size) / $totalTebar) * 100;
 
         //FCR
@@ -139,7 +140,7 @@ class SamplingController extends Controller
     public function edit($kolamId, $siklusId, $samplingId)
     {
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
         $sampling = $siklus->sampling()->findOrFail($samplingId);
 
         return view('dashboard.tambak-udang.sampling.edit', compact('kolam', 'siklus', 'sampling'));
@@ -161,7 +162,8 @@ class SamplingController extends Controller
 
         //Data yang diperlukan
         $kolam = Kolam::findOrFail($kolamId);
-        $siklusSaatIni = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $siklusSaatIni = $kolam->siklus()->findOrFail($siklusId);
+        // dd($siklusSaatIni);
         $sampling = $siklusSaatIni->sampling()->findOrFail($samplingId);
 
         $user = auth()->user();
@@ -198,7 +200,7 @@ class SamplingController extends Controller
         $biomassa = $totalPakan / $feedingRate * 100;
 
         //SR
-        $totalTebar = $siklusSaatIni->total_tebar;
+        $totalTebar = $siklusSaatIni->pivot->jumlah_tebar;
         $survivalRate = (($biomassa * $size) / $totalTebar) * 100;
 
         //FCR
@@ -231,7 +233,7 @@ class SamplingController extends Controller
     public function destroy($kolamId, $siklusId, $samplingId)
     {
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->where('id', $siklusId)->firstOrFail();
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
         $sampling = $siklus->sampling()->findOrFail($samplingId);
 
         $sampling->delete();
