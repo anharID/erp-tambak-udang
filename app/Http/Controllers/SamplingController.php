@@ -17,7 +17,7 @@ class SamplingController extends Controller
     public function index($kolamId, $siklusId)
     {
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->find($siklusId);
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
 
         $siklusTerpilih = $siklus->sampling()->where('kolam_id', $kolam->id)->orderBy('created_at', 'desc')->get();
 
@@ -35,7 +35,7 @@ class SamplingController extends Controller
     {
 
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->find($siklusId);
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
         return view('dashboard.tambak-udang.sampling.create', compact('kolam', 'siklus'));
     }
 
@@ -89,7 +89,6 @@ class SamplingController extends Controller
         //BIOMASSA
         $biomassa = $totalPakan / $feedingRate * 100;
 
-        //TODO ambil data total tebar kolam
         //SR
         $totalTebar = $siklusSaatIni->pivot->jumlah_tebar;
         // dd($totalTebar);
@@ -141,7 +140,7 @@ class SamplingController extends Controller
     public function edit($kolamId, $siklusId, $samplingId)
     {
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->find($siklusId);
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
         $sampling = $siklus->sampling()->findOrFail($samplingId);
 
         return view('dashboard.tambak-udang.sampling.edit', compact('kolam', 'siklus', 'sampling'));
@@ -163,7 +162,7 @@ class SamplingController extends Controller
 
         //Data yang diperlukan
         $kolam = Kolam::findOrFail($kolamId);
-        $siklusSaatIni = $kolam->siklus()->where('kolam_id', $kolam->id)->find($siklusId);
+        $siklusSaatIni = $kolam->siklus()->findOrFail($siklusId);
         // dd($siklusSaatIni);
         $sampling = $siklusSaatIni->sampling()->findOrFail($samplingId);
 
@@ -234,7 +233,7 @@ class SamplingController extends Controller
     public function destroy($kolamId, $siklusId, $samplingId)
     {
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->find($siklusId);
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
         $sampling = $siklus->sampling()->findOrFail($samplingId);
 
         $sampling->delete();

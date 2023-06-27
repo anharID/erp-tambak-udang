@@ -84,7 +84,8 @@
                             class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
                             <h1 class="text-xl font-bold">Sampling</h1>
                             @if ($sampling->isNotEmpty())
-                            <p>Terakhir ditambahkan {{ $sampling->last()->created_at->diffForHumans() }}</p>
+                            <p class="text-sm italic">Terakhir ditambahkan {{
+                                $sampling->last()->created_at->diffForHumans() }}</p>
                             <div class="min-w-0 p-2 mt-2 bg-gray-100 rounded-lg shadow-sm dark:bg-gray-700">
                                 <p>ADG : {{ $sampling->last()->adg }} gram</p>
                                 <p>SR : {{ $sampling->last()->sr }} %</p>
@@ -148,10 +149,6 @@
                         <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
                             <div class="flex flex-col items-center justify-center">
                                 <h1 class="text-lg font-bold mb-4">Tidak ada siklus yang berjalan</h1>
-                                <a href="{{ route('tambah_siklus', ['kolamId' => $kolam->id]) }}"
-                                    class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
-                                    Buat Siklus Kolam
-                                </a>
                             </div>
                         </div>
                         @endif
@@ -175,8 +172,6 @@
                                 <span class="text-right">{{ $kolam->kedalaman }} m</span>
                             </p>
                         </div>
-
-                        //TODO tambahkan informasi siklus
 
                         <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
                             <h1 class="text-xl font-bold mb-1">Siklus</h1>

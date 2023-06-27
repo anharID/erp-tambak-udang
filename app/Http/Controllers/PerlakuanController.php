@@ -16,7 +16,7 @@ class PerlakuanController extends Controller
     public function index($kolamId, $siklusId)
     {
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->find($siklusId);
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
 
         $siklusTerpilih = $siklus->perlakuan()->where('kolam_id', $kolam->id)->orderBy('created_at', 'desc')->get();
 
@@ -33,7 +33,7 @@ class PerlakuanController extends Controller
     {
 
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->find($siklusId);
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
 
         return view('dashboard.tambak-udang.perlakuan.create', compact('kolam', 'siklus'));
     }
@@ -86,7 +86,7 @@ class PerlakuanController extends Controller
     public function edit($kolamId, $siklusId, $perlakuanId)
     {
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->find($siklusId);
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
         $perlakuan = $siklus->perlakuan()->findOrFail($perlakuanId);
 
         return view('dashboard.tambak-udang.perlakuan.edit', compact('kolam', 'siklus', 'perlakuan'));
@@ -128,7 +128,7 @@ class PerlakuanController extends Controller
     public function destroy($kolamId, $siklusId, $perlakuanId)
     {
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->find($siklusId);
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
         $perlakuan = $siklus->perlakuan()->findOrFail($perlakuanId);
 
         $perlakuan->delete();

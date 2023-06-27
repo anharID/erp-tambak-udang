@@ -16,7 +16,7 @@ class PanenController extends Controller
     public function index($kolamId, $siklusId)
     {
         $kolam = Kolam::findOrFail($kolamId);
-        $siklus = $kolam->siklus()->find($siklusId);
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
 
         $siklusTerpilih = $siklus->panen()->where('kolam_id', $kolam->id)->orderBy('created_at', 'desc')->get();
 
