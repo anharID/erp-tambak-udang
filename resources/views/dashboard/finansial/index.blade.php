@@ -1,7 +1,30 @@
+@php
+    $param = request()->input('siklus_id');
+@endphp
 <x-admin>
     <div class="container grid py-12">
         <div class="w-full mx-auto px-4 sm:px-6 lg:px-8 text-gray-900 dark:text-gray-100 overflow-hidden">
+
             <h1 class="mb-4 font-bold text-xl">Manajemen Finansial</h1>
+            <div class="flex items-center mb-4">
+                {{-- <span class="w-24">Pilih Siklus</span> --}}
+                <select
+                    class="mr-2 w-60 rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2"
+                    name="siklus_id" onchange="location = this.value;">
+                    <option value="">Pilih Siklus</option>
+                    @if ($siklusSaatIni)
+                        <option value="{{ route('finansial.index', ['siklus_id' => $siklusSaatIni->id]) }}"
+                            {{ $param == $siklusSaatIni->id ? 'selected' : '' }}>
+                            Siklus Aktif - {{ $siklusSaatIni->tanggal_mulai }}</option>
+                    @endif
+                    @foreach ($siklusSelesai as $item)
+                        <option value="{{ route('finansial.index', ['siklus_id' => $item->id]) }}"
+                            {{ $param == $item->id ? 'selected' : '' }}>Siklus
+                            {{ $item->tanggal_mulai }}</option>
+                    @endforeach
+                </select>
+            </div>
+
             <div class="grid gap-6 mb-8 md:grid-cols-1">
                 <div class="min-w-0 h-96 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
                     <canvas id="myChart">
@@ -13,7 +36,8 @@
             <div class="grid gap-6 mb-8 md:grid-cols-4 sm:grid-cols-2">
                 <div class="min-w-0 p-4 bg-blue-300 rounded-lg shadow-sm dark:bg-gray-800">
                     <p class="text-base mb-2">Saldo Hari Ini</p>
-                    <p class="text-xl font-medium">{{ 'Rp ' . number_format($finansial->last()->total_saldo ?? 0, 2, ',', '.') }}
+                    <p class="text-xl font-medium">
+                        {{ 'Rp ' . number_format($finansial->last()->total_saldo ?? 0, 2, ',', '.') }}
                     </p>
                 </div>
                 <div class="min-w-0 p-4 bg-orange-300 rounded-lg shadow-sm dark:bg-gray-800">
@@ -41,7 +65,7 @@
                         </div>
                     @endif
 
-                    <a href="{{ route('finansial.create') }}"
+                    <a href="{{ route('finansial.create', ['siklus_id' => $param]) }}"
                         class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
                         <i class="fa-solid fa-plus mr-1"></i> Tambah Catatan Finansial
                     </a>
@@ -73,7 +97,7 @@
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700">
-                                @foreach ($finansial as $row)
+                                @foreach ($finansialList as $row)
                                     <tr>
                                         <td class="px-6 py-4 whitespace-nowrap">{{ $row->tanggal }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">{{ $row->jenis_transaksi }}</td>
