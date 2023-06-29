@@ -55,9 +55,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('/dashboard/users', UserController::class);
     Route::resource('/dashboard/karyawan', KaryawanController::class);
     Route::resource('/dashboard/finansial', FinansialController::class);
-    Route::resource('/dashboard/inventaris', InventarisController::class);
-    Route::resource('/dashboard/logistik', LogistikController::class);
     Route::resource('/dashboard/peralatan', PeralatanController::class);
+
+    Route::resource('/dashboard/inventaris', InventarisController::class);
+    Route::resource('/inventaris/{inventaris}/logistik', LogistikController::class);
+    Route::post('/inventaris/{inventaris}/logistik/{logistik}', [LogistikController::class, 'update'])->name('logistik.update');
 });
 
 require __DIR__ . '/auth.php';

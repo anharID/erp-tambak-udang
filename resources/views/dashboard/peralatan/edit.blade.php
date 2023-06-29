@@ -28,8 +28,8 @@
                             <x-input-label for="kondisi_alat" :value="__('Kondisi Alat')" />
                             <select name="kondisi_alat" class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2">
                                 <option value="" disabled selected>Pilih satu opsi</option>
-                                <option value="baik" {{ $peralatan->kondisi_alat == 'baik' ? 'selected' : '' }}>Baik</option>
-                                <option value="tidak baik" {{ $peralatan->kondisi_alat == 'tidak baik' ? 'selected' : '' }}>Tidak Baik</option>
+                                <option value="Baik" {{ $peralatan->kondisi_alat == 'Baik' ? 'selected' : '' }}>Baik</option>
+                                <option value="Tidak baik" {{ $peralatan->kondisi_alat == 'Tidak baik' ? 'selected' : '' }}>Tidak Baik</option>
                             </select>
 
                             <x-input-error :messages="$errors->get('kondisi_alat')" class="mt-2" />

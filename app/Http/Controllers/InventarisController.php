@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Inventaris;
+use App\Models\Logistik;
 use Illuminate\Http\Request;
 
 class InventarisController extends Controller
@@ -14,8 +15,9 @@ class InventarisController extends Controller
      */
     public function index()
     {
-        $inventaris = Inventaris::all();
-        return view("dashboard.inventaris.index", compact('inventaris'));
+        //
+        $inventaris = Inventaris::with('logistik')->get();
+        return view('dashboard.inventaris.index', compact('inventaris'));
     }
 
     /**
@@ -25,7 +27,8 @@ class InventarisController extends Controller
      */
     public function create()
     {
-        return view("dashboard.inventaris.create");
+        //
+        return view('dashboard.inventaris.create');
     }
 
     /**
@@ -36,6 +39,8 @@ class InventarisController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->all());
+        // $validation =  
         $request->validate([
             'nama_barang' => ['required', 'string', 'max:100'],
             'jenis_barang' => ['required', 'string', 'max:100'],
@@ -45,14 +50,16 @@ class InventarisController extends Controller
             'status' => ['required', 'string', 'max:100'],
         ]);
 
+        // Inventaris::create($validation);
         Inventaris::create([
             'nama_barang' => $request->nama_barang,
             'jenis_barang' => $request->jenis_barang,
             'tanggal_peroleh' => $request->tanggal_peroleh,
             'stok' => $request->stok,
+            'harga_total' => $request->harga_total,
             'lokasi' => $request->lokasi,
-            'status' => $request->status,
-            'catatan' => $request->catatan,
+	        'status' => $request->status,
+	        'catatan' => $request->catatan
         ]);
 
         return redirect()->route('inventaris.index')->with('success', "Data berhasil ditambahkan");
@@ -66,7 +73,7 @@ class InventarisController extends Controller
      */
     public function show(Inventaris $inventaris)
     {
-        //
+
     }
 
     /**
@@ -77,7 +84,8 @@ class InventarisController extends Controller
      */
     public function edit(Inventaris $inventari)
     {
-        return view("dashboard.inventaris.edit", compact('inventari'));
+        //
+        return view('dashboard.inventaris.edit', compact('inventari'));
     }
 
     /**
@@ -89,6 +97,7 @@ class InventarisController extends Controller
      */
     public function update(Request $request, Inventaris $inventari)
     {
+        //
         $request->validate([
             'nama_barang' => ['required', 'string', 'max:100'],
             'jenis_barang' => ['required', 'string', 'max:100'],
@@ -98,18 +107,18 @@ class InventarisController extends Controller
             'status' => ['required', 'string', 'max:100'],
         ]);
 
-
         Inventaris::where('id', $inventari->id)->update([
             'nama_barang' => $request->nama_barang,
             'jenis_barang' => $request->jenis_barang,
             'tanggal_peroleh' => $request->tanggal_peroleh,
             'stok' => $request->stok,
+            'harga_total' => $request->harga_total,
             'lokasi' => $request->lokasi,
-            'status' => $request->status,
-            'catatan' => $request->catatan,
+	        'status' => $request->status,
+	        'catatan' => $request->catatan
         ]);
 
-        return redirect()->route('inventaris.index')->with('success', "Data berhasil diubah");
+        return redirect()->route('inventaris.index')->with('success', "Data berhasil diperbarui");
     }
 
     /**
@@ -122,6 +131,6 @@ class InventarisController extends Controller
     {
         $inventari->delete();
 
-        return redirect()->route('inventaris.index')->with('success', "Data berhasil dihapus");
+        return redirect()->route('inventaris.index')->with('success', "Kolam berhasil dihapus");
     }
 }

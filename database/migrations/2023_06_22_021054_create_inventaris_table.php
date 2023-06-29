@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string("jenis_barang");
             $table->date("tanggal_peroleh");
             $table->integer("stok");
+            $table->decimal('harga_total', 15, 2)->nullable();
             $table->string("lokasi");
             $table->string("status");
             $table->string("catatan")->nullable();

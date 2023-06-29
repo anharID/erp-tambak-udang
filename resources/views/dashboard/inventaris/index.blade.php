@@ -23,6 +23,7 @@
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Jenis Barang</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Tanggal Peroleh</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Stok</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Harga Total</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Lokasi</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Catatan</th>
@@ -32,20 +33,15 @@
                             <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700">
                                 @foreach($inventaris as $row)
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->nama_barang }}</td>
-                                        @if ($row->jenis_barang)
-                                        <td class="px-6 py-4 whitespace-nowrap">Jenis Barang 1</td>
-                                        @else
-                                        <td class="px-6 py-4 whitespace-nowrap">Jenis Barang 2</td>
-                                        @endif
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <a href="{{ route('logistik.index', $row->id) }}">{{ $row->nama_barang }}</a>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->jenis_barang }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->tanggal_peroleh }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->stok }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->harga_total }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->lokasi }}</td>
-                                        @if ($row->status)
-                                        <td class="px-6 py-4 whitespace-nowrap">Status 1</td>
-                                        @else
-                                        <td class="px-6 py-4 whitespace-nowrap">Status 2</td>
-                                        @endif
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->status }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->catatan }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <a href="{{ route('inventaris.edit', $row->id) }}" class="text-yellow-600">Edit</a>

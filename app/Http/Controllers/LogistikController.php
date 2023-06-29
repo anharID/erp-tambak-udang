@@ -2,126 +2,122 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Inventaris;
 use App\Models\Logistik;
 use Illuminate\Http\Request;
 
 class LogistikController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index($inventaris)
     {
-        $logistik = Logistik::all();
-        return view("dashboard.logistik.index", compact('logistik'));
+        $data_inventaris = Inventaris::find($inventaris);
+        $logistik=$data_inventaris->logistik()->get();
+        // dd($logistik);
+        return view('dashboard.inventaris.logistik.index', compact('data_inventaris', 'logistik'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function create($inventaris)
     {
-        return view("dashboard.logistik.create");
+        $inventaris = Inventaris::find($inventaris);
+        return view('dashboard.inventaris.logistik.create', compact('inventaris'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(Request $request, $inventaris)
     {
         $request->validate([
             'tanggal' => ['required', 'date'],
-            'stok_masuk' => ['required', 'numeric'],
-            'stok_keluar' => ['required', 'numeric'],
+            'keterangan' => ['required', 'string'],
             'harga_satuan' => ['required', 'numeric'],
-            'harga_total' => ['required', 'numeric'],
             'sumber' => ['required', 'string', 'max:100'],
         ]);
+
+        $item = Inventaris::find($inventaris);
+        $stok_lama = $item->stok;
+
+        if ($request->keterangan == 'stok_masuk') {
+            $stok_baru = $stok_lama + $request->stok_masuk;
+        } else {
+            $stok_baru = $stok_lama - $request->stok_keluar;
+        }
+
+        $item->stok = $stok_baru;
+        $item->harga_total = $stok_baru * $request->harga_satuan;
+        $item->save();
 
         Logistik::create([
+            'inventaris_id' => $inventaris,
             'tanggal' => $request->tanggal,
+            'keterangan' => $request->keterangan,
             'stok_masuk' => $request->stok_masuk,
             'stok_keluar' => $request->stok_keluar,
             'harga_satuan' => $request->harga_satuan,
-            'harga_total' => $request->harga_total,
-            'sumber' => $request->sumber,
-            'catatan' => $request->catatan,
+	        'sumber' => $request->sumber,
+	        'catatan' => $request->catatan
         ]);
 
-        return redirect()->route('logistik.index')->with('success', "Data berhasil ditambahkan");
+        return redirect()->route('logistik.index', $inventaris)->with('success', 'Data logistik berhasil ditambahkan');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Logistik  $logistik
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Logistik $logistik)
+    public function show($inventaris, $logistik)
     {
-        //
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Logistik  $logistik
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Logistik $logistik)
+    public function edit($inventaris, $logistik)
     {
-        return view("dashboard.logistik.edit", compact('logistik'));
+        $inventaris = Inventaris::find($inventaris);
+        $logistik = Logistik::find($logistik);
+        return view('dashboard.inventaris.logistik.edit', compact('inventaris', 'logistik'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Logistik  $logistik
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Logistik $logistik)
+    public function update(Request $request, $inventaris, $logistik)
     {
         $request->validate([
             'tanggal' => ['required', 'date'],
-            'stok_masuk' => ['required', 'numeric'],
-            'stok_keluar' => ['required', 'numeric'],
+            'keterangan' => ['required', 'string'],
             'harga_satuan' => ['required', 'numeric'],
-            'harga_total' => ['required', 'numeric'],
             'sumber' => ['required', 'string', 'max:100'],
         ]);
 
+        $logistik = Logistik::find($logistik);
+        
+        $item = Inventaris::find($inventaris);
+        $stok_inventaris = $item->stok;
 
-        Logistik::where('id', $logistik->id)->update([
+        $stok_masuk_difference = ($request->stok_masuk ?? 0) - ($logistik->stok_masuk ?? 0);
+        $stok_keluar_difference = ($request->stok_keluar ?? 0) - ($logistik->stok_keluar ?? 0);
+
+        if ($request->stok_masuk !== null) {
+            $stok_inventaris += $stok_masuk_difference;
+        }
+        if ($request->stok_keluar !== null) {
+            $stok_inventaris -= $stok_keluar_difference;
+        }
+        
+    // Update the Inventaris stok
+        $item->stok = $stok_inventaris;
+        $item->harga_total = $stok_inventaris * $request->harga_satuan;
+        $item->save();
+        
+        $logistik->update([
+            'inventaris_id' => $inventaris,
             'tanggal' => $request->tanggal,
+            'keterangan' => $request->keterangan,
             'stok_masuk' => $request->stok_masuk,
             'stok_keluar' => $request->stok_keluar,
             'harga_satuan' => $request->harga_satuan,
-            'harga_total' => $request->harga_total,
-            'sumber' => $request->sumber,
-            'catatan' => $request->catatan,
+	        'sumber' => $request->sumber,
+	        'catatan' => $request->catatan
         ]);
 
-        return redirect()->route('logistik.index')->with('success', "Data berhasil diubah");
+        return redirect()->route('logistik.index', $inventaris)->with('success', 'Data logistik berhasil diperbarui');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Logistik  $logistik
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Logistik $logistik)
+    public function destroy($inventaris, $logistik)
     {
+        $logistik = Logistik::find($logistik);
         $logistik->delete();
 
-        return redirect()->route('logistik.index')->with('success', "Data berhasil dihapus");
+        return redirect()->route('logistik.index', $inventaris)->with('success', 'Data logistik berhasil dihapus');
     }
 }

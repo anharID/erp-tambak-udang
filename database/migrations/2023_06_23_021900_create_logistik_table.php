@@ -15,11 +15,12 @@ return new class extends Migration
     {
         Schema::create('logistik', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('inventaris_id')->constrained('inventaris');
             $table->date('tanggal');
-            $table->integer('stok_masuk');
-            $table->integer('stok_keluar');
+            $table->string('keterangan');
+            $table->integer('stok_masuk')->nullable();
+            $table->integer('stok_keluar')->nullable();
             $table->integer('harga_satuan');
-            $table->integer('harga_total');
             $table->string('sumber');
             $table->string('catatan')->nullable();
             $table->timestamps();
