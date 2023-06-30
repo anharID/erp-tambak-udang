@@ -47,7 +47,6 @@ class InventarisController extends Controller
             'tanggal_peroleh' => ['required', 'date'],
             'stok' => ['required', 'numeric'],
             'lokasi' => ['required', 'string', 'max:100'],
-            'status' => ['required', 'string', 'max:100'],
         ]);
 
         // Inventaris::create($validation);
@@ -56,7 +55,8 @@ class InventarisController extends Controller
             'jenis_barang' => $request->jenis_barang,
             'tanggal_peroleh' => $request->tanggal_peroleh,
             'stok' => $request->stok,
-            'harga_total' => $request->harga_total,
+            'harga_satuan' => $request->harga_satuan,
+            'nilai_inventaris' => $request->stok * $request->harga_satuan,
             'lokasi' => $request->lokasi,
 	        'status' => $request->status,
 	        'catatan' => $request->catatan
@@ -104,7 +104,6 @@ class InventarisController extends Controller
             'tanggal_peroleh' => ['required', 'date'],
             'stok' => ['required', 'numeric'],
             'lokasi' => ['required', 'string', 'max:100'],
-            'status' => ['required', 'string', 'max:100'],
         ]);
 
         Inventaris::where('id', $inventari->id)->update([
@@ -112,7 +111,8 @@ class InventarisController extends Controller
             'jenis_barang' => $request->jenis_barang,
             'tanggal_peroleh' => $request->tanggal_peroleh,
             'stok' => $request->stok,
-            'harga_total' => $request->harga_total,
+            'harga_satuan' => $request->harga_satuan,
+            'nilai_inventaris' => $request->stok * $request->harga_satuan,
             'lokasi' => $request->lokasi,
 	        'status' => $request->status,
 	        'catatan' => $request->catatan
@@ -129,8 +129,10 @@ class InventarisController extends Controller
      */
     public function destroy(Inventaris $inventari)
     {
+        $data_logistik = $inventari->logistik()->get();
+        $data_logistik->each->delete();
         $inventari->delete();
 
-        return redirect()->route('inventaris.index')->with('success', "Kolam berhasil dihapus");
+        return redirect()->route('inventaris.index')->with('success', "Data inventaris berhasil dihapus");
     }
 }

@@ -40,13 +40,6 @@
                             <x-input-error :messages="$errors->get('stok_keluar')" class="mt-2" />
                         </div>
 
-                        <!-- Harga Satuan -->
-                        <div class="mt-4">
-                            <x-input-label for="harga_satuan" :value="__('Harga Satuan')" />
-                            <x-text-input id="harga_satuan" class="block mt-1 w-full" type="number" name="harga_satuan" :value="old('harga_satuan')" required autocomplete="harga_satuan" />
-                            <x-input-error :messages="$errors->get('harga_satuan')" class="mt-2" />
-                        </div>
-
                         <!-- Sumber -->
                         <div class="mt-4">
                             <x-input-label for="sumber" :value="__('Sumber')" />

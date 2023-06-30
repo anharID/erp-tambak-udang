@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('keterangan');
             $table->integer('stok_masuk')->nullable();
             $table->integer('stok_keluar')->nullable();
-            $table->integer('harga_satuan');
             $table->string('sumber');
             $table->string('catatan')->nullable();
             $table->timestamps();

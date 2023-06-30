@@ -23,7 +23,8 @@
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Jenis Barang</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Tanggal Peroleh</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Stok</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Harga Total</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Harga Satuan</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Nilai Inventaris</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Lokasi</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Catatan</th>
@@ -39,7 +40,8 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->jenis_barang }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->tanggal_peroleh }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->stok }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->harga_total }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->harga_satuan }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->nilai_inventaris }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->lokasi }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->status }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->catatan }}</td>

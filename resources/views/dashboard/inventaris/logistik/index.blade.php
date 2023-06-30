@@ -25,7 +25,6 @@
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Tanggal</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Stok Masuk</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Stok Keluar</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Harga Satuan</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Sumber</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Catatan</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Aksi</th>
@@ -37,7 +36,6 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->tanggal }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->stok_masuk }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->stok_keluar }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->harga_satuan }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->sumber }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->catatan }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">

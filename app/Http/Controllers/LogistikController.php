@@ -27,7 +27,6 @@ class LogistikController extends Controller
         $request->validate([
             'tanggal' => ['required', 'date'],
             'keterangan' => ['required', 'string'],
-            'harga_satuan' => ['required', 'numeric'],
             'sumber' => ['required', 'string', 'max:100'],
         ]);
 
@@ -41,7 +40,7 @@ class LogistikController extends Controller
         }
 
         $item->stok = $stok_baru;
-        $item->harga_total = $stok_baru * $request->harga_satuan;
+        $item->nilai_inventaris = $item->harga_satuan * $stok_baru;
         $item->save();
 
         Logistik::create([
@@ -50,7 +49,6 @@ class LogistikController extends Controller
             'keterangan' => $request->keterangan,
             'stok_masuk' => $request->stok_masuk,
             'stok_keluar' => $request->stok_keluar,
-            'harga_satuan' => $request->harga_satuan,
 	        'sumber' => $request->sumber,
 	        'catatan' => $request->catatan
         ]);
@@ -75,7 +73,6 @@ class LogistikController extends Controller
         $request->validate([
             'tanggal' => ['required', 'date'],
             'keterangan' => ['required', 'string'],
-            'harga_satuan' => ['required', 'numeric'],
             'sumber' => ['required', 'string', 'max:100'],
         ]);
 
@@ -96,16 +93,15 @@ class LogistikController extends Controller
         
     // Update the Inventaris stok
         $item->stok = $stok_inventaris;
-        $item->harga_total = $stok_inventaris * $request->harga_satuan;
+        $item->nilai_inventaris = $item->harga_satuan * $stok_inventaris;
         $item->save();
-        
+
         $logistik->update([
             'inventaris_id' => $inventaris,
             'tanggal' => $request->tanggal,
             'keterangan' => $request->keterangan,
             'stok_masuk' => $request->stok_masuk,
             'stok_keluar' => $request->stok_keluar,
-            'harga_satuan' => $request->harga_satuan,
 	        'sumber' => $request->sumber,
 	        'catatan' => $request->catatan
         ]);
