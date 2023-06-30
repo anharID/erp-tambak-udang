@@ -31,11 +31,13 @@
                         onchange="location = this.value;">
                         <option value="" selected disabled>Silahkan Pilih Siklus</option>
                         @if ($siklusSaatIni)
-                        <option value="{{ route('data_kolam', ['kolam'=>$kolam->id, 'siklus'=>$siklusSaatIni->id]) }}">
-                            Siklus Aktif - {{ $siklusSaatIni->tanggal_mulai }}</option>
+                        <option value="{{ route('data_kolam', ['kolam'=>$kolam->id, 'siklus'=>$siklusSaatIni->id]) }}"
+                            {{ $siklusTerpilih->id == $siklusSaatIni->id ? 'selected' : '' }}>
+                            {{ $siklusSaatIni->tanggal_mulai }} - Siklus Aktif</option>
                         @endif
                         @foreach ($siklusSelesai as $item)
-                        <option value="{{ route('data_kolam', [$kolam->id, $item->id]) }}">Siklus {{
+                        <option value="{{ route('data_kolam', [$kolam->id, $item->id]) }}" {{ $siklusTerpilih->id ==
+                            $item->id ? 'selected' : '' }}>Siklus {{
                             $item->tanggal_mulai }}</option>
                         @endforeach
                     </select>

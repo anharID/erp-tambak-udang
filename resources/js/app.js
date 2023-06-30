@@ -11,9 +11,10 @@ $(window).ready(function () {
     $(".datatable").DataTable({
         order: [],
         scrollX: true,
-        bAutoWidth:false,
-    });
+        bAutoWidth: false,
+    }).columns.adjust();
 });
+
 
 const jenisTransaksi = document.getElementById("jenis_transaksi");
 const keteranganField = document.getElementById("keterangan_field");

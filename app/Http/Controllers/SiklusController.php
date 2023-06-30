@@ -28,6 +28,7 @@ class SiklusController extends Controller
 
         $siklus = Siklus::create([
             'tanggal_mulai' => $request->input('tanggal_mulai'),
+            'catatan' => $request->input('catatan'),
         ]);
 
         $kolamList = $request->input('kolam_list');
@@ -112,21 +113,21 @@ class SiklusController extends Controller
         return redirect()->route('kolam.index')->with('success', "Siklus berhasil diubah");
     }
 
-    // public function destroy($kolamId, $siklusId)
-    // {
-    //     $kolam = Kolam::findOrFail($kolamId);
-    //     $siklus = $kolam->siklus()->findOrFail($siklusId);
+    public function destroy($siklusId)
+    {
+        $siklus = Siklus::findOrFail($siklusId);
 
-    //     $siklus->monitoring()->delete();
+        $siklus->kolam()->detach();
 
-    //     $siklus->delete();
+        $siklus->monitoring()->delete();
+        $siklus->pakan()->delete();
+        $siklus->sampling()->delete();
+        $siklus->perlakuan()->delete();
+        $siklus->panen()->delete();
+        $siklus->energi()->delete();
 
-    //     $idSiklusTerkait = $kolam->siklus()->pluck('id')->last();
+        $siklus->delete();
 
-    //     if ($kolam->siklus->count() > 0) {
-    //         return redirect()->route('data_kolam', ['kolam' => $kolam->id, 'siklus' => $idSiklusTerkait])->with('success', 'Data siklus berhasil dihapus');
-    //     } else {
-    //         return redirect()->route('kolam.show', $kolam->id)->with('success', 'Data siklus berhasil dihapus');
-    //     }
-    // }
+        return redirect()->route('kolam.index')->with('success', 'Data siklus dan data yang terkait berhasil dihapus');
+    }
 }
