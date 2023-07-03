@@ -18,6 +18,7 @@ class KolamController extends Controller
     {
         //
         $kolam = Kolam::all();
+        $siklusList = Siklus::all();
         $siklusAktif = Siklus::whereNull('tanggal_selesai')->first();
 
         if ($siklusAktif) {
@@ -25,7 +26,7 @@ class KolamController extends Controller
         } else {
             $doc = null;
         }
-        return view('dashboard.tambak-udang.kolam.index', compact('kolam', 'siklusAktif', 'doc'));
+        return view('dashboard.tambak-udang.kolam.index', compact('kolam', 'siklusAktif', 'doc', 'siklusList'));
     }
 
     /**
@@ -137,6 +138,15 @@ class KolamController extends Controller
      */
     public function destroy(Kolam $kolam)
     {
+        $kolam->siklus()->detach();
+
+        $kolam->monitoring()->delete();
+        $kolam->pakan()->delete();
+        $kolam->sampling()->delete();
+        $kolam->perlakuan()->delete();
+        $kolam->panen()->delete();
+        $kolam->energi()->delete();
+
         $kolam->delete();
 
         return redirect()->route('kolam.index')->with('success', "Kolam berhasil dihapus");
