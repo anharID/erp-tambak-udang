@@ -11,6 +11,9 @@ $today = now()->format('Y-m-d');
                     <form method="POST" action="{{ route('finansial.store') }}">
                         @csrf
 
+                        <!-- SiklusID -->
+                        <input type="hidden" name="siklus_id" value="{{ $siklusId }}">
+
                         <!-- Tanggal -->
                         <div>
                             <x-input-label for="tanggal" :value="__('Tanggal')" />
@@ -90,5 +93,5 @@ $today = now()->format('Y-m-d');
             </div>
         </div>
     </div>
-
 </x-admin>
+<script src="{{ Vite::asset('resources/js/finansial.js') }}" defer></script>

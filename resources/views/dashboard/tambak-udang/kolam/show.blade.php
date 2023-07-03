@@ -1,3 +1,6 @@
+@php
+$currentRoute = request()->url();
+@endphp
 <x-admin>
     <div class="container grid py-12">
         <div class="w-full mx-auto px-4 sm:px-6 lg:px-8 text-gray-900 dark:text-gray-100 overflow-hidden">

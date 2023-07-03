@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Finansial;
+use App\Models\Siklus;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class FinansialController extends Controller
 {
@@ -13,29 +15,89 @@ class FinansialController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $finansial = Finansial::all();
+        $finansial = new Finansial();
+
+        $siklusId = $request->query('siklus_id');
+        $siklusList = Siklus::all();
+
+        if ($siklusId) {
+            $finansialList = $finansial->where('siklus_id', $siklusId)->get();
+        } else {
+            $finansialList = $finansial->get();
+        }
+
+        // Ambil siklus berjalan saat ini
+        $siklusSaatIni = Siklus::whereNull('tanggal_selesai')->first();
+        // Ambil siklus selesai
+        $siklusSelesai = Siklus::whereNotNull('tanggal_selesai')->orderBy('tanggal_mulai', 'desc')->get();
 
         // Total Pemasukan
-        $pemasukan = Finansial::where('jenis_transaksi', 'Pemasukan')->get();
+        $pemasukan = $finansialList->where('jenis_transaksi', 'Pemasukan');
         $totalPemasukan = 0;
         foreach ($pemasukan as $row) {
             $totalPemasukan += $row->jumlah;
         }
         // Total Pengeluaran
-        $pengeluaran = Finansial::where('jenis_transaksi', 'Pengeluaran')->get();
+        $pengeluaran = $finansialList->whereIn('jenis_transaksi', ['Pengeluaran', 'Gaji Karyawan']);
         $totalPengeluaran = 0;
         foreach ($pengeluaran as $row) {
             $totalPengeluaran += $row->jumlah;
         }
-        // Total Gaji Karyawan
-        $gaji = Finansial::where('jenis_transaksi', 'Gaji Karyawan')->get();
-        $totalGaji = 0;
-        foreach ($gaji as $row) {
-            $totalGaji += $row->jumlah;
+
+        // Bulan
+        $bulan = Finansial::all()->groupby(function($item){
+            return Carbon::parse($item->tanggal)->format('F');
+        });
+        
+        // Pemasukan
+        $pemasukanBulanan = $pemasukan->groupBy(function ($item) {
+            return Carbon::parse($item->tanggal)->format('F');
+        })->map(function ($group) {
+            return $group->sum('jumlah');
+        });
+        
+        $labels = $bulan->keys();
+        
+        $valuesPemasukan = $pemasukanBulanan->values();
+        
+        $chartDataPemasukan = [
+            'labels' => $labels,
+            'values' => $valuesPemasukan,
+        ];
+
+        // Pengeluaran
+        $pengeluaranBulanan = $pengeluaran->groupBy(function ($item) {
+            return Carbon::parse($item->tanggal)->format('F');
+        })->map(function ($group) {
+            return $group->sum('jumlah');
+        });
+        
+        $valuesPengeluaran = $pengeluaranBulanan->values();
+        
+        $chartDataPengeluaran = [
+            'labels' => $labels,
+            'values' => $valuesPengeluaran,
+        ];
+
+        $data = [
+            'finansial' => $finansial->all(),
+            'finansialList' => $finansialList,
+            'siklusList' => $siklusList,
+            'chartDataPemasukan' => $chartDataPemasukan,
+            'chartDataPengeluaran' => $chartDataPengeluaran,
+            'totalPemasukan' => $totalPemasukan,
+            'totalPengeluaran' => $totalPengeluaran,
+            'siklusSaatIni' => $siklusSaatIni,
+            'siklusSelesai' => $siklusSelesai
+        ];
+
+        if (!$siklusId && $siklusSaatIni) {
+            return redirect()->route('finansial.index', ['siklus_id' => $siklusSaatIni]);
         }
-        return view("dashboard.finansial.index", compact('finansial'), ['totalPemasukan' => $totalPemasukan, 'totalPengeluaran' => $totalPengeluaran, 'totalGaji' => $totalGaji]);
+        
+        return view("dashboard.finansial.index", $data);
     }
 
     /**
@@ -43,10 +105,11 @@ class FinansialController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         $karyawan = Karyawan::all();
-        return view("dashboard.finansial.create", compact('karyawan'));
+        $siklusId = $request->query('siklus_id');
+        return view("dashboard.finansial.create", compact('karyawan', 'siklusId'));
     }
 
     /**
@@ -73,6 +136,7 @@ class FinansialController extends Controller
             $karyawanID = $request->input('karyawan');
             // Simpan data ke dalam tabel finansial
             $finansial->karyawan_id = $karyawanID;
+            $finansial->siklus_id = $request->input('siklus_id');
             $finansial->tanggal = $request->tanggal;
             $finansial->jenis_transaksi = $jenisTransaksi;
             $finansial->jumlah = $request->jumlah;
@@ -82,6 +146,7 @@ class FinansialController extends Controller
             $finansial->save();
         } else {
             // Simpan data ke dalam tabel finansial
+            $finansial->siklus_id = $request->input('siklus_id');
             $finansial->tanggal = $request->input('tanggal');
             $finansial->jenis_transaksi = $jenisTransaksi;
             $finansial->jumlah = $request->input('jumlah');
@@ -90,25 +155,6 @@ class FinansialController extends Controller
             $finansial->status = $request->status;
             $finansial->save();
         }
-
-        // $finansial->create([
-        //     'karyawan_id' => $karyawanID,
-        //     'tanggal' => $request->tanggal,
-        //     'jenis_transaksi' => $jenisTransaksi,
-        //     'jumlah' => $request->jumlah,
-        //     'keterangan' => $karyawan->nama,
-        //     'catatan' => $request->catatan,
-        //     'status' => $request->status,
-        // ]);
-
-        // $finansial = Finansial::create([
-        //     'tanggal' => $request->tanggal,
-        //     'jenis_transaksi' => $request->jenis_transaksi,
-        //     'keterangan' => $request->keterangan,
-        //     'jumlah' => $request->jumlah,
-        //     'catatan' => $request->catatan,
-        //     'status' => $request->status,
-        // ]);
 
         // Hitung total saldo berdasarkan transaksi sebelumnya
         $totalSaldoSebelumnya = 0;
