@@ -1,38 +1,3 @@
-{{-- <script>
-    function changeKeteranganType() {
-        const jenisTransaksi = document.getElementById('jenis_transaksi').value;
-        const keteranganField = document.getElementById('keterangan_field');
-        // const keterangan = document.getElementById('keterangan');
-        const karyawanField = document.getElementById('karyawan_field');
-
-        if (jenisTransaksi === 'Gaji Karyawan') {
-            keteranganField.style.display = 'none';
-            karyawanField.style.display = 'block';
-            // keterangan.removeAttribute('required');
-        } else {
-            keteranganField.style.display = 'block';
-            karyawanField.style.display = 'none';
-        }
-    }
-
-    function setGaji() {
-        var selectKaryawan = document.getElementById('karyawan');
-        var inputJumlah = document.getElementById('jumlah');
-        var selectedOption = selectKaryawan.options[selectKaryawan.selectedIndex];
-        var gaji = selectedOption.getAttribute('gaji');
-
-        inputJumlah.value = gaji;
-    }
-
-    function setKeterangan() {
-        var selectKaryawan = document.getElementById('karyawan');
-        var inputKeterangan = document.getElementById('keterangan');
-        var selectedOption = selectKaryawan.options[selectKaryawan.selectedIndex];
-        var nama = selectedOption.getAttribute('nama');
-
-        inputKeterangan.value = nama;
-    }
-</script> --}}
 <x-admin>
 
     <div class="py-12">
@@ -131,5 +96,5 @@
             </div>
         </div>
     </div>
-
 </x-admin>
+<script src="{{ Vite::asset('resources/js/finansial.js') }}" defer></script>

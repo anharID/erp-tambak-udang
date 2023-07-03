@@ -25,7 +25,6 @@ class SiklusController extends Controller
             'jumlah_tebar.*' => 'integer|min:0', // Memastikan jumlah tebar berupa bilangan bulat positif
         ]);
 
-
         $siklus = Siklus::create([
             'tanggal_mulai' => $request->input('tanggal_mulai'),
         ]);

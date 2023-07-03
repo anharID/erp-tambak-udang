@@ -1,3 +1,6 @@
+@php
+    $currentRoute = request()->url();
+@endphp
 <x-admin>
     <div class="container grid py-12">
         <div class="w-full mx-auto px-4 sm:px-6 lg:px-8 text-gray-900 dark:text-gray-100 overflow-hidden">
@@ -31,11 +34,11 @@
                         onchange="location = this.value;">
                         <option value="" selected disabled>Silahkan Pilih Siklus</option>
                         @if ($siklusSaatIni)
-                        <option value="{{ route('data_kolam', ['kolam'=>$kolam->id, 'siklus'=>$siklusSaatIni->id]) }}">
+                        <option value="{{ route('data_kolam', ['kolam'=>$kolam->id, 'siklus'=>$siklusSaatIni->id]) }}" {{ $currentRoute == route('data_kolam', ['kolam'=>$kolam->id, 'siklus'=>$siklusSaatIni->id]) ? 'selected' : '' }}>
                             Siklus Aktif - {{ $siklusSaatIni->tanggal_mulai }}</option>
                         @endif
                         @foreach ($siklusSelesai as $item)
-                        <option value="{{ route('data_kolam', [$kolam->id, $item->id]) }}">Siklus {{
+                        <option value="{{ route('data_kolam', [$kolam->id, $item->id]) }}" {{ $currentRoute == route('data_kolam', [$kolam->id, $item->id]) ? 'selected' : '' }}>Siklus {{
                             $item->tanggal_mulai }}</option>
                         @endforeach
                     </select>
