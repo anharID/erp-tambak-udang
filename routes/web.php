@@ -46,8 +46,6 @@ Route::middleware('auth')->group(function () {
     Route::put('/siklus/{siklus}/update', [SiklusController::class, 'updateSiklus'])->middleware('role:superadmin,teknisi')->name('update_siklus');
     Route::put('/siklus/{siklus}/tutup-siklus', [SiklusController::class, 'tutupSiklus'])->middleware('role:superadmin,teknisi')->name('tutup_siklus');
 
-
-
     // Route::get('/dashboard/kolam/{kolamId}/tambah-siklus', [SiklusController::class, 'create'])->middleware('role:superadmin,teknisi')->name('tambah_siklus');
     // Route::post('/dashboard/kolam/{kolamId}/tambah-siklus/store', [SiklusController::class, 'tambahSiklus'])->middleware('role:superadmin,teknisi')->name('store_siklus');
     // Route::put('/dashboard/kolam/{kolamId}/siklus/{siklus}/update', [SiklusController::class, 'updateSiklus'])->middleware('role:superadmin,teknisi')->name('update_siklus');
@@ -63,6 +61,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/kolam/{kolamId}/siklus/{siklus}/panen', PanenController::class)->middleware('role:superadmin,admin,direktur,teknisi');
     Route::resource('/kolam/{kolamId}/siklus/{siklus}/perlakuan', PerlakuanController::class)->middleware('role:superadmin,admin,direktur,teknisi');
     Route::resource('/kolam/{kolamId}/siklus/{siklus}/energi', EnergiController::class)->middleware('role:superadmin,admin,direktur,teknisi');
+
 
 
     Route::resource('/users', UserController::class)->middleware('role:superadmin');
