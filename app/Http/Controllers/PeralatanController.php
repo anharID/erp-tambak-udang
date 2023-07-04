@@ -41,10 +41,9 @@ class PeralatanController extends Controller
             'jumlah_alat' => ['required', 'numeric'],
             'kondisi_alat' => ['required', 'string', 'max:255'],
             'maintenance' => ['required', 'boolean'],
-            'catatan' => ['required', 'string', 'max:255'],
         ]);
 
-        Karyawan::create([
+        Peralatan::create([
             'nama_alat' => $request->nama_alat,
             'jumlah_alat' => $request->jumlah_alat,
             'kondisi_alat' => $request->kondisi_alat,
@@ -91,7 +90,6 @@ class PeralatanController extends Controller
             'jumlah_alat' => ['required', 'numeric'],
             'kondisi_alat' => ['required', 'string', 'max:255'],
             'maintenance' => ['required', 'boolean'],
-            'catatan' => ['required', 'string', 'max:255'],
         ]);
 
 
