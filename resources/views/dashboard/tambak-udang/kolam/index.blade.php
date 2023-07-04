@@ -17,6 +17,7 @@
                 <p>DOC : {{ $doc }}</p>
                 <p>Jumlah kolam aktif: {{ $siklusAktif->kolam->count() }}</p>
                 <p class="mb-4">Total Tebar : {{ $siklusAktif->kolam->sum('pivot.jumlah_tebar') }}</p>
+                @can('hakTeknisi')
                 <div class="mt-4 flex items-center justify-center">
                     <a href="{{ route('edit_siklus', ['siklus'=>$siklusAktif->id]) }}"
                         class="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
@@ -31,14 +32,18 @@
                             Siklus</button>
                     </form>
                 </div>
+                @endcan
                 @else
                 <p class="text-sm italic mb-4">Saat ini tidak ada siklus yang berjalan. Untuk memulai siklus
                     silahkan klik mulai siklus
                     dibawah.</p>
+                @can('hakTeknisi')
                 <a href="{{ route('buat_siklus') }}"
                     class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
                     Mulai Siklus
                 </a>
+                @endcan
+
                 @endif
             </div>
 
