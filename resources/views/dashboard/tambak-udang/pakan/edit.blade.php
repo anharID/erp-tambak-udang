@@ -26,11 +26,23 @@
                                 <x-input-error :messages="$errors->get('waktu_pemberian')" class="mt-2" />
                             </div>
                             <!-- Pakan -->
-                            <div>
+                            {{-- <div>
                                 <x-input-label for="no_pakan" :value="__('Jenis Pakan')" />
                                 <x-text-input id="no_pakan" class="block mt-1 w-full" type="text" name="no_pakan"
                                     :value="$pakan->no_pakan ?? old('no_pakan')" required autofocus
                                     autocomplete="no_pakan" />
+                                <x-input-error :messages="$errors->get('no_pakan')" class="mt-2" />
+                            </div> --}}
+                            <div>
+                                <x-input-label for="no_pakan" :value="__('Jenis Pakan')" />
+                                <select name="no_pakan"
+                                    class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2">
+                                    <option value="" disabled selected>Pilih satu opsi</option>
+                                    @foreach($inventaris as $item)
+                                    <option value="{{ $item->nama_barang }}" {{ $pakan->no_pakan == $item->nama_barang ?
+                                        'selected' : '' }}>{{ $item->nama_barang }}</option>
+                                    @endforeach
+                                </select>
                                 <x-input-error :messages="$errors->get('no_pakan')" class="mt-2" />
                             </div>
                             <!-- Jumlah Kg -->
