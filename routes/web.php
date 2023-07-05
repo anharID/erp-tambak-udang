@@ -11,6 +11,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\SamplingController;
 use App\Http\Controllers\FinansialController;
+use App\Http\Controllers\InventarisController;
+use App\Http\Controllers\LogistikController;
 use App\Http\Controllers\PeralatanController;
 use App\Http\Controllers\PerlakuanController;
 use App\Http\Controllers\MonitoringController;
@@ -45,6 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/siklus/{siklus}/edit', [SiklusController::class, 'edit'])->middleware('role:superadmin,teknisi')->name('edit_siklus');
     Route::put('/siklus/{siklus}/update', [SiklusController::class, 'updateSiklus'])->middleware('role:superadmin,teknisi')->name('update_siklus');
     Route::put('/siklus/{siklus}/tutup-siklus', [SiklusController::class, 'tutupSiklus'])->middleware('role:superadmin,teknisi')->name('tutup_siklus');
+    Route::delete('/siklus/{siklus}/delete', [SiklusController::class, 'destroy'])->middleware('role:superadmin,teknisi')->name('hapus_siklus');
 
     // Route::get('/dashboard/kolam/{kolamId}/tambah-siklus', [SiklusController::class, 'create'])->middleware('role:superadmin,teknisi')->name('tambah_siklus');
     // Route::post('/dashboard/kolam/{kolamId}/tambah-siklus/store', [SiklusController::class, 'tambahSiklus'])->middleware('role:superadmin,teknisi')->name('store_siklus');
@@ -71,7 +74,12 @@ Route::middleware('auth')->group(function () {
     Route::resource('/finansial', FinansialController::class)->middleware('role:superadmin,admin,direktur,teknisi');
 
     Route::resource('/peralatan', PeralatanController::class)->middleware('role:superadmin,admin,direktur,teknisi');
+
+    Route::resource('/dashboard/inventaris', InventarisController::class);
+    Route::resource('/inventaris/{inventaris}/logistik', LogistikController::class);
+    Route::post('/inventaris/{inventaris}/logistik/{logistik}', [LogistikController::class, 'update'])->name('logistik.update');
 });
+
 
 
 require __DIR__ . '/auth.php';

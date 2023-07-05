@@ -24,7 +24,7 @@ $today = now()->format('Y-m-d');
 
                         <label class="text-sm">Daftar kolam yang siap tebar</label><br>
                         @foreach($kolam as $d)
-                        <div class="mt-4">
+                        <div class="mt-2">
                             <x-input-label for="kolam_{{ $d->id }}" :value="__($d->nama)" />
                             <input type="hidden" id="kolam_{{ $d->id }}" name="kolam_list[]" value="{{ $d->id }}">
                             <x-text-input id="jumlah_tebar" class="block mt-1 w-full" type="number"
@@ -33,6 +33,14 @@ $today = now()->format('Y-m-d');
                             <x-input-error :messages="$errors->get('jumlah_tebar[{{ $d->id }}]')" class="mt-2" />
                         </div>
                         @endforeach
+
+                        <!-- Catatan -->
+                        <div class="mt-4">
+                            <x-input-label for="catatan" :value="__('Catatan Siklus')" />
+                            <x-text-input id="catatan" class="block mt-1 w-full" type="text" name="catatan"
+                                :value="old('catatan')" autocomplete="catatan" />
+                            <x-input-error :messages="$errors->get('catatan')" class="mt-2" />
+                        </div>
 
                         <div class="flex items-center justify-end mt-4">
                             <x-primary-button class="ml-4">

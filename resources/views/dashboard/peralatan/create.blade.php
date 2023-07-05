@@ -25,21 +25,29 @@
                         <!-- Kondisi Alat -->
                         <div class="mt-4">
                             <x-input-label for="kondisi_alat" :value="__('Kondisi Alat')" />
-                            <x-text-input id="kondisi_alat" class="block mt-1 w-full" type="text" name="kondisi_alat" :value="old('kondisi_alat')" required autocomplete="kondisi_alat" />
+                            <select name="kondisi_alat" class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2">
+                                <option value="" disabled selected>Pilih satu opsi</option>
+                                <option value="Baik">Baik</option>
+                                <option value="Tidak Baik">Tidak Baik</option>
+                            </select>
+
                             <x-input-error :messages="$errors->get('kondisi_alat')" class="mt-2" />
                         </div>
 
                         <!-- Maintenance -->
                         <div class="mt-4">
                             <x-input-label for="maintenance" :value="__('Maintenance')" />
-                            <x-text-input id="maintenance" class="block mt-1 w-full" type="text" name="maintenance" :value="old('maintenance')" required autocomplete="maintenance" />
+                            <input type="radio" id="sedang_maintenance" name="maintenance" value="1" class="form-radio h-3 w-3 mx-1">
+                            <x-input-label for="sedang_maintenance" class="inline font-normal">Sedang Maintenance</x-input-label><br>
+                            <input type="radio" id="tidak_sedang_maintenance" name="maintenance" value="0" class="form-radio h-3 w-3 mx-1">
+                            <x-input-label for="tidak_sedang_maintenance" class="inline font-normal">Tidak Sedang Maintenance</x-input-label><br>
                             <x-input-error :messages="$errors->get('maintenance')" class="mt-2" />
                         </div>
 
                         <!-- Catatan -->
                         <div class="mt-4">
                             <x-input-label for="catatan" :value="__('Catatan')" />
-                            <x-text-input id="catatan" class="block mt-1 w-full" type="text" name="catatan" min="0" :value="old('catatan')" required autocomplete="catatan" />
+                            <x-text-input id="catatan" class="block mt-1 w-full" type="text" name="catatan" min="0" :value="old('catatan')" autocomplete="catatan" />
                             <x-input-error :messages="$errors->get('catatan')" class="mt-2" />
                         </div>
 

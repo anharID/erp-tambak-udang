@@ -10,13 +10,14 @@
             </div>
             @endif
 
-            <h1 class="mb-4 font-bold text-xl">Informasi Siklus</h1>
+            <h1 class="mb-4 font-bold text-xl">Informasi Siklus Berjalan</h1>
             <div class="w-full md:w-1/2 p-6 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 @if ($siklusAktif)
                 <p>Tanggal mulai : {{ $siklusAktif->tanggal_mulai }}</p>
                 <p>DOC : {{ $doc }}</p>
                 <p>Jumlah kolam aktif: {{ $siklusAktif->kolam->count() }}</p>
                 <p class="mb-4">Total Tebar : {{ $siklusAktif->kolam->sum('pivot.jumlah_tebar') }}</p>
+                @can('hakTeknisi')
                 <div class="mt-4 flex items-center justify-center">
                     <a href="{{ route('edit_siklus', ['siklus'=>$siklusAktif->id]) }}"
                         class="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
@@ -31,14 +32,18 @@
                             Siklus</button>
                     </form>
                 </div>
+                @endcan
                 @else
                 <p class="text-sm italic mb-4">Saat ini tidak ada siklus yang berjalan. Untuk memulai siklus
                     silahkan klik mulai siklus
                     dibawah.</p>
+                @can('hakTeknisi')
                 <a href="{{ route('buat_siklus') }}"
                     class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
                     Mulai Siklus
                 </a>
+                @endcan
+
                 @endif
             </div>
 
@@ -117,7 +122,56 @@
                     </table>
                 </div>
             </div>
+
+            <h1 class="my-4 font-bold text-xl">Daftar Siklus</h1>
+            <div class="w-full p-6 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="w-full overflow-x-auto mt-4">
+                    <table class="min-w-full table-auto mt-4 datatable hover">
+                        <thead class="bg-gray-50 dark:bg-gray-800">
+                            <tr>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    Siklus</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    Tanggal Mulai</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    Tanggal Selesai</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700">
+                            @foreach($siklusList as $row)
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ date('F Y',
+                                    strtotime($row->tanggal_mulai)) }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ $row->tanggal_mulai }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ $row->tanggal_selesai }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap flex">
+                                    @if ($row->tanggal_selesai)
+                                    <form action="{{ route('hapus_siklus', $row->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            onclick="return confirm('Aksi ini tidak dapat dibatalkan! Apakah Anda yakin ingin menghapus siklus ini? ')"
+                                            class="text-red-600"><i class="fa-solid fa-trash"></i></button>
+                                    </form>
+                                    @else
+                                    <a href="{{ route('edit_siklus', $row->id) }}" class="text-yellow-600 mr-4"><i
+                                            class="fa-solid fa-pen-to-square"></i></a>
+
+                                    @endif
+                                </td>
+                            </tr>
+                            @endforeach
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-    </div>
     </div>
 </x-admin>
