@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date("tanggal_peroleh");
             $table->integer("stok");
             $table->integer('harga_satuan');
-            $table->decimal('nilai_inventaris', 15, 2)->nullable();
+            $table->integer('nilai_inventaris')->nullable();
             $table->string("lokasi");
             $table->string("status")->nullable();
             $table->string("catatan")->nullable();
