@@ -10,17 +10,59 @@ use Illuminate\Http\Request;
 
 class MonitoringController extends Controller
 {
-    public function index($kolamId, $siklusId)
+    public function index(Request $request, $kolamId, $siklusId)
     {
         $kolam = Kolam::findOrFail($kolamId);
         $siklus = $kolam->siklus()->findOrFail($siklusId);
+
         // dd($kolam);
 
-        $siklusTerpilih = $siklus->monitoring()->where('kolam_id', $kolam->id)->orderBy('created_at', 'desc')->get();
+        $siklusTerpilih = $siklus->monitoring()->where('kolam_id', $kolam->id)->orderBy('tanggal', 'desc')->orderBy('waktu_pengukuran', 'desc')->get();
 
         $siklusBerjalan = ($siklus->tanggal_selesai === null);
 
-        return view('dashboard.tambak-udang.monitoring.index', compact('kolam', 'siklus', 'siklusTerpilih', 'siklusBerjalan'));
+        $chart = $request->query('chart');
+        // $chart = 'suhu';
+        if (!$chart) {
+            return redirect()->route('monitoring.index', ['chart' => 'suhu', 'kolamId' => $kolam->id, 'siklus' => $siklus->id]);
+        }
+
+        $dataPagi = $siklusTerpilih->filter(function ($item) {
+            $time = Carbon::parse($item->waktu_pengukuran);
+            return $time->between('00:00:00', '12:00:00');
+        })->sortBy('tanggal')->all();
+        dd($dataPagi);
+
+        
+        function getChartData($siklusTerpilih, $chart)
+        {
+            $dataPagi = $siklusTerpilih->filter(function ($item) {
+                $time = Carbon::parse($item->waktu_pengukuran);
+                return $time->between('00:00:00', '12:00:00');
+            })->sortBy('tanggal')->pluck($chart)->all();
+            $dataSore = $siklusTerpilih->filter(function ($item) {
+                $time = Carbon::parse($item->waktu_pengukuran);
+                return $time->between('12:00:00', '23:59:59');
+            })->sortBy('tanggal')->pluck($chart)->all();
+            $label = $chart;
+            return ['dataPagi' => $dataPagi, 'dataSore' => $dataSore, 'label' => $label];
+        };
+
+        $tanggal = $siklusTerpilih->sort()->groupby(function ($item) {
+            return Carbon::parse($item->tanggal)->format('j M o');
+        });
+
+        $data = getChartData($siklusTerpilih, $chart);
+
+        $chartData = [
+            'label' => $data['label'],
+            'labels' => $tanggal->keys(),
+            'dataPagi' => $data['dataPagi'],
+            'dataSore' => $data['dataSore']
+        ];
+
+
+        return view('dashboard.tambak-udang.monitoring.index', compact('kolam', 'siklus', 'siklusTerpilih', 'siklusBerjalan', 'chartData'));
     }
 
     public function create($kolamId, $siklusId)
