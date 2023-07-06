@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Kolam;
 use App\Models\Pakan;
 use App\Models\Siklus;
@@ -16,7 +17,7 @@ class PakanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($kolamId, $siklusId)
+    public function index(Request $request, $kolamId, $siklusId)
     {
         // dd($siklusId);
         $kolam = Kolam::findOrFail($kolamId);
@@ -38,8 +39,31 @@ class PakanController extends Controller
         }
 
 
+        $tanggal = $ringkasan->groupby(function ($item) {
+            return Carbon::parse($item->tanggal)->format('j M o');
+        });
 
-        return view('dashboard.tambak-udang.pakan.index', compact('kolam', 'siklus', 'dataPakan', 'siklusBerjalan', 'ringkasan', 'totalPakanKumulatif'));
+        $chart = $request->query('chart');
+
+        if (!$chart) {
+            return redirect()->route('pakan.index', ['chart' => 'pakan_harian', 'kolamId' => $kolam->id, 'siklus' => $siklus->id]);
+        }
+
+        if ($chart == 'pakan_harian') {
+            $data = $ringkasan->pluck('total_pakan')->all();
+        } else if ($chart == 'pakan_kumulatif') {
+            $data = $ringkasan->pluck('total_pakan_kumulatif')->all();
+        }
+
+        $chartData = [
+            'label' => $chart,
+            'labels' => $tanggal->keys(),
+            'data' => $data,
+        ];
+
+
+
+        return view('dashboard.tambak-udang.pakan.index', compact('kolam', 'siklus', 'dataPakan', 'siklusBerjalan', 'ringkasan', 'totalPakanKumulatif', 'chartData'));
     }
 
     /**

@@ -11,7 +11,7 @@ class LogistikController extends Controller
     public function index($inventaris)
     {
         $data_inventaris = Inventaris::find($inventaris);
-        $logistik=$data_inventaris->logistik()->get();
+        $logistik = $data_inventaris->logistik()->get();
         // dd($logistik);
         return view('dashboard.inventaris.logistik.index', compact('data_inventaris', 'logistik'));
     }
@@ -49,8 +49,8 @@ class LogistikController extends Controller
             'keterangan' => $request->keterangan,
             'stok_masuk' => $request->stok_masuk,
             'stok_keluar' => $request->stok_keluar,
-	        'sumber' => $request->sumber,
-	        'catatan' => $request->catatan
+            'sumber' => $request->sumber,
+            'catatan' => $request->catatan
         ]);
 
         return redirect()->route('logistik.index', $inventaris)->with('success', 'Data logistik berhasil ditambahkan');
@@ -58,7 +58,6 @@ class LogistikController extends Controller
 
     public function show($inventaris, $logistik)
     {
-
     }
 
     public function edit($inventaris, $logistik)
@@ -77,7 +76,7 @@ class LogistikController extends Controller
         ]);
 
         $logistik = Logistik::find($logistik);
-        
+
         $item = Inventaris::find($inventaris);
         $stok_inventaris = $item->stok;
 
@@ -90,8 +89,8 @@ class LogistikController extends Controller
         if ($request->stok_keluar !== null) {
             $stok_inventaris -= $stok_keluar_difference;
         }
-        
-    // Update the Inventaris stok
+
+        // Update the Inventaris stok
         $item->stok = $stok_inventaris;
         $item->nilai_inventaris = $item->harga_satuan * $stok_inventaris;
         $item->save();
@@ -102,8 +101,8 @@ class LogistikController extends Controller
             'keterangan' => $request->keterangan,
             'stok_masuk' => $request->stok_masuk,
             'stok_keluar' => $request->stok_keluar,
-	        'sumber' => $request->sumber,
-	        'catatan' => $request->catatan
+            'sumber' => $request->sumber,
+            'catatan' => $request->catatan
         ]);
 
         return redirect()->route('logistik.index', $inventaris)->with('success', 'Data logistik berhasil diperbarui');

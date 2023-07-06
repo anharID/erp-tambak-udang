@@ -14,7 +14,7 @@ class SamplingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($kolamId, $siklusId)
+    public function index(Request $request, $kolamId, $siklusId)
     {
         $kolam = Kolam::findOrFail($kolamId);
         $siklus = $kolam->siklus()->findOrFail($siklusId);
@@ -23,7 +23,32 @@ class SamplingController extends Controller
 
         $siklusBerjalan = ($siklus->tanggal_selesai === null);
 
-        return view('dashboard.tambak-udang.sampling.index', compact('kolam', 'siklus', 'siklusTerpilih', 'siklusBerjalan'));
+        $chart = $request->query('chart');
+
+        if (!$chart) {
+            return redirect()->route('sampling.index', ['chart' => 'abw', 'kolamId' => $kolam->id, 'siklus' => $siklus->id]);
+        }
+
+        function getChartData($siklusTerpilih, $chart)
+        {
+            $data = $siklusTerpilih->sortBy('tanggal')->pluck($chart)->all();
+            $label = $chart;
+            return ['data' => $data, 'label' => $label];
+        };
+
+        $tanggal = $siklusTerpilih->sort()->groupby(function ($item) {
+            return Carbon::parse($item->tanggal)->format('j M o');
+        });
+
+        $data = getChartData($siklusTerpilih, $chart);
+
+        $chartData = [
+            'label' => $data['label'],
+            'labels' => $tanggal->keys(),
+            'data' => $data['data']
+        ];
+
+        return view('dashboard.tambak-udang.sampling.index', compact('kolam', 'siklus', 'siklusTerpilih', 'siklusBerjalan', 'chartData'));
     }
 
     /**

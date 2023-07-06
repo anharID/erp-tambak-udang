@@ -27,13 +27,13 @@ class MonitoringController extends Controller
             return redirect()->route('monitoring.index', ['chart' => 'suhu', 'kolamId' => $kolam->id, 'siklus' => $siklus->id]);
         }
 
-        $dataPagi = $siklusTerpilih->filter(function ($item) {
-            $time = Carbon::parse($item->waktu_pengukuran);
-            return $time->between('00:00:00', '12:00:00');
-        })->sortBy('tanggal')->all();
-        dd($dataPagi);
+        // $dataPagi = $siklusTerpilih->filter(function ($item) {
+        //     $time = Carbon::parse($item->waktu_pengukuran);
+        //     return $time->between('00:00:00', '12:00:00');
+        // })->sortBy('tanggal')->all();
+        // dd($dataPagi);
 
-        
+
         function getChartData($siklusTerpilih, $chart)
         {
             $dataPagi = $siklusTerpilih->filter(function ($item) {
