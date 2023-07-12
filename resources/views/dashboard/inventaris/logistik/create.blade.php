@@ -5,6 +5,12 @@
             <h1 class="mb-4 text-xl font-bold">Tambah Logistik</h1>
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 ">
+                    @if(session('error'))
+                    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
+                        <p class="font-bold">Error</p>
+                        <p>{{ session('error') }}</p>
+                    </div>
+                    @endif
                     <form method="POST" action="{{ route('logistik.store', ['inventaris' => $inventaris->id]) }}">
                         @csrf
 

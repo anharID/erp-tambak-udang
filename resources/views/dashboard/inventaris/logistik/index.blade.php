@@ -18,7 +18,7 @@
                         Manajemen Inventaris
                     </a>
 
-                    <div class="w-full overflow-x-auto">
+                    <div class="w-full mt-4">
                         <table class="w-full table-auto mt-4 datatable">
                             <thead class="bg-gray-50 dark:bg-gray-800">
                                 <tr>

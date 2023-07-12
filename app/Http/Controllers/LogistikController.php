@@ -39,7 +39,7 @@ class LogistikController extends Controller
             $stok_baru = $stok_lama - $request->stok_keluar;
 
             if ($stok_baru < 0) {
-                return redirect()->route('logistik.create', $inventaris)->with('error', 'Stok keluar melebihi stok yang tersedia');
+                return redirect()->route('logistik.create', $inventaris)->withErrors(['stok_keluar' => 'Stok keluar melebihi stok yang tersedia'])->withInput();
             }
         }
 
@@ -95,7 +95,7 @@ class LogistikController extends Controller
             $stok_inventaris -= $stok_keluar_difference;
 
             if ($stok_inventaris < 0) {
-                return redirect()->route('logistik.edit', $inventaris)->with('error', 'Stok keluar melebihi stok yang tersedia');
+                return redirect()->route('logistik.edit', ['inventaris' => $inventaris, 'logistik' => $logistik])->withErrors(['stok_keluar' => 'Stok keluar melebihi stok yang tersedia'])->withInput();
             }
         }
         

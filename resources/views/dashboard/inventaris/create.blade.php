@@ -24,7 +24,6 @@
                                 <option value="Obat">Obat</option>
                                 <option value="Pakan">Pakan</option>
                             </select>
-
                             <x-input-error :messages="$errors->get('jenis_barang')" class="mt-2" />
                         </div>
 
@@ -50,14 +49,14 @@
                         </div>
 
                         <!-- Lokasi -->
-                        <div>
+                        <div class="mt-4">
                             <x-input-label for="lokasi" :value="__('Lokasi')" />
                             <x-text-input id="lokasi" class="block mt-1 w-full" type="text" name="lokasi" :value="old('lokasi')" required autofocus autocomplete="lokasi" />
                             <x-input-error :messages="$errors->get('lokasi')" class="mt-2" />
                         </div>
 
                         <!-- Status -->
-                        <div>
+                        <div class="mt-4">
                             <x-input-label for="status" :value="__('Status')" />
                             <x-text-input id="lokasi" class="block mt-1 w-full" type="text" name="status" :value="old('status')" autocomplete="status" />
                             <x-input-error :messages="$errors->get('status')" class="mt-2" />
