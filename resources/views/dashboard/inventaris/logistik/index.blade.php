@@ -12,7 +12,7 @@
                     @endif
 
                     <a href="{{ route('logistik.create', ['inventaris'=>$data_inventaris->id]) }}" class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
-                        Tambah Logistik
+                        Tambah Catatan Logistik
                     </a>
                     <a href="{{ route('inventaris.index') }}" class="ml-4 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
                         Manajemen Inventaris
@@ -38,7 +38,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->stok_keluar }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->sumber }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->catatan }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-6 py-4 whitespace-nowrap flex">
                                         <a href="{{ route('logistik.edit', ['inventaris'=> $data_inventaris->id, 'logistik'=>$row->id]) }}" class="text-yellow-600 mr-4"><i class="fa-solid fa-pen-to-square"></i></a>
                                         <form action="{{ route('logistik.destroy', ['inventaris'=> $data_inventaris->id, 'logistik'=>$row->id]) }}" method="POST">
                                             @csrf
