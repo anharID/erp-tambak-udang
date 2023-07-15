@@ -2,9 +2,15 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 text-gray-900 dark:text-gray-100">
-            <h1 class="mb-4 text-xl font-bold">Tambah Logistik</h1>
+            <h1 class="mb-4 text-xl font-bold">Tambah Catatan Logistik</h1>
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 ">
+                    @if(session('error'))
+                    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
+                        <p class="font-bold">Error</p>
+                        <p>{{ session('error') }}</p>
+                    </div>
+                    @endif
                     <form method="POST" action="{{ route('logistik.store', ['inventaris' => $inventaris->id]) }}">
                         @csrf
 
@@ -20,21 +26,21 @@
                             <x-input-label for="keterangan" :value="__('Keterangan')" />
                             <select id="keterangan" class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2" name="keterangan">
                                 <option value="" disabled selected>Pilih satu opsi</option>
-                                <option value="stok_masuk">Stok Masuk</option>
-                                <option value="stok_keluar">Stok Keluar</option>
+                                <option value="stok_masuk" {{ old('keterangan') === 'Stok Masuk' ? 'selected' : '' }}>Stok Masuk</option>
+                                <option value="stok_keluar" {{ old('keterangan') === 'Stok Keluar' ? 'selected' : '' }}>Stok Keluar</option>
                             </select>
                             <x-input-error :messages="$errors->get('keterangan')" class="mt-2" />
                         </div>
 
                         <!-- Stok Masuk -->
-                        <div class="mt-4 stok-masuk">
+                        <div class="mt-4" id="stok_masuk_field">
                             <x-input-label for="stok_masuk" :value="__('Stok Masuk')" />
                             <x-text-input id="stok_masuk" class="block mt-1 w-full" type="number" name="stok_masuk" :value="old('stok_masuk')" autocomplete="stok_masuk" />
                             <x-input-error :messages="$errors->get('stok_masuk')" class="mt-2" />
                         </div>
 
                         <!-- Stok Keluar -->
-                        <div class="mt-4 stok-keluar">
+                        <div class="mt-4" id="stok_keluar_field">
                             <x-input-label for="stok_keluar" :value="__('Stok Keluar')" />
                             <x-text-input id="stok_keluar" class="block mt-1 w-full" type="number" name="stok_keluar" :value="old('stok_keluar')" autocomplete="stok_keluar" />
                             <x-input-error :messages="$errors->get('stok_keluar')" class="mt-2" />
@@ -66,22 +72,32 @@
         </div>
     </div>
     <script>
-        // Show/hide Stok Masuk and Stok Keluar input based on selected Keterangan value
-        document.getElementById('keterangan').addEventListener('change', function () {
-            var keteranganValue = this.value;
-            var stokMasukInput = document.querySelector('.stok-masuk');
-            var stokKeluarInput = document.querySelector('.stok-keluar');
+        document.addEventListener('DOMContentLoaded', function () {
+            const keteranganSelect = document.getElementById('keterangan');
+            const stokMasukField = document.getElementById('stok_masuk_field');
+            const stokKeluarField = document.getElementById('stok_keluar_field');
     
-            if (keteranganValue === 'stok_masuk') {
-                stokMasukInput.style.display = 'block';
-                stokKeluarInput.style.display = 'none';
-            } else if (keteranganValue === 'stok_keluar') {
-                stokMasukInput.style.display = 'none';
-                stokKeluarInput.style.display = 'block';
-            } else {
-                stokMasukInput.style.display = 'none';
-                stokKeluarInput.style.display = 'none';
+            // Hide or show stok_masuk and stok_keluar fields based on the selected keterangan value
+            function toggleStokFields() {
+                const keteranganValue = keteranganSelect.value;
+    
+                if (keteranganValue === 'stok_masuk') {
+                    stokMasukField.style.display = 'block';
+                    stokKeluarField.style.display = 'none';
+                } else if (keteranganValue === 'stok_keluar') {
+                    stokMasukField.style.display = 'none';
+                    stokKeluarField.style.display = 'block';
+                } else {
+                    stokMasukField.style.display = 'none';
+                    stokKeluarField.style.display = 'none';
+                }
             }
+    
+            // Initial state based on the selected keterangan value
+            toggleStokFields();
+    
+            // Event listener for keterangan select change
+            keteranganSelect.addEventListener('change', toggleStokFields);
         });
     </script>
     

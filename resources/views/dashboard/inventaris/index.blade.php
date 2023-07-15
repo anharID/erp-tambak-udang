@@ -11,11 +11,11 @@
                     </div>
                     @endif
 
-                    <a href="{{ route('inventaris.create') }}" class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+                    <a href="{{ route('inventaris.create') }}" class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
                         Tambah Inventaris
 
                     </a>
-                    <div class="w-full overflow-x-auto">
+                    <div class="w-full mt-4">
                         <table class="w-full table-auto mt-4 datatable">
                             <thead class="bg-gray-50 dark:bg-gray-800">
                                 <tr>
@@ -45,12 +45,12 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->lokasi }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->status }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->catatan }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <a href="{{ route('inventaris.edit', $row->id) }}" class="text-yellow-600">Edit</a>
+                                    <td class="px-6 py-4 whitespace-nowrap flex">
+                                        <a href="{{ route('inventaris.edit', $row->id) }}" class="text-yellow-600 mr-4"><i class="fa-solid fa-pen-to-square"></i></a>
                                         <form action="{{ route('inventaris.destroy', $row->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')" class="text-red-600">Hapus Data</button>
+                                            <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')" class="text-red-600"><i class="fa-solid fa-trash"></i></button>
                                         </form>
                                     </td>
                                 </tr>

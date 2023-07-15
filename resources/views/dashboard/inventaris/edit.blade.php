@@ -25,7 +25,6 @@
                                 <option value="Obat" {{ $inventari->jenis_barang == 'Obat' ? 'selected' : '' }}>Obat</option>
                                 <option value="Pakan" {{ $inventari->jenis_barang == 'Pakan' ? 'selected' : '' }}>Pakan</option>
                             </select>
-
                             <x-input-error :messages="$errors->get('jenis_barang')" class="mt-2" />
                         </div>
 
@@ -45,20 +44,20 @@
 
                         <!-- Harga Satuan -->
                         <div class="mt-4">
-                            <x-input-label for="harga_satuan" :value="__('harga_satuan')" />
+                            <x-input-label for="harga_satuan" :value="__('Harga Satuan')" />
                             <x-text-input id="harga_satuan" class="block mt-1 w-full" type="number" name="harga_satuan" :value="$inventari->harga_satuan ?? old('harga_satuan')" required autocomplete="harga_satuan" />
                             <x-input-error :messages="$errors->get('stok')" class="mt-2" />
                         </div>
 
                         <!-- Lokasi -->
-                        <div>
+                        <div class="mt-4">
                             <x-input-label for="lokasi" :value="__('Lokasi')" />
                             <x-text-input id="lokasi" class="block mt-1 w-full" type="text" name="lokasi" :value="$inventari->lokasi ?? old('lokasi')" required autofocus autocomplete="lokasi" />
                             <x-input-error :messages="$errors->get('lokasi')" class="mt-2" />
                         </div>
 
                         <!-- Status -->
-                        <div>
+                        <div class="mt-4">
                             <x-input-label for="status" :value="__('Status')" />
                             <x-text-input id="status" class="block mt-1 w-full" type="text" name="status" :value="$inventari->status ?? old('status')" autocomplete="status" />
                             <x-input-error :messages="$errors->get('status')" class="mt-2" />
