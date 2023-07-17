@@ -151,6 +151,8 @@
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $row->tanggal_mulai }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $row->tanggal_selesai }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap flex">
+                                    <a href="{{ route('exportpdf', $row->id) }}" target="_blank"
+                                        class="text-blue-600 mr-4"><i class="fa-solid fa-file-pdf"></i></a>
                                     @if ($row->tanggal_selesai)
                                     <form action="{{ route('hapus_siklus', $row->id) }}" method="POST">
                                         @csrf

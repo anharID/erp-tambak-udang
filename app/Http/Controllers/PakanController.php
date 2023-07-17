@@ -23,6 +23,7 @@ class PakanController extends Controller
         $kolam = Kolam::findOrFail($kolamId);
         $siklus = $kolam->siklus()->findOrFail($siklusId);
         $siklusBerjalan = ($siklus->tanggal_selesai === null);
+        // dd($siklus);
 
         $dataPakan = $siklus->pakan()->where('kolam_id', $kolamId)->orderBy('created_at', 'desc')->get();
 
