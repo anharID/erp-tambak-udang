@@ -4,9 +4,9 @@ $today = now()->format('Y-m-d');
 
 <x-admin>
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 text-gray-900 dark:text-gray-100">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 text-gray-900 dark:text-gray-100">
             <h1 class="mb-4 text-xl font-bold">Tambah Catatan Pakan</h1>
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg">
                 <div class="p-6 ">
                     <form method="POST"
                         action="{{ route('pakan.store', ['kolamId'=>$kolam->id, 'siklus'=>$siklus->id]) }}">
@@ -27,13 +27,6 @@ $today = now()->format('Y-m-d');
                                     autocomplete="waktu_pemberian" />
                                 <x-input-error :messages="$errors->get('waktu_pemberian')" class="mt-2" />
                             </div>
-                            <!-- Pakan -->
-                            {{-- <div>
-                                <x-input-label for="no_pakan" :value="__('Jenis Pakan')" />
-                                <x-text-input id="no_pakan" class="block mt-1 w-full" type="text" name="no_pakan"
-                                    :value="old('no_pakan')" required autofocus autocomplete="no_pakan" />
-                                <x-input-error :messages="$errors->get('no_pakan')" class="mt-2" />
-                            </div> --}}
                             <div>
                                 <x-input-label for="no_pakan" :value="__('Jenis Pakan')" />
                                 <select name="no_pakan"
@@ -45,6 +38,7 @@ $today = now()->format('Y-m-d');
                                 </select>
                                 <x-input-error :messages="$errors->get('no_pakan')" class="mt-2" />
                             </div>
+
                             <!-- Jumlah Kg -->
                             <div>
                                 <x-input-label for="jumlah_kg" :value="__('Jumlah Kg')" />
@@ -54,20 +48,6 @@ $today = now()->format('Y-m-d');
                                 <x-input-error :messages="$errors->get('jumlah_kg')" class="mt-2" />
                             </div>
                         </div>
-
-                        <!-- Warna Air -->
-                        {{-- <div class="mb-4">
-                            <x-input-label for="warna_air" :value="__('Warna Air')" />
-                            <select name="warna_air"
-                                class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2">
-                                <option value="" disabled selected>Pilih satu opsi</option>
-                                <option value="H">H</option>
-                                <option value="HC">HC</option>
-                                <option value="C">C</option>
-                                <option value="HM">HM</option>
-                            </select>
-                            <x-input-error :messages="$errors->get('warna_air')" class="mt-2" />
-                        </div> --}}
 
                         <!-- Catatan -->
                         <div>

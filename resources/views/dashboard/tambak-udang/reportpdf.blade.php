@@ -18,6 +18,7 @@
 
         .table {
             font-family: Arial, Helvetica, sans-serif;
+            font-size: 11pt;
             border-collapse: collapse;
             text-align: center;
             margin-top: 10px;
@@ -104,15 +105,15 @@
 
         {{-- Tabel kolam yang digunakan siklus --}}
         <div>
-            <table class="table">
+            <table class="table w-full">
                 <thead>
                     <tr>
                         <th>Kolam</th>
                         <th>Tipe</th>
-                        <th>Luas</th>
+                        <th>Luas (m<sup>2</sup>)</th>
                         <th>Jumlah tebar</th>
-                        <th>Pakan Kumulatif</th>
-                        <th>Total Tonase Panen</th>
+                        <th>Total Pakan (Kg)</th>
+                        <th>Tonase Panen (Kg)</th>
                         <th>SR %</th>
                         <th>FCR</th>
                     </tr>
@@ -191,10 +192,10 @@
                                             mg/L; Salinitas 20-35ppt.</p>
                                         @endif
         </div>
-        <div style="page-break-before: always;"></div> <!-- Pemisah halaman -->
     </section>
 
     @foreach ($dataRekap as $d)
+    <div style="page-break-before: always;"></div> <!-- Pemisah halaman -->
     <section>
         <div class="text-center">
             <h2 id="{{ $d['kolam']->nama }}">Kolam {{ $d['kolam']->nama }}</h2>
@@ -229,14 +230,6 @@
         {{-- Data Monitoring --}}
         <div>
             <h3>Data Monitoring Kualitas Air</h3>
-
-            @php
-
-            @endphp
-
-
-
-
             <p>Berikut merupakan rekap data pencatatan kualitas air pada kolam :</p>
             <table class="table w-full">
                 <thead>
@@ -336,7 +329,7 @@
                         <th>Size</th>
                         <th>FR %</th>
                         <th>SR %</th>
-                        <th>Biomassa</th>
+                        <th>Biomassa (Kg)</th>
                         <th>FCR</th>
                     </tr>
                 </thead>
@@ -396,12 +389,44 @@
                 </tbody>
             </table>
         </div>
-
     </section>
+    @endforeach
 
     <div style="page-break-before: always;"></div> <!-- Pemisah halaman -->
 
-    @endforeach
+    <section>
+        <div class="text-center">
+            <h2>Riwayat Perlakuan Udang</h2>
+            <h4>{{ \Carbon\Carbon::parse($siklus->tanggal_mulai)->isoFormat('D MMMM YYYY') }} - {{
+                $siklus->tanggal_selesai ? \Carbon\Carbon::parse($siklus->tanggal_selesai)->isoFormat('D MMMM YYYY')
+                : '(Berjalan)' }}</h4>
+        </div>
+
+        @foreach ($dataRekap as $d)
+        <h3>Kolam {{ $d['kolam']->nama }}</h3>
+        <table class="table w-full">
+            <thead>
+                <tr>
+                    <th width="150px">Tanggal</th>
+                    <th>Catatan</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($d['perlakuan'] as $perlakuan)
+                <tr>
+                    @if ($perlakuan->tanggal)
+                    <td>{{ $perlakuan->tanggal }}</td>
+                    <td>{!! nl2br(e($perlakuan->catatan)) !!}</td>
+                    @else
+                    <td colspan="2">tidak ada data</td>
+                    @endif
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+        @endforeach
+
+    </section>
 
 </body>
 

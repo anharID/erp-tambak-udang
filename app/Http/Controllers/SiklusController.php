@@ -117,22 +117,23 @@ class SiklusController extends Controller
     public function export($siklusId)
     {
         $siklus = Siklus::findOrFail($siklusId);
-        $kolam = $siklus->kolam;
+        $kolam = $siklus->kolam()->get();
+
+        // dd($kolam);
 
         $dataRekap = [];
         foreach ($kolam as $k) {
             // data monitoring
-            $monitoringGroup = $k->monitoring->groupBy('tanggal');
-            $monitoringData = $k->monitoring;
+            $monitoringGroup = $k->monitoring()->where('siklus_id', $siklusId)->get()->groupBy('tanggal');
+            $monitoringData = $k->monitoring()->where('siklus_id', $siklusId)->get();
 
             // data sampling
-            $samplingData = $k->sampling;
+            $samplingData = $k->sampling()->where('siklus_id', $siklusId)->get();
 
-            // $lastADG = $samplingData->last()->adg;
             $lastADG = ($samplingData->last()->adg) ?? 0;
 
             // Data Pakan per Kolam
-            $pakanPerKolam = $k->pakan()->selectRaw('tanggal, SUM(jumlah_kg) as total_pakan')->groupBy('tanggal')->get();
+            $pakanPerKolam = $k->pakan()->where('siklus_id', $siklusId)->selectRaw('tanggal, SUM(jumlah_kg) as total_pakan')->groupBy('tanggal')->get();
             $totalPakanKumulatif = 0;
             foreach ($pakanPerKolam as $row) {
                 $totalPakanKumulatif += $row->total_pakan;
@@ -140,10 +141,14 @@ class SiklusController extends Controller
             }
 
             // Data pakan
-            $pakanData = $k->pakan;
+            $pakanData = $k->pakan()->where('siklus_id', $siklusId)->get();
+
+            // Data perlakuan
+            $perlakuanData = $k->perlakuan()->where('siklus_id', $siklusId)->get();
+            // dd($perlakuanData);
 
             //Data panen
-            $panenData = $k->panen;
+            $panenData = $k->panen()->where('siklus_id', $siklusId)->get();
 
             $sr_raw = $panenData->sum('populasi_terambil') / $k->pivot->jumlah_tebar * 100;
             $sr = round($sr_raw, 2);
@@ -161,6 +166,7 @@ class SiklusController extends Controller
                 'monitoring' => $monitoringGroup,
                 'monitoringAll' => $monitoringData,
                 'sampling' => $samplingData,
+                'perlakuan' => $perlakuanData,
                 'detailPakan' => $pakanPerKolam,
                 'pakan' => $pakanData,
                 'adg' => $lastADG,
@@ -169,7 +175,6 @@ class SiklusController extends Controller
             ];
         }
 
-        $ringkasan = [];
         $totalSR = 0;
         $totalFCR = 0;
         $totalADG = 0;
@@ -189,7 +194,6 @@ class SiklusController extends Controller
             $totalDO += $d['monitoringAll']->avg('do');
             $totalSal += $d['monitoringAll']->avg('salinitas');
         }
-        // dd($totalSuhu);
 
         $rataSR = ($count > 0) ? $totalSR / $count : 0;
         $rataFCR = ($count > 0) ? $totalFCR / $count : 0;
@@ -210,12 +214,9 @@ class SiklusController extends Controller
             'rataDO' => $rataDO,
             'rataSal' => $rataSal,
         ];
-        // dd($dataRekap);
 
 
         $pdf = Pdf::loadView('dashboard.tambak-udang.reportpdf', $data);
         return $pdf->stream();
-
-        // return view('dashboard.tambak-udang.reportpdf', compact('siklus', 'data'));
     }
 }
