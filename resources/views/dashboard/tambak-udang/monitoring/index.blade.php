@@ -112,6 +112,9 @@ $param = request()->input('chart');
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                         Catatan</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        Validasi</th>
                                     @if ($siklusBerjalan)
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
@@ -135,8 +138,23 @@ $param = request()->input('chart');
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->amonia }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->nitrit }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->catatan }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->is_validated == 0 ? 'Belum' :
+                                        'Sudah' }}</td>
+
                                     @if ($siklusBerjalan)
+                                    @if ($row->is_validated == 0)
                                     <td class="px-6 py-4 whitespace-nowrap flex">
+                                        @can('hakTeknisi')
+                                        <form
+                                            action="{{ route('validasi_monitoring', ['kolamId' => $kolam->id, 'siklus' => $siklus->id, 'monitoring' => $row->id]) }}"
+                                            method="POST">
+                                            @csrf
+                                            <button type="submit"
+                                                onclick="return confirm('Aksi ini tidak dapat dibatalkan! Tandai entri ini sebagai sudah divalidasi? ')"
+                                                class="text-green-600 mr-4"><i
+                                                    class="fa-regular fa-circle-check"></i></button>
+                                        </form>
+                                        @endcan
                                         <a href="{{ route('monitoring.edit', ['kolamId' => $kolam->id, 'siklus' => $siklus->id, 'monitoring' => $row->id]) }}"
                                             class="text-yellow-600 mr-4"><i class="fa-solid fa-pen-to-square"></i></a>
                                         <form
@@ -148,8 +166,10 @@ $param = request()->input('chart');
                                                 onclick="return confirm('Aksi ini tidak dapat dibatalkan! Apakah Anda yakin ingin menghapus kolam ini? ')"
                                                 class="text-red-600"><i class="fa-solid fa-trash"></i></button>
                                         </form>
-
                                     </td>
+                                    @else
+                                    <td>-</td>
+                                    @endif
                                     @endif
                                 </tr>
                                 @endforeach

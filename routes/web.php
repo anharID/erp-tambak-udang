@@ -51,14 +51,22 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/siklus/budidaya/{siklus}/exportpdf', [SiklusController::class, 'export'])->name('exportpdf');
 
+    // Validasi
+    Route::post('/kolam/{kolamId}/siklus/{siklus}/monitoring/{monitoring}/validasi', [MonitoringController::class, 'dataValidated'])->middleware('role:superadmin,teknisi')->name('validasi_monitoring');
+    Route::post('/kolam/{kolamId}/siklus/{siklus}/pakan/{pakan}/validasi', [PakanController::class, 'dataValidated'])->middleware('role:superadmin,teknisi')->name('validasi_pakan');
+    Route::post('/kolam/{kolamId}/siklus/{siklus}/sampling/{sampling}/validasi', [SamplingController::class, 'dataValidated'])->middleware('role:superadmin,teknisi')->name('validasi_sampling');
+    Route::post('/kolam/{kolamId}/siklus/{siklus}/perlakuan/{perlakuan}/validasi', [PerlakuanController::class, 'dataValidated'])->middleware('role:superadmin,teknisi')->name('validasi_perlakuan');
+    Route::post('/kolam/{kolamId}/siklus/{siklus}/panen/{panen}/validasi', [PanenController::class, 'dataValidated'])->middleware('role:superadmin,teknisi')->name('validasi_panen');
+
     //Kolam
     Route::get('/kolam/{kolam}/siklus/{siklus}', [KolamController::class, 'dataKolam'])->middleware('role:superadmin,admin,direktur,teknisi')->name('data_kolam');
     Route::resource('/kolam', KolamController::class)->middleware(['role:superadmin,admin,direktur,teknisi', 'detail-kolam']);
-    Route::resource('/kolam/{kolamId}/siklus/{siklus}/monitoring', MonitoringController::class)->middleware('role:superadmin,admin,direktur,teknisi');
-    Route::resource('/kolam/{kolamId}/siklus/{siklus}/sampling', SamplingController::class)->middleware('role:superadmin,admin,direktur,teknisi');
-    Route::resource('/kolam/{kolamId}/siklus/{siklus}/pakan', PakanController::class)->middleware('role:superadmin,admin,direktur,teknisi');
-    Route::resource('/kolam/{kolamId}/siklus/{siklus}/panen', PanenController::class)->middleware('role:superadmin,admin,direktur,teknisi');
-    Route::resource('/kolam/{kolamId}/siklus/{siklus}/perlakuan', PerlakuanController::class)->middleware('role:superadmin,admin,direktur,teknisi');
+
+    Route::resource('/kolam/{kolamId}/siklus/{siklus}/monitoring', MonitoringController::class)->middleware(['role:superadmin,admin,direktur,teknisi', 'validated.data']);
+    Route::resource('/kolam/{kolamId}/siklus/{siklus}/sampling', SamplingController::class)->middleware(['role:superadmin,admin,direktur,teknisi', 'validated.data']);
+    Route::resource('/kolam/{kolamId}/siklus/{siklus}/pakan', PakanController::class)->middleware(['role:superadmin,admin,direktur,teknisi', 'validated.data']);
+    Route::resource('/kolam/{kolamId}/siklus/{siklus}/panen', PanenController::class)->middleware(['role:superadmin,admin,direktur,teknisi', 'validated.data']);
+    Route::resource('/kolam/{kolamId}/siklus/{siklus}/perlakuan', PerlakuanController::class)->middleware(['role:superadmin,admin,direktur,teknisi', 'validated.data']);
     Route::resource('/kolam/{kolamId}/siklus/{siklus}/energi', EnergiController::class)->middleware('role:superadmin,admin,direktur,teknisi');
 
 

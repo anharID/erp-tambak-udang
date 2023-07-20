@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('no_pakan');
             $table->float('jumlah_kg');
             $table->string('catatan')->nullable();
+            $table->boolean('is_validated')->default(0);
             $table->timestamps();
         });
     }

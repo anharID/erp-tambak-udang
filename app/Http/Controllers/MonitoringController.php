@@ -10,6 +10,12 @@ use Illuminate\Http\Request;
 
 class MonitoringController extends Controller
 {
+    public function __construct()
+    {
+        // Middleware akan diterapkan hanya pada rute edit dan destroy
+        $this->middleware('validated.data')->only(['edit', 'destroy']);
+    }
+
     public function index(Request $request, $kolamId, $siklusId)
     {
         $kolam = Kolam::findOrFail($kolamId);
@@ -22,17 +28,9 @@ class MonitoringController extends Controller
         $siklusBerjalan = ($siklus->tanggal_selesai === null);
 
         $chart = $request->query('chart');
-        // $chart = 'suhu';
         if (!$chart) {
             return redirect()->route('monitoring.index', ['chart' => 'suhu', 'kolamId' => $kolam->id, 'siklus' => $siklus->id]);
         }
-
-        // $dataPagi = $siklusTerpilih->filter(function ($item) {
-        //     $time = Carbon::parse($item->waktu_pengukuran);
-        //     return $time->between('00:00:00', '12:00:00');
-        // })->sortBy('tanggal')->all();
-        // dd($dataPagi);
-
 
         function getChartData($siklusTerpilih, $chart)
         {
@@ -60,7 +58,6 @@ class MonitoringController extends Controller
             'dataPagi' => $data['dataPagi'],
             'dataSore' => $data['dataSore']
         ];
-
 
         return view('dashboard.tambak-udang.monitoring.index', compact('kolam', 'siklus', 'siklusTerpilih', 'siklusBerjalan', 'chartData'));
     }
@@ -116,7 +113,7 @@ class MonitoringController extends Controller
 
         $kolam->monitoring()->save($monitoring);
 
-        return redirect()->route('monitoring.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data monitoring berhasil disimpan.');
+        return redirect()->route('monitoring.index', ['kolamId' => $kolamId, 'siklus' => $siklusId, 'chart' => 'suhu'])->with('success', 'Data monitoring berhasil disimpan.');
     }
 
     public function edit($kolamId, $siklusId, $monitoringId)
@@ -164,7 +161,7 @@ class MonitoringController extends Controller
             'user_id' => auth()->user()->id,
         ]);
 
-        return redirect()->route('monitoring.index', ['kolamId' => $kolam->id, 'siklus' => $siklus->id])->with('success', 'Data berhasil diubah');
+        return redirect()->route('monitoring.index', ['kolamId' => $kolam->id, 'siklus' => $siklus->id, 'chart' => 'suhu'])->with('success', 'Data berhasil diubah');
     }
 
     public function destroy($kolamId, $siklusId, $monitoringId)
@@ -175,6 +172,18 @@ class MonitoringController extends Controller
 
         $monitoring->delete();
 
-        return redirect()->route('monitoring.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data berhasil dihapus');
+        return redirect()->route('monitoring.index', ['kolamId' => $kolamId, 'siklus' => $siklusId, 'chart' => 'suhu'])->with('success', 'Data berhasil dihapus');
+    }
+
+    public function dataValidated($kolamId, $siklusId, $monitoringId)
+    {
+        $kolam = Kolam::findOrFail($kolamId);
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
+        $monitoring = $siklus->monitoring()->findOrFail($monitoringId);
+
+        $monitoring->is_validated = 1;
+        $monitoring->save();
+
+        return redirect()->route('monitoring.index', ['kolamId' => $kolamId, 'siklus' => $siklusId, 'chart' => 'suhu'])->with('success', 'Data berhasil divalidasi');
     }
 }

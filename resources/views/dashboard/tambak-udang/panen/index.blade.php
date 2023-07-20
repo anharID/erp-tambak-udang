@@ -21,6 +21,21 @@
                         <p>{{ session('success') }}</p>
                     </div>
                     @endif
+                    {{-- @if(session('error'))
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                        <strong class="font-bold">Error!</strong>
+                        <span class="block sm:inline">{{ session('error') }}</span>
+                        <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                            <svg class="fill-current h-6 w-6 text-red-500" role="button"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <title>Close</title>
+                                <path
+                                    d="M14.348 14.849c-.244.244-.642.243-.885-.001l-3.464-3.464-3.464 3.464c-.243.243-.642.244-.885.001-.244-.244-.243-.642.001-.885l3.464-3.464-3.464-3.464c-.244-.244-.244-.642 0-.885.243-.243.642-.244.885 0l3.464 3.464 3.464-3.464c.243-.244.642-.243.885 0 .244.243.243.641-.001.885l-3.464 3.464 3.464 3.464c.243.243.243.641 0 .885z">
+                                </path>
+                            </svg>
+                        </span>
+                    </div>
+                    @endif --}}
 
                     @if ($siklusBerjalan)
                     <a href="{{ route('panen.create',  ['kolamId' => $kolam->id,'siklus'=>$siklus->id]) }}"
@@ -28,8 +43,6 @@
                         <i class="fa-solid fa-plus mr-1"></i> Tambah Catatan
                     </a>
                     @endif
-
-
 
                     <div class="w-full overflow-x-auto mt-4">
                         <table class="min-w-full table-auto mt-4 datatable">
@@ -61,6 +74,9 @@
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                         rowspan="2">
                                         Catatan</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                                        rowspan="2">
+                                        Validasi</th>
                                     @if ($siklusBerjalan)
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                         rowspan="2">
@@ -99,8 +115,22 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->abw }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->status }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->catatan }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->is_validated == 0 ? 'Belum' :
+                                        'Sudah' }}</td>
                                     @if ($siklusBerjalan)
+                                    @if ($row->is_validated == 0)
                                     <td class="px-6 py-4 whitespace-nowrap flex">
+                                        @can('hakTeknisi')
+                                        <form
+                                            action="{{ route('validasi_panen', ['kolamId'=>$kolam->id,'siklus'=>$siklus->id,'panen'=>$row->id]) }}"
+                                            method="POST">
+                                            @csrf
+                                            <button type="submit"
+                                                onclick="return confirm('Aksi ini tidak dapat dibatalkan! Tandai entri ini sebagai sudah divalidasi? ')"
+                                                class="text-green-600 mr-4"><i
+                                                    class="fa-regular fa-circle-check"></i></button>
+                                        </form>
+                                        @endcan
                                         <a href="{{ route('panen.edit', ['kolamId'=>$kolam->id, 'siklus'=>$siklus->id, 'panen'=>$row->id]) }}"
                                             class="text-yellow-600 mr-4"><i class="fa-solid fa-pen-to-square"></i></a>
                                         <form
@@ -112,8 +142,10 @@
                                                 onclick="return confirm('Aksi ini tidak dapat dibatalkan! Apakah Anda yakin ingin menghapus data ini? ')"
                                                 class="text-red-600"><i class="fa-solid fa-trash"></i></button>
                                         </form>
-
                                     </td>
+                                    @else
+                                    <td>-</td>
+                                    @endif
                                     @endif
                                 </tr>
                                 @endforeach

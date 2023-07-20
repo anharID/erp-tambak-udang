@@ -9,6 +9,12 @@ use Illuminate\Http\Request;
 
 class SamplingController extends Controller
 {
+    public function __construct()
+    {
+        // Middleware akan diterapkan hanya pada rute edit dan destroy
+        $this->middleware('validated.data')->only(['edit', 'destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -142,7 +148,7 @@ class SamplingController extends Controller
 
         $kolam->sampling()->save($sampling);
 
-        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data sampling berhasil disimpan.');
+        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId, 'chart' => 'abw'])->with('success', 'Data sampling berhasil disimpan.');
     }
 
     /**
@@ -247,7 +253,7 @@ class SamplingController extends Controller
             'catatan' => $request->catatan
         ]);
 
-        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data sampling berhasil diubah.');
+        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId, 'chart' => 'abw'])->with('success', 'Data sampling berhasil diubah.');
     }
 
     /**
@@ -263,6 +269,18 @@ class SamplingController extends Controller
 
         $sampling->delete();
 
-        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data sampling berhasil dihapus.');
+        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId, 'chart' => 'abw'])->with('success', 'Data sampling berhasil dihapus.');
+    }
+
+    public function dataValidated($kolamId, $siklusId, $samplingId)
+    {
+        $kolam = Kolam::findOrFail($kolamId);
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
+        $sampling = $siklus->sampling()->findOrFail($samplingId);
+
+        $sampling->is_validated = 1;
+        $sampling->save();
+
+        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId, 'chart' => 'abw'])->with('success', 'Data berhasil divalidasi');
     }
 }

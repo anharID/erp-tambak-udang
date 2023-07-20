@@ -12,6 +12,12 @@ use Illuminate\Http\Request;
 
 class PakanController extends Controller
 {
+    public function __construct()
+    {
+        // Middleware akan diterapkan hanya pada rute edit dan destroy
+        $this->middleware('validated.data')->only(['edit', 'destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -136,7 +142,7 @@ class PakanController extends Controller
 
         $kolam->pakan()->save($pakan);
 
-        return redirect()->route('pakan.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data pakan berhasil disimpan.');
+        return redirect()->route('pakan.index', ['kolamId' => $kolamId, 'siklus' => $siklusId, 'chart' => 'pakan_harian'])->with('success', 'Data pakan berhasil disimpan.');
     }
 
     /**
@@ -250,7 +256,7 @@ class PakanController extends Controller
             'catatan' => $request->catatan
         ]);
 
-        return redirect()->route('pakan.index', ['kolamId' => $kolam->id, 'siklus' => $siklus->id])->with('success', 'Data berhasil diubah');
+        return redirect()->route('pakan.index', ['kolamId' => $kolam->id, 'siklus' => $siklus->id, 'chart' => 'pakan_harian'])->with('success', 'Data berhasil diubah');
     }
 
     /**
@@ -281,6 +287,18 @@ class PakanController extends Controller
         $pakan->delete();
 
 
-        return redirect()->route('pakan.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data berhasil dihapus');
+        return redirect()->route('pakan.index', ['kolamId' => $kolamId, 'siklus' => $siklusId, 'chart' => 'pakan_harian'])->with('success', 'Data berhasil dihapus');
+    }
+
+    public function dataValidated($kolamId, $siklusId, $pakanId)
+    {
+        $kolam = Kolam::findOrFail($kolamId);
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
+        $pakan = $siklus->pakan()->findOrFail($pakanId);
+
+        $pakan->is_validated = 1;
+        $pakan->save();
+
+        return redirect()->route('pakan.index', ['kolamId' => $kolamId, 'siklus' => $siklusId, 'chart' => 'pakan_harian'])->with('success', 'Data berhasil divalidasi');
     }
 }
