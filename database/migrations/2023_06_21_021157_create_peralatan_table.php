@@ -13,14 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('perlakuan', function (Blueprint $table) {
+        Schema::create('peralatan', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('kolam_id')->constrained('kolam');
-            $table->foreignId('siklus_id')->constrained('siklus');
-            $table->foreignId('user_id')->constrained('users');
-            $table->date('tanggal');
-            $table->text('catatan');
-            $table->boolean('is_validated')->default(0);
+            $table->string("nama_alat");
+            $table->integer("jumlah_alat");
+            $table->string("kondisi_alat");
+            $table->boolean("maintenance");
+            $table->string("catatan")->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('perlakuans');
+        Schema::dropIfExists('peralatan');
     }
 };

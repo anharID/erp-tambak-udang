@@ -30,6 +30,7 @@ return new class extends Migration
             $table->float('biomas');
             $table->float('fcr');
             $table->string('catatan')->nullable();
+            $table->boolean('is_validated')->default(0);
             $table->timestamps();
         });
     }

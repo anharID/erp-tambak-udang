@@ -1,12 +1,10 @@
-
-@import '@fortawesome/fontawesome-free/css/fontawesome.css';
-@import '@fortawesome/fontawesome-free/css/solid.css';
-@import '@fortawesome/fontawesome-free/css/brands.css';
+@import "@fortawesome/fontawesome-free/css/fontawesome.css";
+@import "@fortawesome/fontawesome-free/css/solid.css";
+@import "@fortawesome/fontawesome-free/css/brands.css";
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 
 .dark input[type="date"]::-webkit-calendar-picker-indicator {
     filter: invert(1);
@@ -35,4 +33,13 @@
 
 .dataTables_wrapper .dataTables_paginate .paginate_button.current {
     padding: 3px 6px 3px 6px;
+}
+
+button[disabled] {
+    cursor: not-allowed;
+}
+
+.disabled-link {
+    pointer-events: none; /* Mencegah aksi klik/tap */
+    text-decoration: none; /* Menghapus garis bawah dari link */
 }

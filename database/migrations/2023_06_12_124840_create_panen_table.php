@@ -29,6 +29,7 @@ return new class extends Migration
             $table->float('abw');
             $table->string('status')->nullable();
             $table->string('catatan')->nullable();
+            $table->boolean('is_validated')->default(0);
             $table->timestamps();
         });
     }

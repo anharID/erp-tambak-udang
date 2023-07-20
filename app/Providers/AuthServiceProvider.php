@@ -38,5 +38,8 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('aksesInventarisKolamPeralatan', function ($user) {
             return $user->role == 'admin' || $user->role == 'superadmin' || $user->role == 'direktur' || $user->role == 'teknisi';
         });
+        Gate::define('hakTeknisi', function ($user) {
+            return $user->role == 'superadmin' || $user->role == 'direktur' || $user->role == 'teknisi';
+        });
     }
 }

@@ -47,21 +47,21 @@ class FinansialController extends Controller
         }
 
         // Bulan
-        $bulan = Finansial::all()->groupby(function($item){
+        $bulan = Finansial::all()->groupby(function ($item) {
             return Carbon::parse($item->tanggal)->format('F');
         });
-        
+
         // Pemasukan
         $pemasukanBulanan = $pemasukan->groupBy(function ($item) {
             return Carbon::parse($item->tanggal)->format('F');
         })->map(function ($group) {
             return $group->sum('jumlah');
         });
-        
+
         $labels = $bulan->keys();
-        
+
         $valuesPemasukan = $pemasukanBulanan->values();
-        
+
         $chartDataPemasukan = [
             'labels' => $labels,
             'values' => $valuesPemasukan,
@@ -73,9 +73,9 @@ class FinansialController extends Controller
         })->map(function ($group) {
             return $group->sum('jumlah');
         });
-        
+
         $valuesPengeluaran = $pengeluaranBulanan->values();
-        
+
         $chartDataPengeluaran = [
             'labels' => $labels,
             'values' => $valuesPengeluaran,
@@ -96,7 +96,7 @@ class FinansialController extends Controller
         if (!$siklusId && $siklusSaatIni) {
             return redirect()->route('finansial.index', ['siklus_id' => $siklusSaatIni]);
         }
-        
+
         return view("dashboard.finansial.index", $data);
     }
 
