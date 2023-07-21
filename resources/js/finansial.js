@@ -26,3 +26,17 @@ selectKaryawan.addEventListener("change", () => {
     const nama = selectedOption.getAttribute("nama");
     inputKeterangan.value = nama;
 });
+
+//  // Modal
+// const openModalBtn = document.getElementById("openModalBtn");
+// const closeModalBtn = document.getElementById("closeModalBtn");
+// const modal = document.getElementById("modal");
+
+// openModalBtn.addEventListener("click", () => {
+//     console.log("test");
+//     modal.classList.remove("hidden");
+// });
+
+// closeModalBtn.addEventListener("click", () => {
+//     modal.classList.add("hidden");
+// });

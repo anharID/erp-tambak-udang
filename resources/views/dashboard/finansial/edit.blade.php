@@ -32,6 +32,9 @@
                                 <option value="Gaji Karyawan"
                                     {{ $finansial->jenis_transaksi == 'Gaji Karyawan' ? 'selected' : '' }}>Gaji Karyawan
                                 </option>
+                                <option value="Penjualan Udang"
+                                    {{ $finansial->jenis_transaksi == 'Penjualan Udang' ? 'selected' : '' }}>Penjualan Udang
+                                </option>
                             </select>
 
                             <x-input-error :messages="$errors->get('jenis_transaksi')" class="mt-2" />

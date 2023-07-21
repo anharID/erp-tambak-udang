@@ -31,6 +31,7 @@ $today = now()->format('Y-m-d');
                                 <option value="Pemasukan">Pemasukan</option>
                                 <option value="Pengeluaran">Pengeluaran</option>
                                 <option value="Gaji Karyawan">Gaji Karyawan</option>
+                                <option value="Penjualan Udang">Penjualan Udang</option>
                             </select>
 
                             <x-input-error :messages="$errors->get('jenis_transaksi')" class="mt-2" />
