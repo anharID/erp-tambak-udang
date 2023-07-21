@@ -12,7 +12,7 @@
                     @endif
 
                     <a href="{{ route('peralatan.create') }}" class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
-                        Tambah Peralatan
+                        <i class="fa-solid fa-plus mr-1"></i> Tambah Peralatan
                     </a>
                     <div class="w-full mt-4">
                         <table class="w-full table-auto mt-4 datatable">
