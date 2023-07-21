@@ -13,19 +13,19 @@ $currentRoute = request()->url();
             </div>
             @endif
 
-            {{-- Kembali --}}
-            <div class="mt-4">
-                <a href="{{ route('kolam.index') }}"
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Daftar Kolam
-                </a>
-            </div>
 
 
             {{-- Nama Kolam --}}
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-4">
                 <div class="col-span-1 md:col-span-2">
-                    <h1 class="font-bold text-2xl">Kolam {{ $kolam->nama }}</h1>
+                    <div class="flex flex-row items-center">
+                        {{-- Kembali --}}
+                        <a href="{{ route('kolam.index') }}"
+                            class="mr-2 flex items-center justify-center bg-gray-300 rounded-full w-8 h-8">
+                            <i class="fa-solid fa-arrow-left fa-lg"></i>
+                        </a>
+                        <h1 class="font-bold text-2xl">Kolam {{ $kolam->nama }}</h1>
+                    </div>
                 </div>
                 <div class="col-span-1">
                     @if ($kolam->siklus->count()>0)

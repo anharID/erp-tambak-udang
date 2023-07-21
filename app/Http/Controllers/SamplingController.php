@@ -9,12 +9,18 @@ use Illuminate\Http\Request;
 
 class SamplingController extends Controller
 {
+    public function __construct()
+    {
+        // Middleware akan diterapkan hanya pada rute edit dan destroy
+        $this->middleware('validated.data')->only(['edit', 'destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($kolamId, $siklusId)
+    public function index(Request $request, $kolamId, $siklusId)
     {
         $kolam = Kolam::findOrFail($kolamId);
         $siklus = $kolam->siklus()->findOrFail($siklusId);
@@ -23,7 +29,32 @@ class SamplingController extends Controller
 
         $siklusBerjalan = ($siklus->tanggal_selesai === null);
 
-        return view('dashboard.tambak-udang.sampling.index', compact('kolam', 'siklus', 'siklusTerpilih', 'siklusBerjalan'));
+        $chart = $request->query('chart');
+
+        if (!$chart) {
+            return redirect()->route('sampling.index', ['chart' => 'abw', 'kolamId' => $kolam->id, 'siklus' => $siklus->id]);
+        }
+
+        function getChartData($siklusTerpilih, $chart)
+        {
+            $data = $siklusTerpilih->sortBy('tanggal')->pluck($chart)->all();
+            $label = $chart;
+            return ['data' => $data, 'label' => $label];
+        };
+
+        $tanggal = $siklusTerpilih->sort()->groupby(function ($item) {
+            return Carbon::parse($item->tanggal)->format('j M o');
+        });
+
+        $data = getChartData($siklusTerpilih, $chart);
+
+        $chartData = [
+            'label' => $data['label'],
+            'labels' => $tanggal->keys(),
+            'data' => $data['data']
+        ];
+
+        return view('dashboard.tambak-udang.sampling.index', compact('kolam', 'siklus', 'siklusTerpilih', 'siklusBerjalan', 'chartData'));
     }
 
     /**
@@ -117,7 +148,7 @@ class SamplingController extends Controller
 
         $kolam->sampling()->save($sampling);
 
-        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data sampling berhasil disimpan.');
+        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId, 'chart' => 'abw'])->with('success', 'Data sampling berhasil disimpan.');
     }
 
     /**
@@ -222,7 +253,7 @@ class SamplingController extends Controller
             'catatan' => $request->catatan
         ]);
 
-        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data sampling berhasil diubah.');
+        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId, 'chart' => 'abw'])->with('success', 'Data sampling berhasil diubah.');
     }
 
     /**
@@ -238,6 +269,18 @@ class SamplingController extends Controller
 
         $sampling->delete();
 
-        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data sampling berhasil dihapus.');
+        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId, 'chart' => 'abw'])->with('success', 'Data sampling berhasil dihapus.');
+    }
+
+    public function dataValidated($kolamId, $siklusId, $samplingId)
+    {
+        $kolam = Kolam::findOrFail($kolamId);
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
+        $sampling = $siklus->sampling()->findOrFail($samplingId);
+
+        $sampling->is_validated = 1;
+        $sampling->save();
+
+        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId, 'chart' => 'abw'])->with('success', 'Data berhasil divalidasi');
     }
 }

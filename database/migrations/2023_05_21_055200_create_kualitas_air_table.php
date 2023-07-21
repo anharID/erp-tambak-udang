@@ -31,6 +31,7 @@ return new class extends Migration
             $table->time('waktu_pengukuran');
             $table->date('tanggal');
             $table->string('catatan')->nullable();
+            $table->boolean('is_validated')->default(0);
             $table->timestamps();
         });
     }

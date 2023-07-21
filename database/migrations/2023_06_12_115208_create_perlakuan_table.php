@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->date('tanggal');
             $table->text('catatan');
+            $table->boolean('is_validated')->default(0);
             $table->timestamps();
         });
     }

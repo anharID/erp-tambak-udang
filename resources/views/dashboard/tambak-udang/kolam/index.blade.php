@@ -54,8 +54,8 @@
 
                 {{-- Tombol tambah kolam --}}
                 <a href="{{ route('kolam.create') }}"
-                    class="px-4 mr-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
-                    Tambah Kolam
+                    class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
+                    <i class="fa-solid fa-plus mr-1"></i> Tambah Kolam
                 </a>
 
                 <div class="w-full overflow-x-auto mt-4">
@@ -151,6 +151,8 @@
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $row->tanggal_mulai }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $row->tanggal_selesai }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap flex">
+                                    <a href="{{ route('exportpdf', $row->id) }}" target="_blank"
+                                        class="text-blue-600 mr-4"><i class="fa-solid fa-file-pdf"></i></a>
                                     @if ($row->tanggal_selesai)
                                     <form action="{{ route('hapus_siklus', $row->id) }}" method="POST">
                                         @csrf
