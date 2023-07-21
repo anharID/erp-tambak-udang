@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Finansial;
 use App\Models\Siklus;
 use App\Models\Karyawan;
+use App\Models\Logistik;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -47,21 +48,21 @@ class FinansialController extends Controller
         }
 
         // Bulan
-        $bulan = Finansial::all()->groupby(function($item){
+        $bulan = Finansial::all()->groupby(function ($item) {
             return Carbon::parse($item->tanggal)->format('F');
         });
-        
+
         // Pemasukan
         $pemasukanBulanan = $pemasukan->groupBy(function ($item) {
             return Carbon::parse($item->tanggal)->format('F');
         })->map(function ($group) {
             return $group->sum('jumlah');
         });
-        
+
         $labels = $bulan->keys();
-        
+
         $valuesPemasukan = $pemasukanBulanan->values();
-        
+
         $chartDataPemasukan = [
             'labels' => $labels,
             'values' => $valuesPemasukan,
@@ -73,9 +74,9 @@ class FinansialController extends Controller
         })->map(function ($group) {
             return $group->sum('jumlah');
         });
-        
+
         $valuesPengeluaran = $pengeluaranBulanan->values();
-        
+
         $chartDataPengeluaran = [
             'labels' => $labels,
             'values' => $valuesPengeluaran,
@@ -96,7 +97,7 @@ class FinansialController extends Controller
         if (!$siklusId && $siklusSaatIni) {
             return redirect()->route('finansial.index', ['siklus_id' => $siklusSaatIni]);
         }
-        
+
         return view("dashboard.finansial.index", $data);
     }
 
@@ -110,6 +111,33 @@ class FinansialController extends Controller
         $karyawan = Karyawan::all();
         $siklusId = $request->query('siklus_id');
         return view("dashboard.finansial.create", compact('karyawan', 'siklusId'));
+    }
+
+    private function updateTotalSaldo($finansial)
+    {
+        // Perbarui total saldo data setelahnya
+        $dataSetelahnya = Finansial::where('id', '>', $finansial->id)->get();
+
+        foreach ($dataSetelahnya as $data) {
+            $dataSebelumnya = Finansial::where('id', '<', $data['id'])->orderBy('id', 'desc')->first();
+            $totalSaldoSebelumnya = $dataSebelumnya->total_saldo;
+            if ($data['jenis_transaksi'] === 'Pemasukan') {
+                $totalSaldoBaru = $totalSaldoSebelumnya + $data['jumlah'];
+                $data->update([
+                    'total_saldo' => $totalSaldoBaru
+                ]);
+            } elseif ($data['jenis_transaksi'] === 'Pengeluaran' || $data['jenis_transaksi'] === 'Gaji Karyawan') {
+                $totalSaldoBaru = $totalSaldoSebelumnya - $data['jumlah'];
+                $data->update([
+                    'total_saldo' => $totalSaldoBaru
+                ]);
+            } else {
+                $totalSaldoBaru = $totalSaldoSebelumnya;
+                $data->update([
+                    'total_saldo' => $totalSaldoBaru
+                ]);
+            }
+        }
     }
 
     /**
@@ -276,30 +304,7 @@ class FinansialController extends Controller
             'status' => $request->status,
             'total_saldo' => $totalSaldo
         ]);
-
-        // Perbarui total saldo data setelahnya
-        $dataSetelahnya = Finansial::where('id', '>', $finansial->id)->get();
-
-        foreach ($dataSetelahnya as $data) {
-            $dataSebelumnya = Finansial::where('id', '<', $data['id'])->orderBy('id', 'desc')->first();
-            $totalSaldoSebelumnya = $dataSebelumnya->total_saldo;
-            if ($data['jenis_transaksi'] === 'Pemasukan') {
-                $totalSaldoBaru = $totalSaldoSebelumnya + $data['jumlah'];
-                $data->update([
-                    'total_saldo' => $totalSaldoBaru
-                ]);
-            } elseif ($data['jenis_transaksi'] === 'Pengeluaran' || $data['jenis_transaksi'] === 'Gaji Karyawan') {
-                $totalSaldoBaru = $totalSaldoSebelumnya - $data['jumlah'];
-                $data->update([
-                    'total_saldo' => $totalSaldoBaru
-                ]);
-            } else {
-                $totalSaldoBaru = $totalSaldoSebelumnya;
-                $data->update([
-                    'total_saldo' => $totalSaldoBaru
-                ]);
-            }
-        }
+        $this->updateTotalSaldo($finansial);
 
         return redirect()->route('finansial.index')->with('success', "Data Catatan Finansial Berhasil Diubah");
     }
@@ -313,6 +318,11 @@ class FinansialController extends Controller
     public function destroy(Finansial $finansial)
     {
         $finansial->delete();
+        $logistik = Logistik::where('id', $finansial->logistik_id)->first();
+        if ($logistik) {
+            $logistik->delete();
+        }
+        $this->updateTotalSaldo($finansial);
 
         return redirect()->route('finansial.index')->with('success', "Data Catatan Finansial Berhasil Dihapus");
     }

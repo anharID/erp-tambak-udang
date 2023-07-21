@@ -15,8 +15,8 @@
                         Tambah Inventaris
 
                     </a>
-                    <div class="w-full mt-4">
-                        <table class="w-full table-auto mt-4 datatable">
+                    <div class="w-full overflow-x-auto mt-4">
+                        <table class="w-full table-auto mt-4 hover display nowrap datatable">
                             <thead class="bg-gray-50 dark:bg-gray-800">
                                 <tr>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Nama Barang</th>
