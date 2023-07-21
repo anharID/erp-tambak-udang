@@ -33,7 +33,7 @@ class AuthServiceProvider extends ServiceProvider
             return $user->role == 'admin' || $user->role == 'superadmin' || $user->role == 'direktur';
         });
         Gate::define('aksesFinansial', function ($user) {
-            return $user->role == 'manajer_keuangan' || $user->role == 'superadmin' || $user->role == 'direktur';
+            return $user->role == 'manajer keuangan' || $user->role == 'superadmin' || $user->role == 'direktur';
         });
         Gate::define('aksesInventarisKolamPeralatan', function ($user) {
             return $user->role == 'admin' || $user->role == 'superadmin' || $user->role == 'direktur' || $user->role == 'teknisi';

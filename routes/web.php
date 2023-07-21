@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\KolamController;
@@ -16,6 +17,7 @@ use App\Http\Controllers\LogistikController;
 use App\Http\Controllers\PeralatanController;
 use App\Http\Controllers\PerlakuanController;
 use App\Http\Controllers\MonitoringController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,9 +33,9 @@ use App\Http\Controllers\MonitoringController;
 Route::redirect('/', '/dashboard');
 
 
-Route::get('/dashboard', function () {
-    return view('dashboard.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+
+Auth::routes(['verify' => true]);
 
 //TODO perbaiki route dan midleware
 Route::middleware('auth')->group(function () {
@@ -75,7 +77,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('/karyawan', KaryawanController::class)->middleware('role:superadmin,admin,direktur');
 
-    Route::resource('/finansial', FinansialController::class)->middleware('role:superadmin,admin,direktur,teknisi');
+    Route::resource('/finansial', FinansialController::class)->middleware('role:superadmin,direktur,manajer keuangan');
 
     Route::resource('/peralatan', PeralatanController::class)->middleware('role:superadmin,admin,direktur,teknisi');
 
