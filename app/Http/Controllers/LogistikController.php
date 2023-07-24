@@ -37,6 +37,10 @@ class LogistikController extends Controller
             $stok_baru = $stok_lama + $request->stok_masuk;
         } else {
             $stok_baru = $stok_lama - $request->stok_keluar;
+
+            if ($stok_baru < 0) {
+                return redirect()->route('logistik.create', $inventaris)->withErrors(['stok_keluar' => 'Stok keluar melebihi stok yang tersedia'])->withInput();
+            }
         }
 
         $item->stok = $stok_baru;
@@ -88,6 +92,10 @@ class LogistikController extends Controller
         }
         if ($request->stok_keluar !== null) {
             $stok_inventaris -= $stok_keluar_difference;
+
+            if ($stok_inventaris < 0) {
+                return redirect()->route('logistik.edit', ['inventaris' => $inventaris, 'logistik' => $logistik])->withErrors(['stok_keluar' => 'Stok keluar melebihi stok yang tersedia'])->withInput();
+            }
         }
 
         // Update the Inventaris stok
