@@ -32,6 +32,9 @@
                                 <option value="Gaji Karyawan"
                                     {{ $finansial->jenis_transaksi == 'Gaji Karyawan' ? 'selected' : '' }}>Gaji Karyawan
                                 </option>
+                                <option value="Penjualan Udang"
+                                    {{ $finansial->jenis_transaksi == 'Penjualan Udang' ? 'selected' : '' }}>Penjualan Udang
+                                </option>
                             </select>
 
                             <x-input-error :messages="$errors->get('jenis_transaksi')" class="mt-2" />
@@ -55,6 +58,22 @@
                                     <option value="{{ $row->id }}" gaji="{{ $row->gaji }}"
                                         nama="{{ $row->nama }}"
                                         {{ $finansial->karyawan_id == $row->id ? 'selected' : '' }}>{{ $row->nama }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            <x-input-error :messages="$errors->get('jenis_transaksi')" class="mt-2" />
+                        </div>
+
+                        <!-- Kolam -->
+                        <div class="mt-4" id="kolam_field" style="display:none;">
+                            <x-input-label for="kolam" :value="__('Nama kolam')" />
+                            <select name="kolam" id="kolam"
+                                class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2">
+                                <option value="" disabled selected>Pilih satu opsi</option>
+                                @foreach ($kolam as $row)
+                                    <option nama="{{ $row->nama }}"
+                                        {{ $finansial->keterangan == 'Kolam ' . $row->nama ? 'selected' : '' }}>{{ $row->nama }}
                                     </option>
                                 @endforeach
                             </select>

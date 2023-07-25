@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Siklus;
 use App\Models\Inventaris;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Logistik extends Model
 {
@@ -49,5 +50,9 @@ class Logistik extends Model
             // Save the changes to the Inventaris model
             $inventaris->save();
         });
+    }
+    public function siklus()
+    {
+        return $this->belongsTo(Siklus::class);
     }
 }

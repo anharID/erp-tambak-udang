@@ -46,6 +46,7 @@ class KaryawanController extends Controller
             'jabatan' => ['required', 'string', 'max:255'],
             'status' => ['required', 'boolean'],
             'gaji' => ['required', 'numeric', 'digits_between:1,11'],
+            'bonus' => ['required', 'numeric', 'digits_between:1,3'],
         ]);
 
         Karyawan::create([
@@ -58,6 +59,7 @@ class KaryawanController extends Controller
             'jabatan' => $request->jabatan,
             'status' => $request->status,
             'gaji' => $request->gaji,
+            'bonus' => $request->bonus,
         ]);
 
         return redirect()->route('karyawan.index')->with('success', "Data berhasil ditambahkan");
@@ -104,6 +106,7 @@ class KaryawanController extends Controller
             'jabatan' => ['required', 'string', 'max:255'],
             'status' => ['required', 'boolean'],
             'gaji' => ['required', 'numeric', 'digits_between:1,11'],
+            'bonus' => ['required', 'numeric', 'digits_between:1,3'],
         ]);
 
 
@@ -117,6 +120,7 @@ class KaryawanController extends Controller
             'jabatan' => $request->jabatan,
             'status' => $request->status,
             'gaji' => $request->gaji,
+            'bonus' => $request->bonus,
         ]);
 
         return redirect()->route('karyawan.index')->with('success', "Data berhasil diubah");

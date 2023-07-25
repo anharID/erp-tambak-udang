@@ -52,6 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/siklus/{siklus}/delete', [SiklusController::class, 'destroy'])->middleware('role:superadmin,teknisi')->name('hapus_siklus');
 
     Route::get('/siklus/budidaya/{siklus}/exportpdf', [SiklusController::class, 'export'])->name('exportpdf');
+    Route::get('/finansial/{siklus}/exportpdf', [FinansialController::class, 'export'])->name('finansial_exportpdf');
 
     // Validasi
     Route::post('/kolam/{kolamId}/siklus/{siklus}/monitoring/{monitoring}/validasi', [MonitoringController::class, 'dataValidated'])->middleware('role:superadmin,teknisi')->name('validasi_monitoring');

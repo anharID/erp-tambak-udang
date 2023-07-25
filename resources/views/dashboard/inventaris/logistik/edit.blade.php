@@ -14,6 +14,20 @@
                     <form method="POST" action="{{ route('logistik.update', [$inventaris->id, $logistik->id]) }}">
                         @csrf
 
+                        <!-- Siklus -->
+                        <div class="mt-4">
+                            <x-input-label for="siklus_id" :value="__('Siklus')" />
+                            <select id="siklus_id"
+                                class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2"
+                                name="siklus_id">
+                                <option value="" disabled selected>Pilih satu opsi</option>
+                                @foreach ($siklus as $row)
+                                    <option value="{{ $row->id }}" {{ $logistik->siklus_id == $row->id ? 'selected' : '' }}>Siklus {{ $row->tanggal_mulai }}</option>
+                                @endforeach
+                            </select>
+                            <x-input-error :messages="$errors->get('siklus_id')" class="mt-2" />
+                        </div>
+
                         <!-- Tanggal-->
                         <div>
                             <x-input-label for="tanggal" :value="__('Tanggal')" />
@@ -52,10 +66,17 @@
                             <x-input-error :messages="$errors->get('sumber')" class="mt-2" />
                         </div>
 
+                        <!-- Status -->
+                        <div class="mt-4">
+                            <x-input-label for="status" :value="__('Status')" />
+                            <x-text-input id="status" class="block mt-1 w-full" type="text" name="status" :value="$logistik->status ?? old ('status')" autocomplete="status" />
+                            <x-input-error :messages="$errors->get('status')" class="mt-2" />
+                        </div>
+
                         <!-- Catatan -->
                         <div class="mt-4">
                             <x-input-label for="catatan" :value="__('Catatan')" />
-                            <x-text-input id="catatan" class="block mt-1 w-full" type="text" name="catatan" :value="$logistik->sumber ?? old ('catatan')" autocomplete="catatan" />
+                            <x-text-input id="catatan" class="block mt-1 w-full" type="text" name="catatan" :value="$logistik->catatan ?? old ('catatan')" autocomplete="catatan" />
                             <x-input-error :messages="$errors->get('catatan')" class="mt-2" />
                         </div>
 
