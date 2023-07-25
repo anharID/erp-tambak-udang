@@ -87,7 +87,7 @@ class SamplingController extends Controller
         //Data yang diperlukan
         $kolam = Kolam::findOrFail($kolamId);
         $siklusSaatIni = $kolam->siklus()->findOrFail($siklusId);
-        $user = auth()->user();
+        // $user = auth()->user();
         $tanggalSebelumSampling = date('Y-m-d', strtotime('-1 day', strtotime($validation['tanggal'])));
         $pakanKemarin = $siklusSaatIni->pakan()->where('kolam_id', $kolamId)->where('tanggal', $tanggalSebelumSampling)->get();
         $totalPakan = $pakanKemarin->sum('jumlah_kg');
@@ -143,7 +143,7 @@ class SamplingController extends Controller
         $sampling->fcr = $fcr;
         $sampling->catatan = $request->catatan;
 
-        $sampling->user()->associate($user);
+        // $sampling->user()->associate($user);
         $sampling->siklus()->associate($siklusSaatIni);
 
         $kolam->sampling()->save($sampling);
@@ -197,7 +197,7 @@ class SamplingController extends Controller
         // dd($siklusSaatIni);
         $sampling = $siklusSaatIni->sampling()->findOrFail($samplingId);
 
-        $user = auth()->user();
+        // $user = auth()->user();
         $tanggalSebelumSampling = date('Y-m-d', strtotime('-1 day', strtotime($validation['tanggal'])));
         $pakanKemarin = $siklusSaatIni->pakan()->where('kolam_id', $kolamId)->where('tanggal', $tanggalSebelumSampling)->get();
         $totalPakan = $pakanKemarin->sum('jumlah_kg');

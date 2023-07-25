@@ -90,7 +90,7 @@ class MonitoringController extends Controller
 
         $siklusSaatIni = $kolam->siklus()->whereNull('tanggal_selesai')->first();
 
-        $user = auth()->user();
+        // $user = auth()->user();
 
         $monitoring = new Monitoring();
 
@@ -108,7 +108,7 @@ class MonitoringController extends Controller
         $monitoring->waktu_pengukuran = $validation['waktu_pengukuran'];
         $monitoring->catatan = $request->catatan;
 
-        $monitoring->user()->associate($user);
+        // $monitoring->user()->associate($user);
         $monitoring->siklus()->associate($siklusSaatIni);
 
         $kolam->monitoring()->save($monitoring);

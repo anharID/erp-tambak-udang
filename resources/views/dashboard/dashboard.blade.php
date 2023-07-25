@@ -102,6 +102,7 @@
                 </a>
             </div>
 
+            @if ($siklus)
             <div class="px-6 pb-6 text-gray-900 dark:text-gray-100">
                 <h1 class="font-bold text-xl">Informasi Budidaya</h1>
             </div>
@@ -167,6 +168,12 @@
                     </div>
                 </div>
             </div>
+
+            @endif
+
+
+
+
 
 
 

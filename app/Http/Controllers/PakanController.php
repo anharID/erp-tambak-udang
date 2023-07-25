@@ -101,7 +101,7 @@ class PakanController extends Controller
         $siklusSaatIni = $kolam->siklus()->whereNull('tanggal_selesai')->first();
 
 
-        $user = auth()->user();
+        // $user = auth()->user();
 
         $validation = $request->validate([
             'tanggal' => 'required|date',
@@ -137,7 +137,7 @@ class PakanController extends Controller
         $pakan->jumlah_kg = $validation['jumlah_kg'];
         $pakan->catatan = $request->catatan;
 
-        $pakan->user()->associate($user);
+        // $pakan->user()->associate($user);
         $pakan->siklus()->associate($siklusSaatIni);
 
         $kolam->pakan()->save($pakan);

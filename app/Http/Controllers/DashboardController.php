@@ -17,8 +17,25 @@ class DashboardController extends Controller
     public function index()
     {
         $siklusSaatIni = Siklus::latest()->first();
+        $biomassa = 0;
+        $panen = 0;
+        $pakan = 0;
         // dd($siklusSaatIni);
-        $kolam = $siklusSaatIni->kolam;
+        if ($siklusSaatIni) {
+            $kolam = $siklusSaatIni->kolam;
+
+            foreach ($kolam as $k) {
+
+                $lastSampling = $k->sampling()->where('siklus_id', $siklusSaatIni->id)->latest()->first();
+                if ($lastSampling !== null) {
+                    $lastBiomassa = $lastSampling->biomas;
+                    $biomassa += $lastBiomassa;
+                }
+            }
+
+            $panen = $siklusSaatIni->panen;
+            $pakan = $siklusSaatIni->pakan;
+        }
 
         if ($siklusSaatIni) {
             $doc = Carbon::now()->diffInDays($siklusSaatIni->tanggal_mulai);
@@ -26,23 +43,16 @@ class DashboardController extends Controller
             $doc = null;
         }
 
-        $biomassa = 0;
-        foreach ($kolam as $k) {
 
-            $lastSampling = $k->sampling()->where('siklus_id', $siklusSaatIni->id)->latest()->first();
-            if ($lastSampling !== null) {
-                $lastBiomassa = $lastSampling->biomas;
-                $biomassa += $lastBiomassa;
-            }
-        }
-
-        $panen = $siklusSaatIni->panen;
-        $pakan = $siklusSaatIni->pakan;
 
         //data untuk overview
         $kolamJumlah = Kolam::all()->count();
         $karyawan = Karyawan::all()->count();
-        $saldo = Finansial::latest()->first()->total_saldo;
+        $finansialakhir = Finansial::latest()->first();
+        $saldo = 0;
+        if ($finansialakhir) {
+            $saldo = $finansialakhir->saldo_akhir;
+        }
         $itemInventaris = Inventaris::all()->count();
         $maintenance = Peralatan::where('maintenance', 1)->get()->count();
 
