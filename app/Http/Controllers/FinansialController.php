@@ -44,7 +44,7 @@ class FinansialController extends Controller
             $totalPemasukan += $row->jumlah;
         }
         // Total Pengeluaran
-        $pengeluaran = $finansialList->whereIn('jenis_transaksi', ['Pengeluaran', 'Gaji Karyawan']);
+        $pengeluaran = $finansialList->whereIn('jenis_transaksi', ['Pengeluaran', 'Gaji Karyawan', 'Bonus Karyawan']);
         $totalPengeluaran = 0;
         foreach ($pengeluaran as $row) {
             $totalPengeluaran += $row->jumlah;
@@ -128,7 +128,38 @@ class FinansialController extends Controller
         $karyawan = Karyawan::all();
         $kolam = Kolam::all();
         $siklusId = $request->query('siklus_id');
-        return view("dashboard.finansial.create", compact('karyawan', 'kolam', 'siklusId'));
+
+        $finansial = new Finansial();
+
+        $siklusId = $request->query('siklus_id');
+
+        if ($siklusId) {
+            $finansialList = $finansial->where('siklus_id', $siklusId)->get();
+        } else {
+            $finansialList = $finansial->get();
+        }
+
+        // Total Pemasukan
+        $pemasukan = $finansialList->whereIn('jenis_transaksi', ['Pemasukan', 'Penjualan Udang']);
+        $totalPemasukan = 0;
+        foreach ($pemasukan as $row) {
+            $totalPemasukan += $row->jumlah;
+        }
+        // Total Pengeluaran
+        $pengeluaran = $finansialList->whereIn('jenis_transaksi', ['Pengeluaran', 'Gaji Karyawan', 'Bonus Karyawan']);
+        $totalPengeluaran = 0;
+        foreach ($pengeluaran as $row) {
+            $totalPengeluaran += $row->jumlah;
+        }
+        // Total Penjualan Udang
+        $penjualan = $finansialList->where('jenis_transaksi', 'Penjualan Udang');
+        $totalPenjualan = 0;
+        foreach ($penjualan as $row) {
+            $totalPenjualan += $row->jumlah;
+        }
+        // Keuntungan Kotor
+        $keuntunganKotor = $totalPenjualan + $totalPemasukan - $totalPengeluaran;
+        return view("dashboard.finansial.create", compact('karyawan', 'kolam', 'siklusId', 'keuntunganKotor'));
     }
 
     private function updateTotalSaldo($finansial)
@@ -144,7 +175,7 @@ class FinansialController extends Controller
                 $data->update([
                     'total_saldo' => $totalSaldoBaru
                 ]);
-            } elseif ($data['jenis_transaksi'] === 'Pengeluaran' || $data['jenis_transaksi'] === 'Gaji Karyawan') {
+            } elseif ($data['jenis_transaksi'] === 'Pengeluaran' || $data['jenis_transaksi'] === 'Gaji Karyawan' || $data['jenis_transaksi'] === 'Bonus Karyawan') {
                 $totalSaldoBaru = $totalSaldoSebelumnya - $data['jumlah'];
                 $data->update([
                     'total_saldo' => $totalSaldoBaru
@@ -178,7 +209,7 @@ class FinansialController extends Controller
         $jenisTransaksi = $request->input('jenis_transaksi');
         $finansial = new Finansial();
 
-        if ($jenisTransaksi === 'Gaji Karyawan') {
+        if ($jenisTransaksi === 'Gaji Karyawan' || $jenisTransaksi === 'Bonus Karyawan') {
             $karyawanID = $request->input('karyawan');
             // Simpan data ke dalam tabel finansial
             $finansial->karyawan_id = $karyawanID;
@@ -213,12 +244,21 @@ class FinansialController extends Controller
         }
 
         // Periksa jenis transaksi dan update total saldo
-        if ($request->jenis_transaksi === 'Pemasukan' || $request->jenis_transaksi === 'Penjualan Udang') {
-            $totalSaldo = $totalSaldoSebelumnya + $request->jumlah;
-        } elseif ($request->jenis_transaksi === 'Pengeluaran' || $request->jenis_transaksi === 'Gaji Karyawan') {
-            $totalSaldo = $totalSaldoSebelumnya - $request->jumlah;
-        } else {
-            $totalSaldo = $totalSaldoSebelumnya;
+        switch ($request->jenis_transaksi) {
+            case 'Pemasukan':
+            case 'Penjualan Udang':
+                $totalSaldo = $totalSaldoSebelumnya + $request->jumlah;
+                break;
+
+            case 'Pengeluaran':
+            case 'Gaji Karyawan':
+            case 'Bonus Karyawan':
+                $totalSaldo = $totalSaldoSebelumnya - $request->jumlah;
+                break;
+
+            default:
+                $totalSaldo = $totalSaldoSebelumnya;
+                break;
         }
 
         $finansial->update([
@@ -273,7 +313,7 @@ class FinansialController extends Controller
         $data = $request->all();
         $jenisTransaksi = $request->input('jenis_transaksi');
 
-        if ($jenisTransaksi === 'Gaji Karyawan') {
+        if ($jenisTransaksi === 'Gaji Karyawan' || $jenisTransaksi === 'Bonus Karyawan') {
             $karyawanID = $request->input('karyawan');
             // Simpan data ke dalam tabel finansial
             $finansial->karyawan_id = $karyawanID;
@@ -306,13 +346,23 @@ class FinansialController extends Controller
         }
 
         // Periksa jenis transaksi dan update total saldo
-        if ($data['jenis_transaksi'] === 'Pemasukan' || $data['jenis_transaksi'] === 'Penjualan Udang') {
-            $totalSaldo = $totalSaldoSebelumnya + $data['jumlah'];
-        } elseif ($data['jenis_transaksi'] === 'Pengeluaran' || $data['jenis_transaksi'] === 'Gaji Karyawan') {
-            $totalSaldo = $totalSaldoSebelumnya - $data['jumlah'];
-        } else {
-            $totalSaldo = $totalSaldoSebelumnya;
+        switch ($data['jenis_transaksi']) {
+            case 'Pemasukan':
+            case 'Penjualan Udang':
+                $totalSaldo = $totalSaldoSebelumnya + $data['jumlah'];
+                break;
+
+            case 'Pengeluaran':
+            case 'Gaji Karyawan':
+            case 'Bonus Karyawan':
+                $totalSaldo = $totalSaldoSebelumnya - $data['jumlah'];
+                break;
+
+            default:
+                $totalSaldo = $totalSaldoSebelumnya;
+                break;
         }
+
 
         Finansial::where('id', $finansial->id)->update([
             'tanggal' => $request->tanggal,
@@ -358,7 +408,7 @@ class FinansialController extends Controller
             $finansialList = $finansial;
         }
 
-        $pengeluaran = $finansialList->whereIn('jenis_transaksi', ['Pengeluaran', 'Gaji Karyawan']);
+        $pengeluaran = $finansialList->whereIn('jenis_transaksi', ['Pengeluaran', 'Gaji Karyawan', 'Bonus Karyawan']);
         $totalPengeluaran = 0;
         foreach ($pengeluaran as $row) {
             $totalPengeluaran += $row->jumlah;
