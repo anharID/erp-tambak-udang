@@ -32,6 +32,9 @@
                                 <option value="Gaji Karyawan"
                                     {{ $finansial->jenis_transaksi == 'Gaji Karyawan' ? 'selected' : '' }}>Gaji Karyawan
                                 </option>
+                                <option value="Bonus Karyawan"
+                                    {{ $finansial->jenis_transaksi == 'Bonus Karyawan' ? 'selected' : '' }}>Bonus Karyawan
+                                </option>
                                 <option value="Penjualan Udang"
                                     {{ $finansial->jenis_transaksi == 'Penjualan Udang' ? 'selected' : '' }}>Penjualan Udang
                                 </option>
@@ -55,7 +58,7 @@
                                 class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2">
                                 <option value="" disabled selected>Pilih satu opsi</option>
                                 @foreach ($karyawan as $row)
-                                    <option value="{{ $row->id }}" gaji="{{ $row->gaji }}"
+                                    <option value="{{ $row->id }}" gaji="{{ $row->gaji }}" bonus="{{ $row->bonus }}"
                                         nama="{{ $row->nama }}"
                                         {{ $finansial->karyawan_id == $row->id ? 'selected' : '' }}>{{ $row->nama }}
                                     </option>

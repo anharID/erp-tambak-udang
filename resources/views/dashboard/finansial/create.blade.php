@@ -31,6 +31,7 @@ $today = now()->format('Y-m-d');
                                 <option value="Pemasukan">Pemasukan</option>
                                 <option value="Pengeluaran">Pengeluaran</option>
                                 <option value="Gaji Karyawan">Gaji Karyawan</option>
+                                <option value="Bonus Karyawan">Bonus Karyawan</option>
                                 <option value="Penjualan Udang">Penjualan Udang</option>
                             </select>
 
@@ -52,7 +53,7 @@ $today = now()->format('Y-m-d');
                                 class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2">
                                 <option value="" disabled selected>Pilih satu opsi</option>
                                 @foreach ($karyawan as $row)
-                                    <option value="{{ $row->id }}" gaji="{{ $row->gaji }}" nama="{{ $row->nama }}">{{ $row->nama }}</option>
+                                    <option value="{{ $row->id }}" gaji="{{ $row->gaji }}" bonus="{{ $row->bonus }}" nama="{{ $row->nama }}">{{ $row->nama }}</option>
                                 @endforeach
                             </select>
 
@@ -110,3 +111,6 @@ $today = now()->format('Y-m-d');
     </div>
 </x-admin>
 <script src="{{ Vite::asset('resources/js/finansial.js') }}" defer></script>
+<script>
+    const keuntunganKotor = @JSON($keuntunganKotor);
+</script>

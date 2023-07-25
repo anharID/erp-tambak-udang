@@ -4,21 +4,33 @@ const karyawanField = document.getElementById("karyawan_field");
 const kolamField = document.getElementById("kolam_field");
 
 keteranganField.style.display =
-    jenisTransaksi.value === "Gaji Karyawan" || jenisTransaksi.value === "Penjualan Udang"
-      ? "none" : "block";
+    jenisTransaksi.value === "Gaji Karyawan" ||
+    jenisTransaksi.value === "Bonus Karyawan" ||
+    jenisTransaksi.value === "Penjualan Udang"
+        ? "none"
+        : "block";
 karyawanField.style.display =
-    jenisTransaksi.value === "Gaji Karyawan" ? "block" : "none";
+    jenisTransaksi.value === "Gaji Karyawan" ||
+    jenisTransaksi.value === "Bonus Karyawan"
+        ? "block"
+        : "none";
 kolamField.style.display =
     jenisTransaksi.value === "Penjualan Udang" ? "block" : "none";
 
 jenisTransaksi.addEventListener("change", () => {
     keteranganField.style.display =
-    jenisTransaksi.value === "Gaji Karyawan" || jenisTransaksi.value === "Penjualan Udang"
-      ? "none" : "block";
-karyawanField.style.display =
-    jenisTransaksi.value === "Gaji Karyawan" ? "block" : "none";
-kolamField.style.display =
-    jenisTransaksi.value === "Penjualan Udang" ? "block" : "none";
+        jenisTransaksi.value === "Gaji Karyawan" ||
+        jenisTransaksi.value === "Bonus Karyawan" ||
+        jenisTransaksi.value === "Penjualan Udang"
+            ? "none"
+            : "block";
+    karyawanField.style.display =
+        jenisTransaksi.value === "Gaji Karyawan" ||
+        jenisTransaksi.value === "Bonus Karyawan"
+            ? "block"
+            : "none";
+    kolamField.style.display =
+        jenisTransaksi.value === "Penjualan Udang" ? "block" : "none";
     // keterangan.removeAttribute('required');
 });
 
@@ -29,9 +41,15 @@ const inputKeterangan = document.getElementById("keterangan");
 selectKaryawan.addEventListener("change", () => {
     const selectedOption = selectKaryawan.options[selectKaryawan.selectedIndex];
     const gaji = selectedOption.getAttribute("gaji");
-    inputJumlah.value = gaji;
+    const bonus = selectedOption.getAttribute("bonus");
     const nama = selectedOption.getAttribute("nama");
-    inputKeterangan.value = nama;
+    if (jenisTransaksi.value === 'Gaji Karyawan') {
+        inputJumlah.value = gaji;
+        inputKeterangan.value = `Gaji Karyawan - ${nama}`;
+    } else if (jenisTransaksi.value === 'Bonus Karyawan') {
+        inputJumlah.value = Math.round(bonus/100 * keuntunganKotor);
+        inputKeterangan.value = `Bonus Karyawan - ${nama}`;
+    }
 });
 
 const selectKolam = document.getElementById("kolam");
