@@ -49,6 +49,11 @@ class FinansialController extends Controller
         foreach ($pengeluaran as $row) {
             $totalPengeluaran += $row->jumlah;
         }
+        $bonus = $finansialList->where('jenis_transaksi', 'Bonus Karyawan');
+        $totalBonus = 0;
+        foreach ($bonus as $row) {
+            $totalBonus += $row->jumlah;
+        }
         // Total Penjualan Udang
         $penjualan = $finansialList->where('jenis_transaksi', 'Penjualan Udang');
         $totalPenjualan = 0;
@@ -56,7 +61,7 @@ class FinansialController extends Controller
             $totalPenjualan += $row->jumlah;
         }
         // Keuntungan Kotor
-        $keuntunganKotor = $totalPenjualan + $totalPemasukan - $totalPengeluaran;
+        $keuntunganKotor = $totalPemasukan - ($totalPengeluaran - $totalBonus);
         // Bonus Karyawan
         $totalBonusKaryawan = (Karyawan::sum('bonus') / 100) * $keuntunganKotor;
 
@@ -151,6 +156,11 @@ class FinansialController extends Controller
         foreach ($pengeluaran as $row) {
             $totalPengeluaran += $row->jumlah;
         }
+        $bonus = $finansialList->where('jenis_transaksi', 'Bonus Karyawan');
+        $totalBonus = 0;
+        foreach ($pengeluaran as $row) {
+            $totalBonus += $row->jumlah;
+        }
         // Total Penjualan Udang
         $penjualan = $finansialList->where('jenis_transaksi', 'Penjualan Udang');
         $totalPenjualan = 0;
@@ -158,8 +168,8 @@ class FinansialController extends Controller
             $totalPenjualan += $row->jumlah;
         }
         // Keuntungan Kotor
-        $keuntunganKotor = $totalPenjualan + $totalPemasukan - $totalPengeluaran;
-        return view("dashboard.finansial.create", compact('karyawan', 'kolam', 'siklusId', 'keuntunganKotor'));
+        $keuntunganKotor = $totalPenjualan + $totalPemasukan - ($totalPengeluaran - $totalBonus);
+        return view("dashboard.finansial.create", compact('karyawan', 'kolam', 'finansialList', 'siklusId', 'keuntunganKotor'));
     }
 
     private function updateTotalSaldo($finansial)
@@ -243,6 +253,7 @@ class FinansialController extends Controller
 
         // Periksa jenis transaksi dan update total saldo
         switch ($request->jenis_transaksi) {
+            case 'Saldo Awal':
             case 'Pemasukan':
             case 'Penjualan Udang':
                 $totalSaldo = $totalSaldoSebelumnya + $request->jumlah;
@@ -343,6 +354,7 @@ class FinansialController extends Controller
 
         // Periksa jenis transaksi dan update total saldo
         switch ($data['jenis_transaksi']) {
+            case 'Saldo Awal':
             case 'Pemasukan':
             case 'Penjualan Udang':
                 $totalSaldo = $totalSaldoSebelumnya + $data['jumlah'];
@@ -409,6 +421,11 @@ class FinansialController extends Controller
         foreach ($pengeluaran as $row) {
             $totalPengeluaran += $row->jumlah;
         }
+        $bonus = $finansialList->where('jenis_transaksi', 'Bonus Karyawan');
+        $totalBonus = 0;
+        foreach ($bonus as $row) {
+            $totalBonus += $row->jumlah;
+        }
 
         // Total Pemasukan
         $pemasukan = $finansialList->whereIn('jenis_transaksi', ['Pemasukan', 'Penjualan Udang']);
@@ -425,9 +442,9 @@ class FinansialController extends Controller
         }
 
         // Keuntungan
-        $keuntungan = $totalPenjualan + $totalPemasukan - $totalPengeluaran;
+        $keuntungan = $totalPemasukan - $totalPengeluaran;
         // Bonus Karyawan
-        $totalBonusKaryawan = (Karyawan::sum('bonus') / 100) * $keuntungan;
+        $totalBonusKaryawan = (Karyawan::sum('bonus') / 100) * ($keuntungan - $totalBonus);
 
         // dd($kolam);
 
