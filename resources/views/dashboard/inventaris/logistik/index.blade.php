@@ -12,7 +12,7 @@
                     @endif
 
                     <a href="{{ route('logistik.create', ['inventaris'=>$data_inventaris->id]) }}" class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
-                        Tambah Catatan Logistik
+                        <i class="fa-solid fa-plus mr-1"></i> Tambah Catatan Logistik
                     </a>
                     <a href="{{ route('inventaris.index') }}" class="ml-4 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
                         Manajemen Inventaris

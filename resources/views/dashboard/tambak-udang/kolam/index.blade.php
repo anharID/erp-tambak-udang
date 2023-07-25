@@ -153,6 +153,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap flex">
                                     <a href="{{ route('exportpdf', $row->id) }}" target="_blank"
                                         class="text-blue-600 mr-4"><i class="fa-solid fa-file-pdf"></i></a>
+                                    @can('hakTeknisi')
                                     @if ($row->tanggal_selesai)
                                     <form action="{{ route('hapus_siklus', $row->id) }}" method="POST">
                                         @csrf
@@ -166,6 +167,7 @@
                                             class="fa-solid fa-pen-to-square"></i></a>
 
                                     @endif
+                                    @endcan
                                 </td>
                             </tr>
                             @endforeach

@@ -62,9 +62,31 @@ $currentRoute = request()->url();
                                 $monitoring->last()->created_at->diffForHumans() }}
                             </p>
                             <div class="min-w-0 p-2 mt-2 bg-gray-100 rounded-lg shadow-sm dark:bg-gray-700">
-                                <p>Suhu: {{ $monitoring->last()->suhu }} &deg;C</p>
-                                <p>PH: {{ $monitoring->last()->ph }}</p>
-                                <p>DO: {{ $monitoring->last()->do }}</p>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                                    <div class="grid-cols-1">
+                                        <p class="flex justify-center text-xl font-semibold">{{
+                                            $monitoring->last()->suhu }} <span class="text-sm text-gray-600">
+                                                &deg;C</span></p>
+                                        <p class="flex justify-center">Suhu</p>
+                                    </div>
+                                    <div class="grid-cols-1">
+                                        <p class="flex justify-center text-xl font-semibold">{{
+                                            $monitoring->last()->ph }} </p>
+                                        <p class="flex justify-center">pH</p>
+                                    </div>
+                                    <div class="grid-cols-1">
+                                        <p class="flex justify-center text-xl font-semibold">{{
+                                            $monitoring->last()->do }} <span class="text-sm text-gray-600"> mg/L</span>
+                                        </p>
+                                        <p class="flex justify-center">DO</p>
+                                    </div>
+                                    <div class="grid-cols-1">
+                                        <p class="flex justify-center text-xl font-semibold">{{
+                                            $monitoring->last()->salinitas }} <span class="text-sm text-gray-600">
+                                                ppt</span></p>
+                                        <p class="flex justify-center text">Salinitas</p>
+                                    </div>
+                                </div>
                             </div>
                             @else
                             <p class="text-sm italic">Belum ada catatan monitoring.</p>
@@ -78,8 +100,20 @@ $currentRoute = request()->url();
                                 $pakan->last()->created_at->diffForHumans() }}
                             </p>
                             <div class="min-w-0 p-2 mt-2 bg-gray-100 rounded-lg shadow-sm dark:bg-gray-700">
-                                <p>Pakan terpakai hari ini {{ $jumlahPakanTerpakaiHariIni }} kg</p>
-                                <p>Pakan terpakai Komulatif {{ $pakan->sum('jumlah_kg') }} kg</p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="grid-cols-1">
+                                        <p class="flex justify-center text-xl font-semibold">{{
+                                            $jumlahPakanTerpakaiHariIni }} <span class="text-sm text-gray-600">
+                                                Kg</span></p>
+                                        <p class="flex justify-center">Pakan terpakai hari ini</p>
+                                    </div>
+                                    <div class="grid-cols-1">
+                                        <p class="flex justify-center text-xl font-semibold">{{
+                                            $pakan->sum('jumlah_kg') }} <span class="text-sm text-gray-600">
+                                                Kg</span></p>
+                                        <p class="flex justify-center">Pakan terpakai Komulatif</p>
+                                    </div>
+                                </div>
                             </div>
                             @else
                             <p class="text-sm italic">Belum ada catatan pakan.</p>
@@ -92,8 +126,33 @@ $currentRoute = request()->url();
                             <p class="text-sm italic">Terakhir ditambahkan {{
                                 $sampling->last()->created_at->diffForHumans() }}</p>
                             <div class="min-w-0 p-2 mt-2 bg-gray-100 rounded-lg shadow-sm dark:bg-gray-700">
-                                <p>ADG : {{ $sampling->last()->adg }} gram</p>
-                                <p>SR : {{ $sampling->last()->sr }} %</p>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                                    <div class="grid-cols-1">
+                                        <p class="flex justify-center text-xl font-semibold">{{
+                                            $sampling->last()->adg }} <span class="text-sm text-gray-600">
+                                                gr</span></p>
+                                        <p class="flex justify-center">ADG</p>
+                                    </div>
+                                    <div class="grid-cols-1">
+                                        <p class="flex justify-center text-xl font-semibold">{{
+                                            $sampling->last()->biomas }} <span class="text-sm text-gray-600">
+                                                Kg</span></p>
+                                        <p class="flex justify-center">Biomassa</p>
+                                    </div>
+                                    <div class="grid-cols-1">
+                                        <p class="flex justify-center text-xl font-semibold">{{
+                                            $sampling->last()->sr }} <span class="text-sm text-gray-600">
+                                                %</span></p>
+                                        <p class="flex justify-center">SR</p>
+                                    </div>
+                                    <div class="grid-cols-1">
+                                        <p class="flex justify-center text-xl font-semibold">{{
+                                            $sampling->last()->fcr }}
+                                            {{-- <span class="text-sm text-gray-600">%</span> --}}
+                                        </p>
+                                        <p class="flex justify-center">FCR</p>
+                                    </div>
+                                </div>
                             </div>
                             @else
                             <p class="text-sm italic">Belum ada catatan sampling.</p>
@@ -119,8 +178,20 @@ $currentRoute = request()->url();
                             <p class="text-sm italic">Terakhir ditambahkan {{
                                 $panen->last()->created_at->diffForHumans() }}</p>
                             <div class="min-w-0 p-2 mt-2 bg-gray-100 rounded-lg shadow-sm dark:bg-gray-700">
-                                <p>Status Panen : {{ $panen->last()->status }}</p>
-                                <p>Tonase Panen : {{ $panen->last()->tonase_jumlah }} Kg</p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="grid-cols-1">
+                                        <p class="flex justify-center text-xl font-semibold">{{
+                                            $panen->last()->tonase_jumlah }} <span class="text-sm text-gray-600">
+                                                Kg</span></p>
+                                        <p class="flex justify-center">Panen terakhir ({{ $panen->last()->status }})</p>
+                                    </div>
+                                    <div class="grid-cols-1">
+                                        <p class="flex justify-center text-xl font-semibold">{{
+                                            $panen->sum('tonase_jumlah') }} <span class="text-sm text-gray-600">
+                                                Kg</span></p>
+                                        <p class="flex justify-center">Total tonase panen</p>
+                                    </div>
+                                </div>
                             </div>
                             @else
                             <p class="text-sm italic">Belum ada catatan Panen.</p>
@@ -135,9 +206,21 @@ $currentRoute = request()->url();
                             <p class="text-sm italic">Terakhir ditambahkan {{
                                 $energi->last()->created_at->diffForHumans() }}</p>
                             <div class="min-w-0 p-2 mt-2 bg-gray-100 rounded-lg shadow-sm dark:bg-gray-700">
-                                <p>penggunaan : {{ $energi->last()->penggunaan }}</p>
-                                <p>Konsumsi energi : {{ $energi->last()->kwh }} kWh</p>
-                                <p>Total konsumsi energi : {{ $energi->sum('kwh') }} kWh</p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="grid-cols-1">
+                                        <p class="flex justify-center text-xl font-semibold">{{
+                                            $energi->last()->kwh }} <span class="text-sm text-gray-600">
+                                                KWh</span></p>
+                                        <p class="flex justify-center">Penggunaan terakhir ({{
+                                            $energi->last()->penggunaan }})</p>
+                                    </div>
+                                    <div class="grid-cols-1">
+                                        <p class="flex justify-center text-xl font-semibold">{{
+                                            $energi->sum('kwh') }} <span class="text-sm text-gray-600">
+                                                KWh</span></p>
+                                        <p class="flex justify-center">Penggunaan total</p>
+                                    </div>
+                                </div>
                             </div>
                             @else
                             <p class="text-sm italic">Belum ada catatan Energi.</p>
