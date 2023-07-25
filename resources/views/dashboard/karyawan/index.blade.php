@@ -48,6 +48,9 @@
                                         Gaji</th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        Bonus</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                         Aksi</th>
                                 </tr>
                             </thead>
@@ -67,10 +70,13 @@
                                             <td class="px-6 py-4 whitespace-nowrap">Cuti</td>
                                         @endif
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            {{ 'Rp ' . number_format($row->gaji, 2, ',', '.') }}
+                                            {{ 'Rp ' . number_format($row->gaji, 2, ',', '.') }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            {{ $row->bonus . '%' }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap flex">
                                             <a href="{{ route('karyawan.edit', $row->id) }}"
-                                                class="text-yellow-600 mr-4"><i class="fa-solid fa-pen-to-square"></i></a>
+                                                class="text-yellow-600 mr-4"><i
+                                                    class="fa-solid fa-pen-to-square"></i></a>
                                             <form action="{{ route('karyawan.destroy', $row->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')

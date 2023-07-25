@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html :class="{ 'dark': dark }"
-    x-data="{ dark: localStorage.getItem('dark') === 'true' || false,   isSideMenuOpen: false, isProfileMenuOpen: false}"
+    x-data="data()"
     x-init="$watch('dark', value => localStorage.setItem('dark', value))" lang="{{ str_replace('_', '-', 
 app()->getLocale()) }}">
 
@@ -18,8 +18,9 @@ app()->getLocale()) }}">
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
-
+    
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="{{ Vite::asset('resources/js/focus-trap.js') }}" defer></script>
 
 </head>
 
@@ -81,13 +82,13 @@ app()->getLocale()) }}">
                         <!-- Profile menu -->
                         <li class="relative">
                             <button class="align-middle rounded-full focus:shadow-outline-blue focus:outline-none"
-                                @click="isProfileMenuOpen = !isProfileMenuOpen" @keydown.escape="closeProfileMenu"
+                                @click="toggleProfileMenu" @keydown.escape="closeProfileMenu"
                                 aria-label="Account" aria-haspopup="true">
                                 <img class="object-cover w-8 h-8 rounded-full"
                                     src="https://images.unsplash.com/photo-1502378735452-bc7d86632805?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=aa3a807e1bbdfd4364d1f449eaa96d82"
                                     alt="" aria-hidden="true" />
                             </button>
-                            <template x-if="isProfileMenuOpen">
+                            <div x-show="isProfileMenuOpen">
                                 <ul x-transition:leave="transition ease-in duration-150"
                                     x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
                                     @click.away="closeProfileMenu" @keydown.escape="closeProfileMenu"
@@ -138,7 +139,7 @@ app()->getLocale()) }}">
                                         </li>
                                     </form>
                                 </ul>
-                            </template>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -150,12 +151,6 @@ app()->getLocale()) }}">
 
         </div>
     </div>
-    {{-- <script>
-        $(document).ready(function() {
-            $('.datatable').DataTable();
-        });
-
-    </script> --}}
 </body>
 
 </html>

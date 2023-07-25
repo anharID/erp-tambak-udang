@@ -31,6 +31,7 @@ $today = now()->format('Y-m-d');
                                 <option value="Pemasukan">Pemasukan</option>
                                 <option value="Pengeluaran">Pengeluaran</option>
                                 <option value="Gaji Karyawan">Gaji Karyawan</option>
+                                <option value="Penjualan Udang">Penjualan Udang</option>
                             </select>
 
                             <x-input-error :messages="$errors->get('jenis_transaksi')" class="mt-2" />
@@ -52,6 +53,20 @@ $today = now()->format('Y-m-d');
                                 <option value="" disabled selected>Pilih satu opsi</option>
                                 @foreach ($karyawan as $row)
                                     <option value="{{ $row->id }}" gaji="{{ $row->gaji }}" nama="{{ $row->nama }}">{{ $row->nama }}</option>
+                                @endforeach
+                            </select>
+
+                            <x-input-error :messages="$errors->get('jenis_transaksi')" class="mt-2" />
+                        </div>
+
+                        <!-- Kolam -->
+                        <div class="mt-4" id="kolam_field" style="display:none;">
+                            <x-input-label for="kolam" :value="__('Kolam')" />
+                            <select name="kolam" id="kolam"
+                                class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2">
+                                <option value="" disabled selected>Pilih satu opsi</option>
+                                @foreach ($kolam as $row)
+                                    <option nama="{{ $row->nama }}">{{ $row->nama }}</option>
                                 @endforeach
                             </select>
 
