@@ -202,8 +202,6 @@ class FinansialController extends Controller
             'jenis_transaksi' => ['required', 'string', 'max:255'],
             'keterangan' => ['required', 'string', 'max:255'],
             'jumlah' => ['required', 'numeric'],
-            'catatan' => ['required', 'string', 'max:255'],
-            'status' => ['required', 'string', 'max:255'],
         ]);
 
         $jenisTransaksi = $request->input('jenis_transaksi');
@@ -306,8 +304,6 @@ class FinansialController extends Controller
             'jenis_transaksi' => ['required', 'string', 'max:255'],
             'keterangan' => ['required', 'string', 'max:255'],
             'jumlah' => ['required', 'numeric'],
-            'catatan' => ['required', 'string', 'max:255'],
-            'status' => ['required', 'string', 'max:255'],
         ]);
 
         $data = $request->all();
