@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Finansial;
+use Carbon\Carbon;
+use App\Models\Kolam;
 use App\Models\Siklus;
 use App\Models\Karyawan;
 use App\Models\Logistik;
+use App\Models\Finansial;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class FinansialController extends Controller
 {
@@ -54,7 +56,7 @@ class FinansialController extends Controller
             $totalPenjualan += $row->jumlah;
         }
         // Keuntungan Kotor
-        $keuntunganKotor = $totalPenjualan - $totalPengeluaran;
+        $keuntunganKotor = $totalPenjualan + $totalPemasukan - $totalPengeluaran;
         // Bonus Karyawan
         $totalBonusKaryawan = (Karyawan::sum('bonus') / 100) * $keuntunganKotor;
 
@@ -124,8 +126,9 @@ class FinansialController extends Controller
     public function create(Request $request)
     {
         $karyawan = Karyawan::all();
+        $kolam = Kolam::all();
         $siklusId = $request->query('siklus_id');
-        return view("dashboard.finansial.create", compact('karyawan', 'siklusId'));
+        return view("dashboard.finansial.create", compact('karyawan', 'kolam', 'siklusId'));
     }
 
     private function updateTotalSaldo($finansial)
@@ -135,7 +138,7 @@ class FinansialController extends Controller
 
         foreach ($dataSetelahnya as $data) {
             $dataSebelumnya = Finansial::where('id', '<', $data['id'])->orderBy('id', 'desc')->first();
-            $totalSaldoSebelumnya = $dataSebelumnya->total_saldo;
+            $totalSaldoSebelumnya = $dataSebelumnya->total_saldo ?? 0;
             if ($data['jenis_transaksi'] === 'Pemasukan' || $data['jenis_transaksi'] === 'Penjualan Udang') {
                 $totalSaldoBaru = $totalSaldoSebelumnya + $data['jumlah'];
                 $data->update([
@@ -245,7 +248,8 @@ class FinansialController extends Controller
     public function edit(Finansial $finansial)
     {
         $karyawan = Karyawan::all();
-        return view("dashboard.finansial.edit", compact('finansial', 'karyawan'));
+        $kolam = Kolam::all();
+        return view("dashboard.finansial.edit", compact('finansial', 'karyawan', 'kolam'));
     }
 
     /**
@@ -340,5 +344,63 @@ class FinansialController extends Controller
         $this->updateTotalSaldo($finansial);
 
         return redirect()->route('finansial.index')->with('success', "Data Catatan Finansial Berhasil Dihapus");
+    }
+
+    public function export($siklusId)
+    {
+        $siklus = Siklus::findOrFail($siklusId);
+        $finansial = Finansial::all();
+        $kolam = Kolam::all();
+
+        if ($siklusId) {
+            $finansialList = $finansial->where('siklus_id', $siklusId);
+        } else {
+            $finansialList = $finansial;
+        }
+
+        $pengeluaran = $finansialList->whereIn('jenis_transaksi', ['Pengeluaran', 'Gaji Karyawan']);
+        $totalPengeluaran = 0;
+        foreach ($pengeluaran as $row) {
+            $totalPengeluaran += $row->jumlah;
+        }
+
+        // Total Pemasukan
+        $pemasukan = $finansialList->whereIn('jenis_transaksi', ['Pemasukan', 'Penjualan Udang']);
+        $totalPemasukan = 0;
+        foreach ($pemasukan as $row) {
+            $totalPemasukan += $row->jumlah;
+        }
+
+        // Total Penjualan Udang
+        $penjualan = $finansialList->where('jenis_transaksi', 'Penjualan Udang');
+        $totalPenjualan = 0;
+        foreach ($penjualan as $row) {
+            $totalPenjualan += $row->jumlah;
+        }
+
+        // Keuntungan
+        $keuntungan = $totalPenjualan + $totalPemasukan - $totalPengeluaran;
+        // Bonus Karyawan
+        $totalBonusKaryawan = (Karyawan::sum('bonus') / 100) * $keuntungan;
+
+        // dd($kolam);
+
+        $data = [
+            'siklus' => $siklus,
+            'kolam' => $kolam,
+            'finansialList' => $finansialList,
+            'totalPemasukan' => $totalPemasukan,
+            'totalPengeluaran' => $totalPengeluaran,
+            'totalPenjualan' => $totalPenjualan,
+            'totalBonusKaryawan' => $totalBonusKaryawan,
+            'keuntungan' => $keuntungan,
+        ];
+
+
+        // Create a new Dompdf object
+
+        // Set the font to Times New Roman
+        $pdf = Pdf::setOption(['defaultFont' => 'Figtree'])->loadView('dashboard.finansial.reportpdf', $data);
+        return $pdf->stream();
     }
 }
