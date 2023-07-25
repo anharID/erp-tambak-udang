@@ -27,7 +27,6 @@
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Stok Masuk</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Stok Keluar</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Sumber</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Catatan</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Aksi</th>
                                 </tr>
@@ -40,7 +39,6 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->stok_masuk }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->stok_keluar }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->sumber }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->status }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->catatan }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap flex">
                                         <a href="{{ route('logistik.edit', ['inventaris'=> $data_inventaris->id, 'logistik'=>$row->id]) }}" class="text-yellow-600 mr-4"><i class="fa-solid fa-pen-to-square"></i></a>

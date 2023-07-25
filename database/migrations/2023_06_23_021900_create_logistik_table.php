@@ -22,7 +22,6 @@ return new class extends Migration
             $table->integer('stok_masuk')->nullable();
             $table->integer('stok_keluar')->nullable();
             $table->string('sumber');
-            $table->string('status');
             $table->string('catatan')->nullable();
             $table->timestamps();
         });

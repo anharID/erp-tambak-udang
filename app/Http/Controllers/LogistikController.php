@@ -58,7 +58,6 @@ class LogistikController extends Controller
             'tanggal' => ['required', 'date'],
             'keterangan' => ['required', 'string'],
             'sumber' => ['required', 'string', 'max:100'],
-            'status' => ['required', 'string', 'max:100'],
         ]);
 
         $finansial = new Finansial();
@@ -87,7 +86,6 @@ class LogistikController extends Controller
             'stok_masuk' => $request->stok_masuk,
             'stok_keluar' => $request->stok_keluar,
             'sumber' => $request->sumber,
-            'status' => $request->status,
             'catatan' => $request->catatan
         ]);
 
@@ -104,7 +102,6 @@ class LogistikController extends Controller
             $finansial->jumlah = $item->harga_satuan * $jumlahStok;
             $finansial->keterangan = $keterangan;
             $finansial->catatan = $request->catatan;
-            $finansial->status = $request->status;
             $finansial->save();
             // Hitung total saldo berdasarkan transaksi sebelumnya
             $totalSaldoSebelumnya = 0;
@@ -144,7 +141,6 @@ class LogistikController extends Controller
             'tanggal' => ['required', 'date'],
             'keterangan' => ['required', 'string'],
             'sumber' => ['required', 'string', 'max:100'],
-            'status' => ['required', 'string', 'max:100'],
         ]);
 
         $logistik = Logistik::find($logistik);
@@ -179,7 +175,6 @@ class LogistikController extends Controller
             'stok_masuk' => $request->stok_masuk,
             'stok_keluar' => $request->stok_keluar,
             'sumber' => $request->sumber,
-            'status' => $request->status,
             'catatan' => $request->catatan
         ]);
 
@@ -199,7 +194,6 @@ class LogistikController extends Controller
             $finansial->jumlah = $item->harga_satuan * $jumlahStok;
             $finansial->keterangan = $keterangan;
             $finansial->catatan = $request->catatan;
-            $finansial->status = $request->status;
             $finansial->save();
             // Hitung total saldo berdasarkan transaksi sebelumnya
             $totalSaldoSebelumnya = 0;

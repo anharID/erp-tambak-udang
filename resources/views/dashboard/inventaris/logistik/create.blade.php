@@ -73,14 +73,6 @@
                             <x-input-error :messages="$errors->get('sumber')" class="mt-2" />
                         </div>
 
-                        <!-- Status -->
-                        <div class="mt-4">
-                            <x-input-label for="status" :value="__('Status')" />
-                            <x-text-input id="status" class="block mt-1 w-full" type="text" name="status"
-                                :value="old('status')" autocomplete="status" />
-                            <x-input-error :messages="$errors->get('status')" class="mt-2" />
-                        </div>
-
                         <!-- Catatan -->
                         <div class="mt-4">
                             <x-input-label for="catatan" :value="__('Catatan')" />
