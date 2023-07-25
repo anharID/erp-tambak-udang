@@ -86,12 +86,12 @@ class SamplingController extends Controller
 
         //Data yang diperlukan
         $kolam = Kolam::findOrFail($kolamId);
-        $siklusSaatIni = $kolam->siklus()->where('kolam_id', $kolamId)->whereNull('tanggal_selesai')->first();
+        $siklusSaatIni = $kolam->siklus()->findOrFail($siklusId);
         $user = auth()->user();
         $tanggalSebelumSampling = date('Y-m-d', strtotime('-1 day', strtotime($validation['tanggal'])));
-        $pakanKemarin = $siklusSaatIni->pakan()->where('tanggal', $tanggalSebelumSampling)->get();
+        $pakanKemarin = $siklusSaatIni->pakan()->where('kolam_id', $kolamId)->where('tanggal', $tanggalSebelumSampling)->get();
         $totalPakan = $pakanKemarin->sum('jumlah_kg');
-        $pakanKomulatif = $siklusSaatIni->pakan()->where('tanggal', '<', now()->subDay())->sum('jumlah_kg');
+        $pakanKomulatif = $siklusSaatIni->pakan()->where('kolam_id', $kolamId)->where('tanggal', '<', now()->subDay())->sum('jumlah_kg');
 
 
         //UMUR
@@ -199,9 +199,9 @@ class SamplingController extends Controller
 
         $user = auth()->user();
         $tanggalSebelumSampling = date('Y-m-d', strtotime('-1 day', strtotime($validation['tanggal'])));
-        $pakanKemarin = $siklusSaatIni->pakan()->where('tanggal', $tanggalSebelumSampling)->get();
+        $pakanKemarin = $siklusSaatIni->pakan()->where('kolam_id', $kolamId)->where('tanggal', $tanggalSebelumSampling)->get();
         $totalPakan = $pakanKemarin->sum('jumlah_kg');
-        $pakanKomulatif = $siklusSaatIni->pakan()->where('tanggal', '<', now()->subDay())->sum('jumlah_kg');
+        $pakanKomulatif = $siklusSaatIni->pakan->where('kolam_id', $kolamId)()->where('tanggal', '<', now()->subDay())->sum('jumlah_kg');
 
 
         //UMUR
