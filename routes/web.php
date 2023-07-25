@@ -82,9 +82,9 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('/peralatan', PeralatanController::class)->middleware('role:superadmin,admin,direktur,teknisi');
 
-    Route::resource('/dashboard/inventaris', InventarisController::class);
+    Route::resource('/inventaris', InventarisController::class);
     Route::resource('/inventaris/{inventaris}/logistik', LogistikController::class);
-    Route::post('/inventaris/{inventaris}/logistik/{logistik}', [LogistikController::class, 'update'])->name('logistik.update');
+    // Route::post('/inventaris/{inventaris}/logistik/{logistik}', [LogistikController::class, 'update'])->name('logistik.update');
 });
 
 
