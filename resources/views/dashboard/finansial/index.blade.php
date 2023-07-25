@@ -6,6 +6,13 @@
         <div class="w-full mx-auto px-4 sm:px-6 lg:px-8 text-gray-900 dark:text-gray-100 overflow-hidden">
 
             <h1 class="mb-4 font-bold text-xl">Manajemen Finansial</h1>
+            @if (!$param)
+            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
+                <p class="text-sm italic mb-4">Tidak ada data siklus. Untuk memulai siklus
+                    silahkan mulai siklus pada halaman <a href="{{ route('kolam.index') }}" class="underline" target="_blank">Manajemen Tambak Udang</a>.</p>
+            </div>
+            
+            @endif
             <div class="flex items-center mb-4">
                 {{-- <span class="w-24">Pilih Siklus</span> --}}
                 <select
@@ -94,7 +101,7 @@
                         class="px-4 py-2 inline-block text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
                         <i class="fa-solid fa-plus mr-1"></i> Tambah Catatan Finansial
                     </a>
-                    <a href="{{ route('finansial_exportpdf', $param) }}" target="_blank"
+                    <a href="{{ route('finansial_exportpdf', $param ?? '') }}" target="_blank"
                         class="px-4 py-2 inline-block text-sm font-medium leading-5 text-white transition-colors duration-150 bg-gray-600 border border-transparent rounded-lg active:bg-gray-600 hover:bg-gray-700 focus:outline-none focus:shadow-outline-gray">
                         <i class="fa-regular fa-file-pdf mr-1"></i> Cetak Laporan Keuangan
                     </a>

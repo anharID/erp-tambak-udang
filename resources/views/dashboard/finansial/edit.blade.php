@@ -96,7 +96,7 @@
                         <div class="mt-4">
                             <x-input-label for="catatan" :value="__('Catatan')" />
                             <x-text-input id="catatan" class="block mt-1 w-full" type="text" name="catatan"
-                                :value="$finansial->catatan ?? old('catatan')" required autocomplete="catatan" />
+                                :value="$finansial->catatan ?? old('catatan')" autocomplete="catatan" />
                             <x-input-error :messages="$errors->get('catatan')" class="mt-2" />
                         </div>
 
@@ -104,7 +104,7 @@
                         <div class="mt-4">
                             <x-input-label for="status" :value="__('Status')" />
                             <x-text-input id="status" class="block mt-1 w-full" type="text" name="status"
-                                :value="$finansial->status ?? old('status')" required autocomplete="status" />
+                                :value="$finansial->status ?? old('status')" autocomplete="status" />
                             <x-input-error :messages="$errors->get('status')" class="mt-2" />
                         </div>
                         <div class="flex items-center justify-end mt-4">
