@@ -13,30 +13,43 @@
             <h1 class="mb-4 font-bold text-xl">Informasi Siklus Berjalan</h1>
             <div class="w-full md:w-1/2 p-6 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 @if ($siklusAktif)
-                <p>Tanggal mulai : {{ $siklusAktif->tanggal_mulai }}</p>
-                <p>DOC : {{ $doc }}</p>
-                <p>Jumlah kolam aktif: {{ $siklusAktif->kolam->count() }}</p>
-                <p class="mb-4">Total Tebar : {{ $siklusAktif->kolam->sum('pivot.jumlah_tebar') }}</p>
+                <table>
+                    <tr>
+                        <td>Tanggal Mulai</td>
+                        <td>: {{ $siklusAktif->tanggal_mulai }}</td>
+                    </tr>
+                    <tr>
+                        <td>DoC </td>
+                        <td>: {{ $doc }}</td>
+                    </tr>
+                    <tr>
+                        <td>Jumlah Kolam Aktif </td>
+                        <td>: {{ $siklusAktif->kolam->count() }}</td>
+                    </tr>
+                    <tr>
+                        <td>Total Tebar </td>
+                        <td>: {{ $siklusAktif->kolam->sum('pivot.jumlah_tebar') }}</td>
+                    </tr>
+                </table>
                 @can('hakTeknisi')
                 <div class="mt-4 flex items-center justify-center">
                     <a href="{{ route('edit_siklus', ['siklus'=>$siklusAktif->id]) }}"
-                        class="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
                         Edit Siklus
                     </a>
                     <form action="{{ route('tutup_siklus', ['siklus' => $siklusAktif->id]) }}" method="POST">
                         @csrf
                         @method('put')
                         <button type="submit"
-                            class="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded "
+                            class="ml-2 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-600 border border-transparent rounded-lg active:bg-red-600 hover:bg-red-700 focus:outline-none focus:shadow-outline-red"
                             onclick="return confirm('Apakah Anda yakin ingin menutup siklus saat ini?')">Tutup
                             Siklus</button>
                     </form>
                 </div>
                 @endcan
                 @else
-                <p class="text-sm italic mb-4">Saat ini tidak ada siklus yang berjalan. Untuk memulai siklus
-                    silahkan klik mulai siklus
-                    dibawah.</p>
+                <p class="text-sm italic mb-4">Saat ini tidak ada siklus yang berjalan. Untuk memulai siklus silahkan
+                    klik mulai siklus dibawah.</p>
                 @can('hakTeknisi')
                 <a href="{{ route('buat_siklus') }}"
                     class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">

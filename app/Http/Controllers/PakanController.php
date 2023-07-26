@@ -117,6 +117,7 @@ class PakanController extends Controller
 
         Logistik::create([
             'inventaris_id' => $inventaris->id,
+            'siklus_id' => $siklusId,
             'tanggal' => $request->tanggal,
             'keterangan' => 'stok_keluar',
             'stok_masuk' => null,

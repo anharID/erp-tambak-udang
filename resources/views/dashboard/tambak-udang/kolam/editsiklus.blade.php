@@ -30,6 +30,14 @@
                         </div>
                         @endforeach
 
+                        <!-- Catatan -->
+                        <div class="mt-4">
+                            <x-input-label for="catatan" :value="__('Catatan Siklus')" />
+                            <x-text-input id="catatan" class="block mt-1 w-full" type="text" name="catatan"
+                                :value="$siklus->catatan ?? old('catatan')" autocomplete="catatan" />
+                            <x-input-error :messages="$errors->get('catatan')" class="mt-2" />
+                        </div>
+
                         <div class="flex items-center justify-end mt-4">
                             <x-primary-button class="ml-4">
                                 {{ __('Ubah Siklus') }}
