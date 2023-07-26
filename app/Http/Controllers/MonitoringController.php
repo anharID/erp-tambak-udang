@@ -37,14 +37,36 @@ class MonitoringController extends Controller
             $dataPagi = $siklusTerpilih->filter(function ($item) {
                 $time = Carbon::parse($item->waktu_pengukuran);
                 return $time->between('00:00:00', '12:00:00');
-            })->sortBy('tanggal')->pluck($chart)->all();
+            })->sortBy('tanggal')->groupby(function ($item) {
+                return Carbon::parse($item->tanggal)->format('j M o');
+            })->map(function ($group) use ($chart) {
+                return $group->pluck($chart)->first();});
             $dataSore = $siklusTerpilih->filter(function ($item) {
                 $time = Carbon::parse($item->waktu_pengukuran);
                 return $time->between('12:00:00', '23:59:59');
-            })->sortBy('tanggal')->pluck($chart)->all();
+            })->sortBy('tanggal')->groupby(function ($item) {
+                return Carbon::parse($item->tanggal)->format('j M o');
+            })->map(function ($group) use ($chart) {
+                return $group->pluck($chart)->first();});
             $label = $chart;
             return ['dataPagi' => $dataPagi, 'dataSore' => $dataSore, 'label' => $label];
         };
+        // function getChartData($siklusTerpilih, $chart)
+        // {
+        //     $dataPagi = $siklusTerpilih->filter(function ($item) {
+        //         $time = Carbon::parse($item->waktu_pengukuran);
+        //         return $time->between('00:00:00', '12:00:00');
+        //     })->sortBy('tanggal')->groupby(function ($item) {
+        //         return Carbon::parse($item->tanggal)->format('j M o');
+        //     })->map(function ($group) use ($chart) {
+        //         return $group->pluck($chart)->first();});
+        //     $dataSore = $siklusTerpilih->filter(function ($item) {
+        //         $time = Carbon::parse($item->waktu_pengukuran);
+        //         return $time->between('12:00:00', '23:59:59');
+        //     })->sortBy('tanggal')->pluck($chart)->all();
+        //     $label = $chart;
+        //     return ['dataPagi' => $dataPagi, 'dataSore' => $dataSore, 'label' => $label];
+        // };
 
         $tanggal = $siklusTerpilih->sort()->groupby(function ($item) {
             return Carbon::parse($item->tanggal)->format('j M o');

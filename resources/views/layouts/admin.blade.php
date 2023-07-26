@@ -18,7 +18,7 @@
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script src="{{ Vite::asset('resources/js/focus-trap.js') }}" defer></script>
+    @vite('resources/js/focus-trap.js')
 
 </head>
 

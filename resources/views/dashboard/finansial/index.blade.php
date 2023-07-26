@@ -135,7 +135,7 @@
                             <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700">
                                 @foreach ($finansialList as $row)
                                     <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $row->tanggal }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ Carbon\Carbon::parse($row->tanggal)->format('d-m-o') }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">{{ $row->jenis_transaksi }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">{{ $row->keterangan }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">
@@ -270,6 +270,6 @@
 </x-admin>
 <script type="module" src="{{ Vite::asset('resources/js/chartFinansial.js') }}" defer></script>
 <script>
-    const chartDataPemasukan = @JSON($chartDataPemasukan);
-    const chartDataPengeluaran = @JSON($chartDataPengeluaran);
+    const chartDataPemasukan = @JSON($pemasukanBulanan);
+    const chartDataPengeluaran = @JSON($pengeluaranBulanan);
 </script>

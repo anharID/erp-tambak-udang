@@ -122,4 +122,4 @@
         </div>
     </div>
 </x-admin>
-<script src="{{ Vite::asset('resources/js/finansial.js') }}" defer></script>
+@vite('resources/js/finansial.js')

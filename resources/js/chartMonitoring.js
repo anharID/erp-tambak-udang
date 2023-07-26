@@ -7,11 +7,10 @@ const ctx = document.getElementById("myChart");
 new Chart(ctx, {
     type: "line",
     data: {
-        labels: data.labels,
         datasets: [
             {
                 label: "Pagi",
-                data: data.dataPagi,
+                data: Object.entries(data.dataPagi).map(([x, y]) => ({ x, y })),
                 borderWidth: 1,
                 backgroundColor: "rgba(34, 197, 94, 0.3)",
                 borderColor: "rgb(34, 197, 94)",
@@ -20,7 +19,7 @@ new Chart(ctx, {
             },
             {
                 label: "Sore",
-                data: data.dataSore,
+                data: Object.entries(data.dataSore).map(([x, y]) => ({ x, y })),
                 borderWidth: 1,
                 backgroundColor: "rgba(239, 68, 68, 0.3)",
                 borderColor: "rgb(239, 68, 68)",

@@ -17,7 +17,7 @@
                         <!-- Tanggal -->
                         <div>
                             <x-input-label for="tanggal" :value="__('Tanggal')" />
-                            <x-text-input id="tanggal" class="block mt-1 w-full" type="date" name="tanggal"
+                            <x-text-input id="tanggal" class="block mt-1 w-full" type="date" format="dd-mm-yyyy" name="tanggal"
                                 :value="$today ?? old('tanggal')" required autofocus autocomplete="tanggal" />
                             <x-input-error :messages="$errors->get('tanggal')" class="mt-2" />
                         </div>
@@ -115,7 +115,7 @@
         </div>
     </div>
 </x-admin>
-<script src="{{ Vite::asset('resources/js/finansial.js') }}" defer></script>
+@vite('resources/js/finansial.js')
 <script>
     const keuntunganKotor = @JSON($keuntunganKotor);
 </script>

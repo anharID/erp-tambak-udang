@@ -65,26 +65,12 @@ class FinansialController extends Controller
         // Bonus Karyawan
         $totalBonusKaryawan = (Karyawan::sum('bonus') / 100) * $keuntunganKotor;
 
-        // Bulan
-        $bulan = Finansial::all()->groupby(function ($item) {
-            return Carbon::parse($item->tanggal)->format('F');
-        });
-
         // Pemasukan
         $pemasukanBulanan = $pemasukan->groupBy(function ($item) {
             return Carbon::parse($item->tanggal)->format('F');
         })->map(function ($group) {
             return $group->sum('jumlah');
         });
-
-        $labels = $bulan->keys();
-
-        $valuesPemasukan = $pemasukanBulanan->values();
-
-        $chartDataPemasukan = [
-            'labels' => $labels,
-            'values' => $valuesPemasukan,
-        ];
 
         // Pengeluaran
         $pengeluaranBulanan = $pengeluaran->groupBy(function ($item) {
@@ -93,20 +79,13 @@ class FinansialController extends Controller
             return $group->sum('jumlah');
         });
 
-        $valuesPengeluaran = $pengeluaranBulanan->values();
-
-        $chartDataPengeluaran = [
-            'labels' => $labels,
-            'values' => $valuesPengeluaran,
-        ];
-
         $data = [
             'finansial' => $finansial->all(),
             'karyawan' => $karyawan,
             'finansialList' => $finansialList,
             'siklusList' => $siklusList,
-            'chartDataPemasukan' => $chartDataPemasukan,
-            'chartDataPengeluaran' => $chartDataPengeluaran,
+            'pemasukanBulanan' => $pemasukanBulanan,
+            'pengeluaranBulanan' => $pengeluaranBulanan,
             'totalPemasukan' => $totalPemasukan,
             'totalPengeluaran' => $totalPengeluaran,
             'totalPenjualan' => $totalPenjualan,
