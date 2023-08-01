@@ -16,12 +16,22 @@ class KolamSeeder extends Seeder
     public function run()
     {
         //
+        Kolam::create(
+            [
+                'nama' => 'A1',
+                'lokasi' => 'STP UNDIP',
+                'tipe' => 'Kolam Bisnis',
+                'luas' => '625',
+                'kedalaman' => '2',
+            ]
+        );
+
         Kolam::create([
-            'nama' => 'A1',
+            'nama' => 'A2',
             'lokasi' => 'STP UNDIP',
             'tipe' => 'Kolam Bisnis',
-            'luas' => '25',
-            'kedalaman' => '1.5',
+            'luas' => '625',
+            'kedalaman' => '2',
         ]);
     }
 }
