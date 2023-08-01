@@ -76,14 +76,10 @@
                         </tr>
                         <tr>
 
-                            <td class="w-4/5 p-4">Bonus Karyawan <button  @click="openModal"
+                            <td class="w-4/5 p-4">Total Bonus Karyawan <button  @click="openModal"
                                     class="inline-block hover:cursor-pointer bg-blue-500 text-white text-xs ml-1 px-2 py-1 rounded-full">Lihat</button>
                             </td>
                             <td class="w-1/5 p-4">{{ 'Rp ' . number_format($totalBonusKaryawan ?? 0, 2, ',', '.') }}</td>
-                        </tr>
-                        <tr>
-                            <td class="w-4/5 p-4">Keuntungan Sebelum Pajak</td>
-                            <td class="w-1/5 p-4">{{ 'Rp ' . number_format(($keuntunganKotor - $totalBonusKaryawan) ?? 0, 2, ',', '.') }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -150,7 +146,7 @@
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit"
-                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus user ini?')"
+                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"
                                                     class="text-red-600"><i class="fa-solid fa-trash"></i></button>
                                             </form>
                                         </td>
@@ -231,6 +227,9 @@
                         Bonus</th>
                     <th
                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Nominal</th>
+                    <th
+                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                         Aksi</th>
                 </tr>
             </thead>
@@ -239,6 +238,7 @@
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap">{{ $row->nama }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">{{ $row->bonus . '%' }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap"> {{ 'Rp ' . number_format(((($row->bonus) / 100) * $keuntunganKotor), 2, ',', '.') }}</td>
                         <td class="px-6 py-4 whitespace-nowrap flex">
                             <a href="{{ route('karyawan.edit', $row->id) }}" target="_blank"
                                 class="text-yellow-600 mr-4"><i
@@ -252,17 +252,6 @@
         <footer
           class="flex flex-col items-center justify-end px-6 py-3 -mx-6 -mb-4 space-y-4 sm:space-y-0 sm:space-x-6 sm:flex-row bg-gray-50 dark:bg-gray-800"
         >
-          {{-- <button
-            @click="closeModal"
-            class="w-full px-5 py-3 text-sm font-medium leading-5 text-white transition-colors duration-150 border bg-red-500 border-gray-300 rounded-lg dark:text-gray-400 sm:px-4 sm:py-2 sm:w-auto active:bg-transparent hover:border-gray-500 focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray"
-          >
-            Tutup
-          </button> --}}
-          {{-- <button
-            class="w-full px-5 py-3 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg sm:w-auto sm:px-4 sm:py-2 active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue"
-          >
-            Accept
-          </button> --}}
         </footer>
       </div>
     </div>

@@ -91,6 +91,7 @@ class FinansialController extends Controller
             'totalPenjualan' => $totalPenjualan,
             'keuntunganKotor' => $keuntunganKotor,
             'totalBonusKaryawan' => $totalBonusKaryawan,
+            'totalBonus' => $totalBonus,
             'siklusSaatIni' => $siklusSaatIni,
             'siklusSelesai' => $siklusSelesai
         ];
@@ -137,7 +138,7 @@ class FinansialController extends Controller
         }
         $bonus = $finansialList->where('jenis_transaksi', 'Bonus Karyawan');
         $totalBonus = 0;
-        foreach ($pengeluaran as $row) {
+        foreach ($bonus as $row) {
             $totalBonus += $row->jumlah;
         }
         // Total Penjualan Udang
@@ -147,7 +148,7 @@ class FinansialController extends Controller
             $totalPenjualan += $row->jumlah;
         }
         // Keuntungan Kotor
-        $keuntunganKotor = $totalPenjualan + $totalPemasukan - ($totalPengeluaran - $totalBonus);
+        $keuntunganKotor = $totalPemasukan - ($totalPengeluaran - $totalBonus);
         return view("dashboard.finansial.create", compact('karyawan', 'kolam', 'finansialList', 'siklusId', 'keuntunganKotor'));
     }
 
@@ -421,9 +422,9 @@ class FinansialController extends Controller
         }
 
         // Keuntungan
-        $keuntungan = $totalPemasukan - $totalPengeluaran;
+        $keuntungan = $totalPemasukan - ($totalPengeluaran - $totalBonus);
         // Bonus Karyawan
-        $totalBonusKaryawan = (Karyawan::sum('bonus') / 100) * ($keuntungan - $totalBonus);
+        $totalBonusKaryawan = (Karyawan::sum('bonus') / 100) * $keuntungan;
 
         // dd($kolam);
 
