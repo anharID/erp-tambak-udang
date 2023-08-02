@@ -1,6 +1,3 @@
-@php
-$param = request()->input('chart');
-@endphp
 <x-admin>
     <div class="container grid py-12">
         <div class="w-full mx-auto px-4 sm:px-6 lg:px-8 text-gray-900 dark:text-gray-100 overflow-hidden">
@@ -17,16 +14,13 @@ $param = request()->input('chart');
             <div class="mb-8">
                 <select
                     class="mr-2 mb-2 w-60 rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2"
-                    name="chart" onchange="location = this.value;">
-                    <option value="">Pilih Grafik</option>
+                    name="chart" id="selectChart">
                     <option
-                        value="{{ route('pakan.index', ['chart' => 'pakan_harian', 'kolamId' => $kolam->id, 'siklus' => $siklus->id]) }}"
-                        {{ $param=='pakan_harian' ? 'selected' : '' }}>
-                        Chart Pakan Harian</option>
+                        value="total_pakan" chartLabel="Pakan Harian" selected>
+                        Grafik Pakan Harian</option>
                     <option
-                        value="{{ route('pakan.index', ['chart' => 'pakan_kumulatif', 'kolamId' => $kolam->id, 'siklus' => $siklus->id]) }}"
-                        {{ $param=='pakan_kumulatif' ? 'selected' : '' }}>
-                        Chart Pakan Kumulatif</option>
+                        value="total_pakan_kumulatif" chartLabel="Pakan Kumulatif">
+                        Grafik Pakan Kumulatif</option>
                 </select>
                 <div class="min-w-0 h-96 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
                     <canvas id="myChart">

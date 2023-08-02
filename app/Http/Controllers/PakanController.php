@@ -25,19 +25,18 @@ class PakanController extends Controller
      */
     public function index(Request $request, $kolamId, $siklusId)
     {
-        // dd($siklusId);
         $kolam = Kolam::findOrFail($kolamId);
         $siklus = $kolam->siklus()->findOrFail($siklusId);
         $siklusBerjalan = ($siklus->tanggal_selesai === null);
-        // dd($siklus);
 
         $dataPakan = $siklus->pakan()->where('kolam_id', $kolamId)->orderBy('created_at', 'desc')->get();
 
         $ringkasan = $siklus->pakan()->where('kolam_id', $kolamId)
             ->selectRaw('tanggal, SUM(jumlah_kg) as total_pakan')
             ->groupBy('tanggal')
-            // ->orderBy('tanggal', 'desc')
             ->get();
+
+            
 
         $totalPakanKumulatif = 0;
         foreach ($ringkasan as $row) {
@@ -45,30 +44,10 @@ class PakanController extends Controller
             $row->total_pakan_kumulatif = $totalPakanKumulatif;
         }
 
-
-        $tanggal = $ringkasan->groupby(function ($item) {
+        $chartData = $ringkasan->groupby(function ($item) {
             return Carbon::parse($item->tanggal)->format('j M o');
-        });
-
-        $chart = $request->query('chart');
-
-        if (!$chart) {
-            return redirect()->route('pakan.index', ['chart' => 'pakan_harian', 'kolamId' => $kolam->id, 'siklus' => $siklus->id]);
-        }
-
-        if ($chart == 'pakan_harian') {
-            $data = $ringkasan->pluck('total_pakan')->all();
-        } else if ($chart == 'pakan_kumulatif') {
-            $data = $ringkasan->pluck('total_pakan_kumulatif')->all();
-        }
-
-        $chartData = [
-            'label' => $chart,
-            'labels' => $tanggal->keys(),
-            'data' => $data,
-        ];
-
-
+        })->map(function ($group)  {
+            return $group->first();});
 
         return view('dashboard.tambak-udang.pakan.index', compact('kolam', 'siklus', 'dataPakan', 'siklusBerjalan', 'ringkasan', 'totalPakanKumulatif', 'chartData'));
     }
