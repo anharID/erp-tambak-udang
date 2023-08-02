@@ -21,62 +21,37 @@ class MonitoringController extends Controller
         $kolam = Kolam::findOrFail($kolamId);
         $siklus = $kolam->siklus()->findOrFail($siklusId);
 
-        // dd($kolam);
-
         $siklusTerpilih = $siklus->monitoring()->where('kolam_id', $kolam->id)->orderBy('tanggal', 'desc')->orderBy('waktu_pengukuran', 'desc')->get();
 
         $siklusBerjalan = ($siklus->tanggal_selesai === null);
 
-        $chart = $request->query('chart');
-        if (!$chart) {
-            return redirect()->route('monitoring.index', ['chart' => 'suhu', 'kolamId' => $kolam->id, 'siklus' => $siklus->id]);
-        }
-
-        function getChartData($siklusTerpilih, $chart)
+        function getChartData($siklusTerpilih)
         {
             $dataPagi = $siklusTerpilih->filter(function ($item) {
                 $time = Carbon::parse($item->waktu_pengukuran);
                 return $time->between('00:00:00', '12:00:00');
             })->sortBy('tanggal')->groupby(function ($item) {
                 return Carbon::parse($item->tanggal)->format('j M o');
-            })->map(function ($group) use ($chart) {
-                return $group->pluck($chart)->first();});
+            })->map(function ($group)  {
+                return $group->first();});
             $dataSore = $siklusTerpilih->filter(function ($item) {
                 $time = Carbon::parse($item->waktu_pengukuran);
                 return $time->between('12:00:00', '23:59:59');
             })->sortBy('tanggal')->groupby(function ($item) {
                 return Carbon::parse($item->tanggal)->format('j M o');
-            })->map(function ($group) use ($chart) {
-                return $group->pluck($chart)->first();});
-            $label = $chart;
-            return ['dataPagi' => $dataPagi, 'dataSore' => $dataSore, 'label' => $label];
+            })->map(function ($group) {
+                return $group->first();});
+            return ['dataPagi' => $dataPagi, 'dataSore' => $dataSore];
         };
-        // function getChartData($siklusTerpilih, $chart)
-        // {
-        //     $dataPagi = $siklusTerpilih->filter(function ($item) {
-        //         $time = Carbon::parse($item->waktu_pengukuran);
-        //         return $time->between('00:00:00', '12:00:00');
-        //     })->sortBy('tanggal')->groupby(function ($item) {
-        //         return Carbon::parse($item->tanggal)->format('j M o');
-        //     })->map(function ($group) use ($chart) {
-        //         return $group->pluck($chart)->first();});
-        //     $dataSore = $siklusTerpilih->filter(function ($item) {
-        //         $time = Carbon::parse($item->waktu_pengukuran);
-        //         return $time->between('12:00:00', '23:59:59');
-        //     })->sortBy('tanggal')->pluck($chart)->all();
-        //     $label = $chart;
-        //     return ['dataPagi' => $dataPagi, 'dataSore' => $dataSore, 'label' => $label];
-        // };
+        
 
         $tanggal = $siklusTerpilih->sort()->groupby(function ($item) {
             return Carbon::parse($item->tanggal)->format('j M o');
         });
 
-        $data = getChartData($siklusTerpilih, $chart);
+        $data = getChartData($siklusTerpilih);
 
         $chartData = [
-            'label' => $data['label'],
-            'labels' => $tanggal->keys(),
             'dataPagi' => $data['dataPagi'],
             'dataSore' => $data['dataSore']
         ];
