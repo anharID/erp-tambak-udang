@@ -29,30 +29,10 @@ class SamplingController extends Controller
 
         $siklusBerjalan = ($siklus->tanggal_selesai === null);
 
-        $chart = $request->query('chart');
-
-        if (!$chart) {
-            return redirect()->route('sampling.index', ['chart' => 'abw', 'kolamId' => $kolam->id, 'siklus' => $siklus->id]);
-        }
-
-        function getChartData($siklusTerpilih, $chart)
-        {
-            $data = $siklusTerpilih->sortBy('tanggal')->pluck($chart)->all();
-            $label = $chart;
-            return ['data' => $data, 'label' => $label];
-        };
-
-        $tanggal = $siklusTerpilih->sort()->groupby(function ($item) {
+        $chartData = $siklusTerpilih->sortBy('tanggal')->groupby(function ($item) {
             return Carbon::parse($item->tanggal)->format('j M o');
-        });
-
-        $data = getChartData($siklusTerpilih, $chart);
-
-        $chartData = [
-            'label' => $data['label'],
-            'labels' => $tanggal->keys(),
-            'data' => $data['data']
-        ];
+        })->map(function ($group)  {
+            return $group->first();});
 
         return view('dashboard.tambak-udang.sampling.index', compact('kolam', 'siklus', 'siklusTerpilih', 'siklusBerjalan', 'chartData'));
     }

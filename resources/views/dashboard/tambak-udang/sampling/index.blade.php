@@ -1,7 +1,3 @@
-@php
-$param = request()->input('chart');
-@endphp
-
 <x-admin>
     <div class="container grid py-12">
         <div class="w-full mx-auto px-4 sm:px-6 lg:px-8 text-gray-900 dark:text-gray-100 overflow-hidden">
@@ -18,27 +14,21 @@ $param = request()->input('chart');
             <div class="mb-8">
                 <select
                     class="mr-2 mb-2 w-60 rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2"
-                    name="chart" onchange="location = this.value;">
-                    <option value="">Pilih Grafik</option>
+                    name="chart" id="selectChart">
                     <option
-                        value="{{ route('sampling.index', ['chart' => 'abw', 'kolamId' => $kolam->id, 'siklus' => $siklus->id]) }}"
-                        {{ $param=='abw' ? 'selected' : '' }}>
-                        Chart ABW</option>
+                        value="abw" chartLabel="ABW" selected>
+                        Grafik ABW</option>
                     <option
-                        value="{{ route('sampling.index', ['chart' => 'adg', 'kolamId' => $kolam->id, 'siklus' => $siklus->id]) }}"
-                        {{ $param=='adg' ? 'selected' : '' }}>
-                        Chart ADG</option>
+                        value="adg" chartLabel="ADG">
+                        Grafik ADG</option>
                     <option
-                        value="{{ route('sampling.index', ['chart' => 'size', 'kolamId' => $kolam->id, 'siklus' => $siklus->id]) }}"
-                        {{ $param=='size' ? 'selected' : '' }}>
-                        Chart Size</option>
+                        value="size" chartLabel="Size">
+                        Grafik Size</option>
                     <option
-                        value="{{ route('sampling.index', ['chart' => 'sr', 'kolamId' => $kolam->id, 'siklus' => $siklus->id]) }}"
-                        {{ $param=='sr' ? 'selected' : '' }}>
-                        Chart SR</option>
+                        value="sr" chartLabel="SR">
+                        Grafik SR</option>
                     <option
-                        value="{{ route('sampling.index', ['chart' => 'fcr', 'kolamId' => $kolam->id, 'siklus' => $siklus->id]) }}"
-                        {{ $param=='fcr' ? 'selected' : '' }}>
+                        value="fcr" chartLabel="FCR">
                         Grafik FCR</option>
                 </select>
                 <div class="min-w-0 h-96 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
