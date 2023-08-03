@@ -37,6 +37,12 @@ class FinansialController extends Controller
         // Ambil siklus selesai
         $siklusSelesai = Siklus::whereNotNull('tanggal_selesai')->orderBy('tanggal_mulai', 'desc')->get();
 
+        // Total Saldo Awal
+        $saldoAwal = $finansialList->where('jenis_transaksi','Saldo Awal');
+        $totalSaldoAwal = 0;
+        foreach ($saldoAwal as $row) {
+            $totalSaldoAwal += $row->jumlah;
+        }
         // Total Pemasukan
         $pemasukan = $finansialList->whereIn('jenis_transaksi', ['Pemasukan', 'Penjualan Udang']);
         $totalPemasukan = 0;
@@ -86,6 +92,7 @@ class FinansialController extends Controller
             'siklusList' => $siklusList,
             'pemasukanBulanan' => $pemasukanBulanan,
             'pengeluaranBulanan' => $pengeluaranBulanan,
+            'totalSaldoAwal' => $totalSaldoAwal,
             'totalPemasukan' => $totalPemasukan,
             'totalPengeluaran' => $totalPengeluaran,
             'totalPenjualan' => $totalPenjualan,
@@ -152,33 +159,6 @@ class FinansialController extends Controller
         return view("dashboard.finansial.create", compact('karyawan', 'kolam', 'finansialList', 'siklusId', 'keuntunganKotor'));
     }
 
-    private function updateTotalSaldo($finansial)
-    {
-        // Perbarui total saldo data setelahnya
-        $dataSetelahnya = Finansial::where('id', '>', $finansial->id)->get();
-
-        foreach ($dataSetelahnya as $data) {
-            $dataSebelumnya = Finansial::where('id', '<', $data['id'])->orderBy('id', 'desc')->first();
-            $totalSaldoSebelumnya = $dataSebelumnya->total_saldo ?? 0;
-            if ($data['jenis_transaksi'] === 'Pemasukan' || $data['jenis_transaksi'] === 'Penjualan Udang') {
-                $totalSaldoBaru = $totalSaldoSebelumnya + $data['jumlah'];
-                $data->update([
-                    'total_saldo' => $totalSaldoBaru
-                ]);
-            } elseif ($data['jenis_transaksi'] === 'Pengeluaran' || $data['jenis_transaksi'] === 'Gaji Karyawan' || $data['jenis_transaksi'] === 'Bonus Karyawan') {
-                $totalSaldoBaru = $totalSaldoSebelumnya - $data['jumlah'];
-                $data->update([
-                    'total_saldo' => $totalSaldoBaru
-                ]);
-            } else {
-                $totalSaldoBaru = $totalSaldoSebelumnya;
-                $data->update([
-                    'total_saldo' => $totalSaldoBaru
-                ]);
-            }
-        }
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -220,39 +200,6 @@ class FinansialController extends Controller
             $finansial->status = $request->status;
             $finansial->save();
         }
-
-        // Hitung total saldo berdasarkan transaksi sebelumnya
-        $totalSaldoSebelumnya = 0;
-
-        // Cek apakah ada transaksi sebelumnya
-        $dataSebelumnya = Finansial::where('id', '<', $finansial->id)->orderBy('id', 'desc')->first();
-
-        if ($dataSebelumnya) {
-            $totalSaldoSebelumnya = $dataSebelumnya->total_saldo;
-        }
-
-        // Periksa jenis transaksi dan update total saldo
-        switch ($request->jenis_transaksi) {
-            case 'Saldo Awal':
-            case 'Pemasukan':
-            case 'Penjualan Udang':
-                $totalSaldo = $totalSaldoSebelumnya + $request->jumlah;
-                break;
-
-            case 'Pengeluaran':
-            case 'Gaji Karyawan':
-            case 'Bonus Karyawan':
-                $totalSaldo = $totalSaldoSebelumnya - $request->jumlah;
-                break;
-
-            default:
-                $totalSaldo = $totalSaldoSebelumnya;
-                break;
-        }
-
-        $finansial->update([
-            'total_saldo' => $totalSaldo
-        ]);
 
         return redirect()->route('finansial.index')->with('success', "Catatan Finansial berhasil ditambahkan");
     }
@@ -297,7 +244,6 @@ class FinansialController extends Controller
             'jumlah' => ['required', 'numeric'],
         ]);
 
-        $data = $request->all();
         $jenisTransaksi = $request->input('jenis_transaksi');
 
         if ($jenisTransaksi === 'Gaji Karyawan' || $jenisTransaksi === 'Bonus Karyawan') {
@@ -322,35 +268,6 @@ class FinansialController extends Controller
             $finansial->save();
         }
 
-        // Hitung total saldo berdasarkan transaksi sebelumnya
-        $totalSaldoSebelumnya = 0;
-
-        // Cek apakah ada transaksi sebelumnya
-        $dataSebelumnya = Finansial::where('id', '<', $finansial->id)->orderBy('id', 'desc')->first();
-
-        if ($dataSebelumnya) {
-            $totalSaldoSebelumnya = $dataSebelumnya->total_saldo;
-        }
-
-        // Periksa jenis transaksi dan update total saldo
-        switch ($data['jenis_transaksi']) {
-            case 'Saldo Awal':
-            case 'Pemasukan':
-            case 'Penjualan Udang':
-                $totalSaldo = $totalSaldoSebelumnya + $data['jumlah'];
-                break;
-
-            case 'Pengeluaran':
-            case 'Gaji Karyawan':
-            case 'Bonus Karyawan':
-                $totalSaldo = $totalSaldoSebelumnya - $data['jumlah'];
-                break;
-
-            default:
-                $totalSaldo = $totalSaldoSebelumnya;
-                break;
-        }
-
 
         Finansial::where('id', $finansial->id)->update([
             'tanggal' => $request->tanggal,
@@ -359,9 +276,7 @@ class FinansialController extends Controller
             'jumlah' => $request->jumlah,
             'catatan' => $request->catatan,
             'status' => $request->status,
-            'total_saldo' => $totalSaldo
         ]);
-        $this->updateTotalSaldo($finansial);
 
         return redirect()->route('finansial.index')->with('success', "Data Catatan Finansial Berhasil Diubah");
     }
@@ -379,7 +294,6 @@ class FinansialController extends Controller
         if ($logistik) {
             $logistik->delete();
         }
-        $this->updateTotalSaldo($finansial);
 
         return redirect()->route('finansial.index')->with('success', "Data Catatan Finansial Berhasil Dihapus");
     }

@@ -30,7 +30,6 @@ return new class extends Migration
             $table->string("status")->nullable();
             $table->string("catatan")->nullable();
             $table->date("tanggal");
-            $table->integer("total_saldo")->default(0);
             $table->timestamps();
         });
     }

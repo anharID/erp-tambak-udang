@@ -44,7 +44,7 @@
                 <div class="min-w-0 p-4 bg-blue-300 rounded-lg shadow-sm dark:bg-gray-800">
                     <p class="text-base mb-2">Saldo Hari Ini</p>
                     <p class="text-xl font-medium">
-                        {{ 'Rp ' . number_format($finansial->last()->total_saldo ?? 0, 2, ',', '.') }}
+                        {{ 'Rp ' . number_format(($totalSaldoAwal + $totalPemasukan - $totalPengeluaran) ?? 0, 2, ',', '.') }}
                     </p>
                 </div>
                 {{-- <div class="min-w-0 p-4 bg-orange-300 rounded-lg shadow-sm dark:bg-gray-800">
