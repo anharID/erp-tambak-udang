@@ -79,11 +79,11 @@
 
                         <!-- Profile menu -->
                         <li class="relative">
-                            <button class="align-middle" @click="toggleProfileMenu" @keydown.escape="closeProfileMenu"
+                            <button class="align-middle" x-on:click="toggleProfileMenu" @keydown.escape="closeProfileMenu"
                                 aria-label="Account" aria-haspopup="true">
                                 <i class="fa-solid fa-circle-user fa-lg mr-2"></i>
                             </button>
-                            <div x-show="isProfileMenuOpen">
+                            <div x-cloak x-show="isProfileMenuOpen">
                                 <ul x-transition:leave="transition ease-in duration-150"
                                     x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
                                     @click.away="closeProfileMenu" @keydown.escape="closeProfileMenu"
