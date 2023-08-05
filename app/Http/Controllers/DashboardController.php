@@ -35,12 +35,16 @@ class DashboardController extends Controller
 
             $panen = $siklusSaatIni->panen;
             $pakan = $siklusSaatIni->pakan;
+            
+            
         }
 
         if ($siklusSaatIni) {
             $doc = Carbon::now()->diffInDays($siklusSaatIni->tanggal_mulai);
+            $finansial = Finansial::where('siklus_id', $siklusSaatIni->id)->get();
         } else {
             $doc = null;
+            $finansial = Finansial::get();
         }
 
 
@@ -48,11 +52,25 @@ class DashboardController extends Controller
         //data untuk overview
         $kolamJumlah = Kolam::all()->count();
         $karyawan = Karyawan::all()->count();
-        $finansialakhir = Finansial::latest()->first();
-        $saldo = 0;
-        if ($finansialakhir) {
-            $saldo = $finansialakhir->saldo_akhir;
+        // Total Saldo Awal
+        $saldoAwal = $finansial->where('jenis_transaksi','Saldo Awal');
+        $totalSaldoAwal = 0;
+        foreach ($saldoAwal as $row) {
+            $totalSaldoAwal += $row->jumlah;
         }
+        // Total Pemasukan
+        $pemasukan = $finansial->whereIn('jenis_transaksi', ['Pemasukan', 'Penjualan Udang']);
+        $totalPemasukan = 0;
+        foreach ($pemasukan as $row) {
+            $totalPemasukan += $row->jumlah;
+        }
+        // Total Pengeluaran
+        $pengeluaran = $finansial->whereIn('jenis_transaksi', ['Pengeluaran', 'Gaji Karyawan', 'Bonus Karyawan']);
+        $totalPengeluaran = 0;
+        foreach ($pengeluaran as $row) {
+            $totalPengeluaran += $row->jumlah;
+        }
+        $saldo = $totalSaldoAwal + $totalPemasukan - $totalPengeluaran;
         $itemInventaris = Inventaris::all()->count();
         $maintenance = Peralatan::where('maintenance', 1)->get()->count();
 

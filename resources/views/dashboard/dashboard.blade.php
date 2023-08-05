@@ -51,7 +51,7 @@
                             Jumlah Saldo
                         </p>
                         <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                            Rp. {{ $saldo }}
+                            {{ 'Rp ' . number_format($saldo ?? 0, 0, ',', '.') }}
                         </p>
                     </div>
                 </a>
