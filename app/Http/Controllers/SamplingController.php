@@ -31,8 +31,9 @@ class SamplingController extends Controller
 
         $chartData = $siklusTerpilih->sortBy('tanggal')->groupby(function ($item) {
             return Carbon::parse($item->tanggal)->format('j M o');
-        })->map(function ($group)  {
-            return $group->first();});
+        })->map(function ($group) {
+            return $group->first();
+        });
 
         return view('dashboard.tambak-udang.sampling.index', compact('kolam', 'siklus', 'siklusTerpilih', 'siklusBerjalan', 'chartData'));
     }
@@ -128,7 +129,7 @@ class SamplingController extends Controller
 
         $kolam->sampling()->save($sampling);
 
-        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId, 'chart' => 'abw'])->with('success', 'Data sampling berhasil disimpan.');
+        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data sampling berhasil disimpan.');
     }
 
     /**
@@ -233,7 +234,7 @@ class SamplingController extends Controller
             'catatan' => $request->catatan
         ]);
 
-        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId, 'chart' => 'abw'])->with('success', 'Data sampling berhasil diubah.');
+        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data sampling berhasil diubah.');
     }
 
     /**
@@ -249,7 +250,7 @@ class SamplingController extends Controller
 
         $sampling->delete();
 
-        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId, 'chart' => 'abw'])->with('success', 'Data sampling berhasil dihapus.');
+        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data sampling berhasil dihapus.');
     }
 
     public function dataValidated($kolamId, $siklusId, $samplingId)
@@ -261,6 +262,6 @@ class SamplingController extends Controller
         $sampling->is_validated = 1;
         $sampling->save();
 
-        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId, 'chart' => 'abw'])->with('success', 'Data berhasil divalidasi');
+        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data berhasil divalidasi');
     }
 }

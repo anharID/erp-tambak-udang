@@ -36,7 +36,7 @@ class PakanController extends Controller
             ->groupBy('tanggal')
             ->get();
 
-            
+
 
         $totalPakanKumulatif = 0;
         foreach ($ringkasan as $row) {
@@ -46,8 +46,9 @@ class PakanController extends Controller
 
         $chartData = $ringkasan->groupby(function ($item) {
             return Carbon::parse($item->tanggal)->format('j M o');
-        })->map(function ($group)  {
-            return $group->first();});
+        })->map(function ($group) {
+            return $group->first();
+        });
 
         return view('dashboard.tambak-udang.pakan.index', compact('kolam', 'siklus', 'dataPakan', 'siklusBerjalan', 'ringkasan', 'totalPakanKumulatif', 'chartData'));
     }
@@ -122,7 +123,7 @@ class PakanController extends Controller
 
         $kolam->pakan()->save($pakan);
 
-        return redirect()->route('pakan.index', ['kolamId' => $kolamId, 'siklus' => $siklusId, 'chart' => 'pakan_harian'])->with('success', 'Data pakan berhasil disimpan.');
+        return redirect()->route('pakan.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data pakan berhasil disimpan.');
     }
 
     /**
@@ -219,11 +220,11 @@ class PakanController extends Controller
                 'stok' => $updatedStok,
                 'nilai_inventaris' => $nilaiInventaris
             ]);
-
             $dtLogistik = Logistik::where('inventaris_id', $dtInventaris->id)
-                ->where('updated_at', $pakan->updated_at)->first();
+                ->where('created_at', $pakan->created_at)->first();
             $dtLogistik->update([
-                'stok_keluar' => $request->jumlah_kg
+                'stok_keluar' => $request->jumlah_kg,
+                'tanggal' => $request->tanggal
             ]);
         }
 
@@ -236,7 +237,7 @@ class PakanController extends Controller
             'catatan' => $request->catatan
         ]);
 
-        return redirect()->route('pakan.index', ['kolamId' => $kolam->id, 'siklus' => $siklus->id, 'chart' => 'pakan_harian'])->with('success', 'Data berhasil diubah');
+        return redirect()->route('pakan.index', ['kolamId' => $kolam->id, 'siklus' => $siklus->id])->with('success', 'Data berhasil diubah');
     }
 
     /**
@@ -267,7 +268,7 @@ class PakanController extends Controller
         $pakan->delete();
 
 
-        return redirect()->route('pakan.index', ['kolamId' => $kolamId, 'siklus' => $siklusId, 'chart' => 'pakan_harian'])->with('success', 'Data berhasil dihapus');
+        return redirect()->route('pakan.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data berhasil dihapus');
     }
 
     public function dataValidated($kolamId, $siklusId, $pakanId)
@@ -279,6 +280,6 @@ class PakanController extends Controller
         $pakan->is_validated = 1;
         $pakan->save();
 
-        return redirect()->route('pakan.index', ['kolamId' => $kolamId, 'siklus' => $siklusId, 'chart' => 'pakan_harian'])->with('success', 'Data berhasil divalidasi');
+        return redirect()->route('pakan.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data berhasil divalidasi');
     }
 }

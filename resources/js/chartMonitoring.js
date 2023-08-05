@@ -7,7 +7,7 @@ const selectChart = document.getElementById("selectChart");
 let chart
 
 const makeChart = (prop = 'suhu', label = 'Suhu') => {
-   return chart = new Chart(ctx, {
+    return chart = new Chart(ctx, {
         type: "line",
         data: {
             datasets: [
@@ -72,7 +72,7 @@ selectChart.addEventListener("change", (e) => {
     const selectedOption = e.target.options[e.target.selectedIndex];
     const label = selectedOption.getAttribute("chartLabel");
     const prop = e.target.value;
-    if (chart){
+    if (chart) {
         chart.destroy()
     }
     makeChart(prop, label)
