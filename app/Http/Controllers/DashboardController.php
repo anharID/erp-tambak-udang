@@ -35,8 +35,6 @@ class DashboardController extends Controller
 
             $panen = $siklusSaatIni->panen;
             $pakan = $siklusSaatIni->pakan;
-            
-            
         }
 
         if ($siklusSaatIni) {
@@ -53,7 +51,7 @@ class DashboardController extends Controller
         $kolamJumlah = Kolam::all()->count();
         $karyawan = Karyawan::all()->count();
         // Total Saldo Awal
-        $saldoAwal = $finansial->where('jenis_transaksi','Saldo Awal');
+        $saldoAwal = $finansial->where('jenis_transaksi', 'Saldo Awal');
         $totalSaldoAwal = 0;
         foreach ($saldoAwal as $row) {
             $totalSaldoAwal += $row->jumlah;
