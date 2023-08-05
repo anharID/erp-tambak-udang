@@ -57,10 +57,11 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{!! nl2br(e($row->catatan)) !!}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->is_validated == 0 ? 'Belum' :
                                         'Sudah' }}</td>
+
                                     @if ($siklusBerjalan)
-                                    @if ($row->is_validated == 0)
                                     <td class="px-6 py-4 whitespace-nowrap flex">
                                         @can('hakTeknisi')
+                                        @if ($row->is_validated == 0)
                                         <form
                                             action="{{ route('validasi_perlakuan', ['kolamId'=>$kolam->id,'siklus'=>$siklus->id,'perlakuan'=>$row->id]) }}"
                                             method="POST">
@@ -70,7 +71,9 @@
                                                 class="text-green-600 mr-4"><i
                                                     class="fa-regular fa-circle-check"></i></button>
                                         </form>
+                                        @endif
                                         @endcan
+                                        @if ($row->is_validated == 0 || auth()->user()->role === "superadmin")
                                         <a href="{{ route('perlakuan.edit', ['kolamId'=>$kolam->id, 'siklus'=>$siklus->id, 'perlakuan'=>$row->id]) }}"
                                             class="text-yellow-600 mr-4"><i class="fa-solid fa-pen-to-square"></i></a>
                                         <form
@@ -82,10 +85,10 @@
                                                 onclick="return confirm('Aksi ini tidak dapat dibatalkan! Apakah Anda yakin ingin menghapus data ini? ')"
                                                 class="text-red-600"><i class="fa-solid fa-trash"></i></button>
                                         </form>
+                                        @else
+                                        -
+                                        @endif
                                     </td>
-                                    @else
-                                    <td>-</td>
-                                    @endif
                                     @endif
                                 </tr>
                                 @endforeach
