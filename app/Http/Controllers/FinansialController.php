@@ -106,7 +106,10 @@ class FinansialController extends Controller
         if (!$siklusId && $siklusSaatIni) {
             return redirect()->route('finansial.index', ['siklus_id' => $siklusSaatIni]);
         }
-
+        if (!$siklusId && !$siklusSaatIni && ($siklusSelesai->first())) {
+            return redirect()->route('finansial.index', ['siklus_id' => $siklusSelesai->first()->id]);
+        }
+        
         return view("dashboard.finansial.index", $data);
     }
 
