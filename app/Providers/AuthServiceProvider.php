@@ -29,6 +29,12 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('hakSuperadmin', function ($user) {
             return $user->role == 'superadmin';
         });
+        Gate::define('hakDirektur', function ($user) {
+            return $user->role == 'superadmin' || $user->role == 'direktur';
+        });
+        Gate::define('hakTeknisi', function ($user) {
+            return $user->role == 'superadmin' || $user->role == 'direktur' || $user->role == 'teknisi';
+        });
         Gate::define('aksesKaryawan', function ($user) {
             return $user->role == 'admin' || $user->role == 'superadmin' || $user->role == 'direktur';
         });
@@ -37,9 +43,6 @@ class AuthServiceProvider extends ServiceProvider
         });
         Gate::define('aksesInventarisKolamPeralatan', function ($user) {
             return $user->role == 'admin' || $user->role == 'superadmin' || $user->role == 'direktur' || $user->role == 'teknisi';
-        });
-        Gate::define('hakTeknisi', function ($user) {
-            return $user->role == 'superadmin' || $user->role == 'direktur' || $user->role == 'teknisi';
         });
     }
 }

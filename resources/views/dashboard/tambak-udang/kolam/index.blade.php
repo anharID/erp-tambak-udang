@@ -125,7 +125,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
-                                            onclick="return confirm('Aksi ini tidak dapat dibatalkan! Apakah Anda yakin ingin menghapus kolam ini? ')"
+                                            onclick="return confirm('Aksi ini tidak dapat dibatalkan! Apakah Anda yakin ingin menghapus kolam {{ $row->nama }}? ')"
                                             class="text-red-600"><i class="fa-solid fa-trash"></i></button>
                                     </form>
                                 </td>
@@ -136,6 +136,7 @@
                 </div>
             </div>
 
+            @can('hakDirektur')
             <h1 class="my-4 font-bold text-xl">Daftar Siklus</h1>
             <div class="w-full p-6 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="w-full overflow-x-auto mt-4">
@@ -189,6 +190,7 @@
                     </table>
                 </div>
             </div>
+            @endcan
         </div>
     </div>
 </x-admin>

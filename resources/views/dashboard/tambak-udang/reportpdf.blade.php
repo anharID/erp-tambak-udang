@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
@@ -121,11 +121,12 @@
                 <tbody>
                     @foreach ($dataRekap as $d)
                     <tr>
+                        {{-- {{ 'Rp ' . number_format($totalPemasukan ?? 0, 2, ',', '.') }} --}}
                         <td><a href="#{{ $d['kolam']->nama }}">{{ $d['kolam']->nama }}</a>
                         </td>
                         <td>{{ $d['kolam']->tipe }}</td>
                         <td>{{ $d['kolam']->luas }}</td>
-                        <td>{{ $d['kolam']->pivot->jumlah_tebar }}</td>
+                        <td>{{ number_format($d['kolam']->pivot->jumlah_tebar) }}</td>
                         <td>{{ $d['pakan']->sum('jumlah_kg') }}</td>
                         <td>{{ $d['panen']->sum('tonase_jumlah') }}</td>
                         <td>{{ $d['sr'] }}</td>
@@ -223,7 +224,7 @@
             </tr>
             <tr>
                 <td>Jumlah Tebar</td>
-                <td>: {{ $d['kolam']->pivot->jumlah_tebar }}</td>
+                <td>: {{ number_format($d['kolam']->pivot->jumlah_tebar) }}</td>
             </tr>
         </table>
 

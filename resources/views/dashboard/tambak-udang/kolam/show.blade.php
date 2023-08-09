@@ -259,6 +259,18 @@ $currentRoute = request()->url();
                                 <span>Kedalaman</span>
                                 <span class="text-right">{{ $kolam->kedalaman }} m</span>
                             </p>
+                            <p class="flex justify-between">
+                                <span>Tipe Kolam</span>
+                                <span class="text-right">{{ $kolam->tipe }}</span>
+                            </p>
+                            <p class="flex justify-between">
+                                <span>Status Kolam</span>
+                                <span class="text-right">{{ $kolam->status == 1 ? "Aktif" : "Tidak Aktif" }}</span>
+                            </p>
+                            <p class="flex justify-between">
+                                <span>Catatan</span>
+                                <span class="text-right">{{ $kolam->catatan ?? "-"}}</span>
+                            </p>
                         </div>
 
                         <div class="min-w-0 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
@@ -321,6 +333,18 @@ $currentRoute = request()->url();
                 <p class="flex justify-between">
                     <span>Kedalaman</span>
                     <span class="text-right">{{ $kolam->kedalaman }}</span>
+                </p>
+                <p class="flex justify-between">
+                    <span>Tipe Kolam</span>
+                    <span class="text-right">{{ $kolam->tipe }}</span>
+                </p>
+                <p class="flex justify-between">
+                    <span>Status Kolam</span>
+                    <span class="text-right">{{ $kolam->status == 1 ? "Aktif" : "Tidak Aktif" }}</span>
+                </p>
+                <p class="flex justify-between">
+                    <span>Catatan</span>
+                    <span class="text-right">{{ $kolam->catatan}}</span>
                 </p>
             </div>
         </div>
