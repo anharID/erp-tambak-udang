@@ -127,7 +127,7 @@
                                             method="POST">
                                             @csrf
                                             <button type="submit"
-                                                onclick="return confirm('Aksi ini tidak dapat dibatalkan! Tandai entri ini sebagai sudah divalidasi? ')"
+                                                onclick="return confirm('Aksi ini tidak dapat dibatalkan! Tandai catatan ini sebagai sudah divalidasi? ')"
                                                 class="text-green-600 mr-4"><i
                                                     class="fa-regular fa-circle-check"></i></button>
                                         </form>
