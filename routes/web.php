@@ -17,6 +17,8 @@ use App\Http\Controllers\LogistikController;
 use App\Http\Controllers\PeralatanController;
 use App\Http\Controllers\PerlakuanController;
 use App\Http\Controllers\MonitoringController;
+use App\Http\Controllers\PenggunaanEnergiController;
+use App\Models\PenggunaanEnergi;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -30,12 +32,13 @@ use Illuminate\Support\Facades\Auth;
 |
  */
 
+Auth::routes(['verify' => true]);
+
 Route::redirect('/', '/dashboard');
 
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
-Auth::routes(['verify' => true]);
 
 //TODO perbaiki route dan midleware
 Route::middleware('auth')->group(function () {
@@ -53,6 +56,14 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/siklus/budidaya/{siklus}/exportpdf', [SiklusController::class, 'export'])->name('exportpdf');
     Route::get('/finansial/{siklus}/exportpdf', [FinansialController::class, 'export'])->name('finansial_exportpdf');
+
+    //penggunaan energi
+    Route::get('/kolam/kategori-penggunan-energi', [PenggunaanEnergiController::class, 'index'])->middleware('role:superadmin')->name('kategori_penggunaan');
+    Route::get('/kolam/kategori-penggunan-energi/create', [PenggunaanEnergiController::class, 'create'])->middleware('role:superadmin')->name('penggunaan.create');
+    Route::post('/kolam/kategori-penggunan-energi/store', [PenggunaanEnergiController::class, 'store'])->middleware('role:superadmin')->name('penggunaan.store');
+    Route::get('/kolam/kategori-penggunan-energi/{penggunaanId}/edit', [PenggunaanEnergiController::class, 'edit'])->middleware('role:superadmin')->name('penggunaan.edit');
+    Route::put('/kolam/kategori-penggunan-energi/{penggunaanId}/update', [PenggunaanEnergiController::class, 'update'])->middleware('role:superadmin')->name('penggunaan.update');
+    Route::delete('/kolam/kategori-penggunan-energi/{penggunaanId}/delete', [PenggunaanEnergiController::class, 'destroy'])->middleware('role:superadmin')->name('penggunaan.destroy');
 
     // Validasi
     Route::post('/kolam/{kolamId}/siklus/{siklus}/monitoring/{monitoring}/validasi', [MonitoringController::class, 'dataValidated'])->middleware('role:superadmin,teknisi')->name('validasi_monitoring');

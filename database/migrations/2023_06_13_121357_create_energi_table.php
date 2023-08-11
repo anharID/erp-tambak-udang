@@ -17,9 +17,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('kolam_id')->constrained('kolam');
             $table->foreignId('siklus_id')->constrained('siklus');
-            // $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('penggunaan_id')->constrained('penggunaan_energi');
             $table->date('tanggal');
-            $table->string('penggunaan');
             $table->string('sumber_energi');
             $table->integer('jumlah');
             $table->float('daya');

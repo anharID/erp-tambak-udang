@@ -212,7 +212,7 @@ $currentRoute = request()->url();
                                             $energi->last()->kwh }} <span class="text-sm text-gray-600">
                                                 KWh</span></p>
                                         <p class="flex justify-center">Penggunaan terakhir ({{
-                                            $energi->last()->penggunaan }})</p>
+                                            $energi->last()->penggunaan->penggunaan }})</p>
                                     </div>
                                     <div class="grid-cols-1">
                                         <p class="flex justify-center text-xl font-semibold">{{

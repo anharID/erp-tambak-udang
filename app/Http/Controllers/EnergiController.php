@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Energi;
 use App\Models\Kolam;
+use App\Models\PenggunaanEnergi;
 use Illuminate\Http\Request;
 
 class EnergiController extends Controller
@@ -23,8 +24,9 @@ class EnergiController extends Controller
 
         $kolam = Kolam::findOrFail($kolamId);
         $siklus = $kolam->siklus()->findOrFail($siklusId);
+        $penggunaan = PenggunaanEnergi::all();
 
-        return view('dashboard.tambak-udang.energi.create', compact('kolam', 'siklus'));
+        return view('dashboard.tambak-udang.energi.create', compact('kolam', 'siklus', 'penggunaan'));
     }
 
     public function store(Request $request, $kolamId, $siklusId)
@@ -35,7 +37,7 @@ class EnergiController extends Controller
 
         $validation = $request->validate([
             'tanggal' => 'required|date',
-            'penggunaan' => 'required',
+            'penggunaan_id' => 'required',
             'sumber_energi' => 'required',
             'jumlah' => 'required|numeric',
             'daya' => 'required|numeric',
@@ -46,7 +48,7 @@ class EnergiController extends Controller
 
         $energi = new Energi();
         $energi->tanggal = $validation['tanggal'];
-        $energi->penggunaan = $validation['penggunaan'];
+        $energi->penggunaan_id = $validation['penggunaan_id'];
         $energi->sumber_energi = $validation['sumber_energi'];
         $energi->jumlah = $validation['jumlah'];
         $energi->daya = $validation['daya'];
@@ -66,15 +68,16 @@ class EnergiController extends Controller
         $kolam = Kolam::findOrFail($kolamId);
         $siklus = $kolam->siklus()->findOrFail($siklusId);
         $energi = $siklus->energi()->findOrFail($energiId);
+        $penggunaan = PenggunaanEnergi::all();
 
-        return view('dashboard.tambak-udang.energi.edit', compact('kolam', 'siklus', 'energi'));
+        return view('dashboard.tambak-udang.energi.edit', compact('kolam', 'siklus', 'energi', 'penggunaan'));
     }
 
     public function update(Request $request, $kolamId, $siklusId, $energiId)
     {
         $validation = $request->validate([
             'tanggal' => 'required|date',
-            'penggunaan' => 'required',
+            'penggunaan_id' => 'required',
             'sumber_energi' => 'required',
             'jumlah' => 'required|numeric',
             'daya' => 'required|numeric',
@@ -89,7 +92,7 @@ class EnergiController extends Controller
 
         $energi->update([
             'tanggal' => $validation['tanggal'],
-            'penggunaan' => $validation['penggunaan'],
+            'penggunaan_id' => $validation['penggunaan_id'],
             'sumber_energi' => $validation['sumber_energi'],
             'jumlah' => $validation['jumlah'],
             'daya' => $validation['daya'],
