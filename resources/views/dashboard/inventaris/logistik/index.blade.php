@@ -22,6 +22,7 @@
                         <table class="w-full table-auto mt-4 datatable">
                             <thead class="bg-gray-50 dark:bg-gray-800">
                                 <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Siklus</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Tanggal</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Stok Masuk</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Stok Keluar</th>
@@ -33,6 +34,7 @@
                             <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700">
                                 @foreach($logistik as $row)
                                 <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">Siklus {{ $row->siklus->tanggal_mulai }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->tanggal }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->stok_masuk }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->stok_keluar }}</td>

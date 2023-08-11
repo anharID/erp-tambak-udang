@@ -16,10 +16,11 @@ return new class extends Migration
         Schema::create('logistik', function (Blueprint $table) {
             $table->id();
             $table->foreignId('inventaris_id')->constrained('inventaris');
+            $table->foreignId('siklus_id')->constrained('siklus');
             $table->date('tanggal');
             $table->string('keterangan');
-            $table->integer('stok_masuk')->nullable();
-            $table->integer('stok_keluar')->nullable();
+            $table->float('stok_masuk')->nullable();
+            $table->float('stok_keluar')->nullable();
             $table->string('sumber');
             $table->string('catatan')->nullable();
             $table->timestamps();

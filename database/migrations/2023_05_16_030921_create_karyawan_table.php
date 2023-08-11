@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string("jabatan");
             $table->boolean("status");
             $table->integer("gaji");
+            $table->integer("bonus")->nullable();
             $table->timestamps();
         });
     }

@@ -9,12 +9,18 @@ use Illuminate\Http\Request;
 
 class SamplingController extends Controller
 {
+    public function __construct()
+    {
+        // Middleware akan diterapkan hanya pada rute edit dan destroy
+        $this->middleware('validated.data')->only(['edit', 'destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($kolamId, $siklusId)
+    public function index(Request $request, $kolamId, $siklusId)
     {
         $kolam = Kolam::findOrFail($kolamId);
         $siklus = $kolam->siklus()->findOrFail($siklusId);
@@ -23,7 +29,13 @@ class SamplingController extends Controller
 
         $siklusBerjalan = ($siklus->tanggal_selesai === null);
 
-        return view('dashboard.tambak-udang.sampling.index', compact('kolam', 'siklus', 'siklusTerpilih', 'siklusBerjalan'));
+        $chartData = $siklusTerpilih->sortBy('tanggal')->groupby(function ($item) {
+            return Carbon::parse($item->tanggal)->format('j M o');
+        })->map(function ($group) {
+            return $group->first();
+        });
+
+        return view('dashboard.tambak-udang.sampling.index', compact('kolam', 'siklus', 'siklusTerpilih', 'siklusBerjalan', 'chartData'));
     }
 
     /**
@@ -55,12 +67,12 @@ class SamplingController extends Controller
 
         //Data yang diperlukan
         $kolam = Kolam::findOrFail($kolamId);
-        $siklusSaatIni = $kolam->siklus()->where('kolam_id', $kolamId)->whereNull('tanggal_selesai')->first();
-        $user = auth()->user();
+        $siklusSaatIni = $kolam->siklus()->findOrFail($siklusId);
+        // $user = auth()->user();
         $tanggalSebelumSampling = date('Y-m-d', strtotime('-1 day', strtotime($validation['tanggal'])));
-        $pakanKemarin = $siklusSaatIni->pakan()->where('tanggal', $tanggalSebelumSampling)->get();
+        $pakanKemarin = $siklusSaatIni->pakan()->where('kolam_id', $kolamId)->where('tanggal', $tanggalSebelumSampling)->get();
         $totalPakan = $pakanKemarin->sum('jumlah_kg');
-        $pakanKomulatif = $siklusSaatIni->pakan()->where('tanggal', '<', now()->subDay())->sum('jumlah_kg');
+        $pakanKomulatif = $siklusSaatIni->pakan()->where('kolam_id', $kolamId)->where('tanggal', '<', now()->subDay())->sum('jumlah_kg');
 
 
         //UMUR
@@ -112,7 +124,7 @@ class SamplingController extends Controller
         $sampling->fcr = $fcr;
         $sampling->catatan = $request->catatan;
 
-        $sampling->user()->associate($user);
+        // $sampling->user()->associate($user);
         $sampling->siklus()->associate($siklusSaatIni);
 
         $kolam->sampling()->save($sampling);
@@ -166,11 +178,11 @@ class SamplingController extends Controller
         // dd($siklusSaatIni);
         $sampling = $siklusSaatIni->sampling()->findOrFail($samplingId);
 
-        $user = auth()->user();
+        // $user = auth()->user();
         $tanggalSebelumSampling = date('Y-m-d', strtotime('-1 day', strtotime($validation['tanggal'])));
-        $pakanKemarin = $siklusSaatIni->pakan()->where('tanggal', $tanggalSebelumSampling)->get();
+        $pakanKemarin = $siklusSaatIni->pakan()->where('kolam_id', $kolamId)->where('tanggal', $tanggalSebelumSampling)->get();
         $totalPakan = $pakanKemarin->sum('jumlah_kg');
-        $pakanKomulatif = $siklusSaatIni->pakan()->where('tanggal', '<', now()->subDay())->sum('jumlah_kg');
+        $pakanKomulatif = $siklusSaatIni->pakan->where('kolam_id', $kolamId)()->where('tanggal', '<', now()->subDay())->sum('jumlah_kg');
 
 
         //UMUR
@@ -239,5 +251,17 @@ class SamplingController extends Controller
         $sampling->delete();
 
         return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data sampling berhasil dihapus.');
+    }
+
+    public function dataValidated($kolamId, $siklusId, $samplingId)
+    {
+        $kolam = Kolam::findOrFail($kolamId);
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
+        $sampling = $siklus->sampling()->findOrFail($samplingId);
+
+        $sampling->is_validated = 1;
+        $sampling->save();
+
+        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data berhasil divalidasi');
     }
 }

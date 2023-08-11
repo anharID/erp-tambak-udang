@@ -1,13 +1,14 @@
 <x-admin>
     <div class="container grid py-12">
         <div class="w-full mx-auto px-4 sm:px-6 lg:px-8 text-gray-900 dark:text-gray-100 overflow-hidden">
-            <h1 class="mb-4 font-bold text-2xl">Penggunaan Energi Kolam {{ $kolam->nama }}</h1>
-
-            {{-- Kembali --}}
-            <a href="{{ route('data_kolam', ['kolam'=>$kolam->id, 'siklus'=>$siklus->id]) }}"
-                class="mr-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Kembali
-            </a>
+            <div class="flex flex-row items-center mb-4">
+                {{-- Kembali --}}
+                <a href="{{ route('data_kolam', ['kolam' => $kolam->id, 'siklus' => $siklus->id]) }}"
+                    class="mr-2 flex items-center justify-center bg-gray-300 rounded-full w-8 h-8">
+                    <i class="fa-solid fa-arrow-left fa-lg"></i>
+                </a>
+                <h1 class="font-bold text-2xl">Penggunaan Energi Kolam {{ $kolam->nama }}</h1>
+            </div>
 
             @if ($siklusTerpilih)
             <div class="my-4 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -23,8 +24,8 @@
 
                     @if ($siklusBerjalan)
                     <a href="{{ route('energi.create',  ['kolamId' => $kolam->id,'siklus'=>$siklus->id]) }}"
-                        class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                        Tambah Catatan
+                        class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
+                        <i class="fa-solid fa-plus mr-1"></i> Tambah Catatan
                     </a>
                     @endif
 
@@ -75,18 +76,19 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->kwh }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->catatan }}</td>
                                     @if ($siklusBerjalan)
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-6 py-4 whitespace-nowrap flex">
                                         <a href="{{ route('energi.edit', ['kolamId'=>$kolam->id, 'siklus'=>$siklus->id, 'energi'=>$row->id]) }}"
-                                            class="text-yellow-600">Edit</a>
+                                            class="text-yellow-600 mr-4"><i class="fa-solid fa-pen-to-square"></i></a>
                                         <form
                                             action="{{ route('energi.destroy', ['kolamId'=>$kolam->id,'siklus'=>$siklus->id,'energi'=>$row->id]) }}"
                                             method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
-                                                onclick="return confirm('Aksi ini tidak dapat dibatalkan! Apakah Anda yakin ingin menghapus data ini? ')"
-                                                class="text-red-600">Hapus Data</button>
+                                                onclick="return confirm('Aksi ini tidak dapat dibatalkan! Apakah Anda yakin ingin menghapus catatan ini? ')"
+                                                class="text-red-600"><i class="fa-solid fa-trash"></i></button>
                                         </form>
+
                                     </td>
                                     @endif
                                 </tr>

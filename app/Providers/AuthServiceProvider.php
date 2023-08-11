@@ -26,20 +26,23 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('aksesPengguna', function ($user) {
+        Gate::define('hakSuperadmin', function ($user) {
             return $user->role == 'superadmin';
+        });
+        Gate::define('hakDirektur', function ($user) {
+            return $user->role == 'superadmin' || $user->role == 'direktur';
+        });
+        Gate::define('hakTeknisi', function ($user) {
+            return $user->role == 'superadmin' || $user->role == 'direktur' || $user->role == 'teknisi';
         });
         Gate::define('aksesKaryawan', function ($user) {
             return $user->role == 'admin' || $user->role == 'superadmin' || $user->role == 'direktur';
         });
         Gate::define('aksesFinansial', function ($user) {
-            return $user->role == 'manajer_keuangan' || $user->role == 'superadmin' || $user->role == 'direktur';
+            return $user->role == 'manajer keuangan' || $user->role == 'superadmin' || $user->role == 'direktur';
         });
         Gate::define('aksesInventarisKolamPeralatan', function ($user) {
             return $user->role == 'admin' || $user->role == 'superadmin' || $user->role == 'direktur' || $user->role == 'teknisi';
-        });
-        Gate::define('hakTeknisi', function ($user) {
-            return $user->role == 'superadmin' || $user->role == 'direktur' || $user->role == 'teknisi';
         });
     }
 }

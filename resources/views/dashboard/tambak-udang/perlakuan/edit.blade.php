@@ -1,8 +1,8 @@
 <x-admin>
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 text-gray-900 dark:text-gray-100">
-            <h1 class="mb-4 text-xl font-bold">Tambah Catatan Perlakuan</h1>
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 text-gray-900 dark:text-gray-100">
+            <h1 class="mb-4 text-xl font-bold">Ubah Catatan Perlakuan</h1>
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg">
                 <div class="p-6 ">
                     <form method="POST"
                         action="{{ route('perlakuan.update', ['kolamId'=>$kolam->id, 'siklus'=>$siklus->id, 'perlakuan'=>$perlakuan->id]) }}">
@@ -28,7 +28,7 @@
 
                         <div class="flex items-center justify-end mt-4">
                             <x-primary-button class="ml-4">
-                                {{ __('Tambah Data') }}
+                                {{ __('Ubah Data') }}
                             </x-primary-button>
                         </div>
                     </form>

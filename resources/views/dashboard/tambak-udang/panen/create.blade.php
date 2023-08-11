@@ -1,12 +1,12 @@
 @php
-    $today = now()->format('Y-m-d');
+$today = now()->format('Y-m-d');
 @endphp
 
 <x-admin>
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 text-gray-900 dark:text-gray-100">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 text-gray-900 dark:text-gray-100">
             <h1 class="mb-4 text-xl font-bold">Tambah Catatan Panen</h1>
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg">
                 <div class="p-6 ">
                     <form method="POST"
                         action="{{ route('panen.store', ['kolamId' => $kolam->id, 'siklus' => $siklus->id]) }}">
@@ -23,9 +23,8 @@
                             <!-- Waktu Panen -->
                             <div>
                                 <x-input-label for="waktu_panen" :value="__('Waktu Panen')" />
-                                <x-text-input id="waktu_panen" class="block mt-1 w-full" type="time"
-                                    name="waktu_panen" :value="old('waktu_panen')" required autofocus
-                                    autocomplete="waktu_panen" />
+                                <x-text-input id="waktu_panen" class="block mt-1 w-full" type="time" name="waktu_panen"
+                                    :value="old('waktu_panen')" required autofocus autocomplete="waktu_panen" />
                                 <x-input-error :messages="$errors->get('waktu_panen')" class="mt-2" />
                             </div>
                         </div>
@@ -34,7 +33,7 @@
                         <div class="grid gap-4 mb-4 md:grid-cols-2">
                             <!-- Tonase Besar -->
                             <div>
-                                <x-input-label for="tonase_besar" :value="__('Tonase Besar')" class="font-light" />
+                                <x-input-label for="tonase_besar" :value="__('Tonase Besar (Kg)')" class="font-light" />
                                 <x-text-input id="tonase_besar" class="block mt-1 w-full" type="number" step='0.01'
                                     min='0' name="tonase_besar" :value="old('tonase_besar')" required autofocus
                                     autocomplete="tonase_besar" />
@@ -43,7 +42,7 @@
 
                             <!-- Tonase Kecil -->
                             <div>
-                                <x-input-label for="tonase_kecil" :value="__('Tonase Kecil')" class="font-light" />
+                                <x-input-label for="tonase_kecil" :value="__('Tonase Kecil (Kg)')" class="font-light" />
                                 <x-text-input id="tonase_kecil" class="block mt-1 w-full" type="number" step='0.01'
                                     min='0' name="tonase_kecil" :value="old('tonase_kecil')" required autofocus
                                     autocomplete="tonase_kecil" />

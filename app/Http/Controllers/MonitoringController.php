@@ -10,17 +10,55 @@ use Illuminate\Http\Request;
 
 class MonitoringController extends Controller
 {
-    public function index($kolamId, $siklusId)
+    public function __construct()
+    {
+        // Middleware akan diterapkan hanya pada rute edit dan destroy
+        $this->middleware('validated.data')->only(['edit', 'destroy']);
+    }
+
+    public function index(Request $request, $kolamId, $siklusId)
     {
         $kolam = Kolam::findOrFail($kolamId);
         $siklus = $kolam->siklus()->findOrFail($siklusId);
-        // dd($kolam);
 
-        $siklusTerpilih = $siklus->monitoring()->where('kolam_id', $kolam->id)->orderBy('created_at', 'desc')->get();
+        $siklusTerpilih = $siklus->monitoring()->where('kolam_id', $kolam->id)->orderBy('tanggal', 'desc')->orderBy('waktu_pengukuran', 'desc')->get();
 
         $siklusBerjalan = ($siklus->tanggal_selesai === null);
 
-        return view('dashboard.tambak-udang.monitoring.index', compact('kolam', 'siklus', 'siklusTerpilih', 'siklusBerjalan'));
+        function getChartData($siklusTerpilih)
+        {
+            $dataPagi = $siklusTerpilih->filter(function ($item) {
+                $time = Carbon::parse($item->waktu_pengukuran);
+                return $time->between('00:00:00', '12:00:00');
+            })->sortBy('tanggal')->groupby(function ($item) {
+                return Carbon::parse($item->tanggal)->format('j M o');
+            })->map(function ($group) {
+                return $group->first();
+            });
+            $dataSore = $siklusTerpilih->filter(function ($item) {
+                $time = Carbon::parse($item->waktu_pengukuran);
+                return $time->between('12:00:00', '23:59:59');
+            })->sortBy('tanggal')->groupby(function ($item) {
+                return Carbon::parse($item->tanggal)->format('j M o');
+            })->map(function ($group) {
+                return $group->first();
+            });
+            return ['dataPagi' => $dataPagi, 'dataSore' => $dataSore];
+        };
+
+
+        $tanggal = $siklusTerpilih->sort()->groupby(function ($item) {
+            return Carbon::parse($item->tanggal)->format('j M o');
+        });
+
+        $data = getChartData($siklusTerpilih);
+
+        $chartData = [
+            'dataPagi' => $data['dataPagi'],
+            'dataSore' => $data['dataSore']
+        ];
+
+        return view('dashboard.tambak-udang.monitoring.index', compact('kolam', 'siklus', 'siklusTerpilih', 'siklusBerjalan', 'chartData'));
     }
 
     public function create($kolamId, $siklusId)
@@ -51,7 +89,7 @@ class MonitoringController extends Controller
 
         $siklusSaatIni = $kolam->siklus()->whereNull('tanggal_selesai')->first();
 
-        $user = auth()->user();
+        // $user = auth()->user();
 
         $monitoring = new Monitoring();
 
@@ -69,7 +107,7 @@ class MonitoringController extends Controller
         $monitoring->waktu_pengukuran = $validation['waktu_pengukuran'];
         $monitoring->catatan = $request->catatan;
 
-        $monitoring->user()->associate($user);
+        // $monitoring->user()->associate($user);
         $monitoring->siklus()->associate($siklusSaatIni);
 
         $kolam->monitoring()->save($monitoring);
@@ -134,5 +172,17 @@ class MonitoringController extends Controller
         $monitoring->delete();
 
         return redirect()->route('monitoring.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data berhasil dihapus');
+    }
+
+    public function dataValidated($kolamId, $siklusId, $monitoringId)
+    {
+        $kolam = Kolam::findOrFail($kolamId);
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
+        $monitoring = $siklus->monitoring()->findOrFail($monitoringId);
+
+        $monitoring->is_validated = 1;
+        $monitoring->save();
+
+        return redirect()->route('monitoring.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data berhasil divalidasi');
     }
 }

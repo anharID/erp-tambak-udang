@@ -45,7 +45,7 @@
 
                         <!-- Email -->
                         <div class="mt-4">
-                            <x-input-label for="email" :value="__('Email Address')" />
+                            <x-input-label for="email" :value="__('Alamat Email')" />
                             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="email" />
                             <x-input-error :messages="$errors->get('email')" class="mt-2" />
                         </div>
@@ -80,6 +80,13 @@
                             <x-input-label for="gaji" :value="__('Gaji')" />
                             <x-text-input id="gaji" class="block mt-1 w-full" type="number" name="gaji" min="0" :value="old('gaji')" required autocomplete="gaji" />
                             <x-input-error :messages="$errors->get('gaji')" class="mt-2" />
+                        </div>
+
+                        <!-- Bonus -->
+                        <div class="mt-4">
+                            <x-input-label for="bonus" :value="__('Bonus (%)')" />
+                            <x-text-input id="bonus" class="block mt-1 w-full" type="number" name="bonus" min="0" :value="old('bonus')" required autocomplete="bonus" />
+                            <x-input-error :messages="$errors->get('bonus')" class="mt-2" />
                         </div>
 
                         <div class="flex items-center justify-end mt-4">

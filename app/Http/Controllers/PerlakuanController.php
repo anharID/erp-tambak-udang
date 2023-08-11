@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 
 class PerlakuanController extends Controller
 {
+    public function __construct()
+    {
+        // Middleware akan diterapkan hanya pada rute edit dan destroy
+        $this->middleware('validated.data')->only(['edit', 'destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -50,7 +56,7 @@ class PerlakuanController extends Controller
 
         $siklusSaatIni = $kolam->siklus()->where('kolam_id', $kolamId)->whereNull('tanggal_selesai')->first();
 
-        $user = auth()->user();
+        // $user = auth()->user();
 
         $validation = $request->validate([
             'tanggal' => 'required|date',
@@ -60,7 +66,7 @@ class PerlakuanController extends Controller
         $perlakuan = new Perlakuan();
         $perlakuan->tanggal = $validation['tanggal'];
         $perlakuan->catatan = $validation['catatan'];
-        $perlakuan->user()->associate($user);
+        // $perlakuan->user()->associate($user);
         $perlakuan->siklus()->associate($siklusSaatIni);
 
         $kolam->perlakuan()->save($perlakuan);
@@ -134,5 +140,17 @@ class PerlakuanController extends Controller
         $perlakuan->delete();
 
         return redirect()->route('perlakuan.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data perlakuan berhasil dihapus.');
+    }
+
+    public function dataValidated($kolamId, $siklusId, $perlakuanId)
+    {
+        $kolam = Kolam::findOrFail($kolamId);
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
+        $perlakuan = $siklus->perlakuan()->findOrFail($perlakuanId);
+
+        $perlakuan->is_validated = 1;
+        $perlakuan->save();
+
+        return redirect()->route('perlakuan.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data berhasil divalidasi');
     }
 }

@@ -65,5 +65,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'role' => \App\Http\Middleware\RoleMiddleware::class,
         'detail-kolam' => \App\Http\Middleware\DetailKolam::class,
+        'validated.data' => \App\Http\Middleware\DataValidated::class,
     ];
 }

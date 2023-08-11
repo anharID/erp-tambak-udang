@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('kolam_id')->constrained('kolam');
             $table->foreignId('siklus_id')->constrained('siklus');
-            $table->foreignId('user_id')->constrained('users');
+            // $table->foreignId('user_id')->constrained('users');
             $table->date('tanggal');
             $table->integer('umur');
             $table->float('berat_sampling');
@@ -30,6 +30,7 @@ return new class extends Migration
             $table->float('biomas');
             $table->float('fcr');
             $table->string('catatan')->nullable();
+            $table->boolean('is_validated')->default(0);
             $table->timestamps();
         });
     }

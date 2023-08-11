@@ -4,9 +4,9 @@ $today = now()->format('Y-m-d');
 
 <x-admin>
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 text-gray-900 dark:text-gray-100">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 text-gray-900 dark:text-gray-100">
             <h1 class="mb-4 text-xl font-bold">Tambah Catatan Sampling</h1>
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg">
                 <div class="p-6 ">
                     <form method="POST"
                         action="{{ route('sampling.store', ['kolamId'=>$kolam->id, 'siklus'=>$siklus->id]) }}">
@@ -21,7 +21,7 @@ $today = now()->format('Y-m-d');
                             </div>
                             <!-- Berat -->
                             <div>
-                                <x-input-label for="berat_sampling" :value="__('Berat')" />
+                                <x-input-label for="berat_sampling" :value="__('Berat (gr)')" />
                                 <x-text-input id="berat_sampling" class="block mt-1 w-full" type="number"
                                     name="berat_sampling" :value="old('berat_sampling')" required autofocus
                                     autocomplete="berat_sampling" />

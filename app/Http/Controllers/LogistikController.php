@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Inventaris;
+use App\Models\Finansial;
+use App\Models\Siklus;
 use App\Models\Logistik;
 use Illuminate\Http\Request;
 
@@ -11,15 +13,43 @@ class LogistikController extends Controller
     public function index($inventaris)
     {
         $data_inventaris = Inventaris::find($inventaris);
-        $logistik=$data_inventaris->logistik()->get();
+        $logistik = $data_inventaris->logistik()->get();
         // dd($logistik);
         return view('dashboard.inventaris.logistik.index', compact('data_inventaris', 'logistik'));
+    }
+
+    private function updateTotalSaldo($finansial)
+    {
+        // Perbarui total saldo data setelahnya
+        $dataSetelahnya = Finansial::where('id', '>', $finansial->id)->get();
+
+        foreach ($dataSetelahnya as $data) {
+            $dataSebelumnya = Finansial::where('id', '<', $data['id'])->orderBy('id', 'desc')->first();
+            $totalSaldoSebelumnya = $dataSebelumnya->total_saldo;
+            if ($data['jenis_transaksi'] === 'Pemasukan') {
+                $totalSaldoBaru = $totalSaldoSebelumnya + $data['jumlah'];
+                $data->update([
+                    'total_saldo' => $totalSaldoBaru
+                ]);
+            } elseif ($data['jenis_transaksi'] === 'Pengeluaran' || $data['jenis_transaksi'] === 'Gaji Karyawan') {
+                $totalSaldoBaru = $totalSaldoSebelumnya - $data['jumlah'];
+                $data->update([
+                    'total_saldo' => $totalSaldoBaru
+                ]);
+            } else {
+                $totalSaldoBaru = $totalSaldoSebelumnya;
+                $data->update([
+                    'total_saldo' => $totalSaldoBaru
+                ]);
+            }
+        }
     }
 
     public function create($inventaris)
     {
         $inventaris = Inventaris::find($inventaris);
-        return view('dashboard.inventaris.logistik.create', compact('inventaris'));
+        $siklus = Siklus::all();
+        return view('dashboard.inventaris.logistik.create', compact('inventaris', 'siklus'));
     }
 
     public function store(Request $request, $inventaris)
@@ -30,6 +60,7 @@ class LogistikController extends Controller
             'sumber' => ['required', 'string', 'max:100'],
         ]);
 
+        $finansial = new Finansial();
         $item = Inventaris::find($inventaris);
         $stok_lama = $item->stok;
 
@@ -47,29 +78,61 @@ class LogistikController extends Controller
         $item->nilai_inventaris = $item->harga_satuan * $stok_baru;
         $item->save();
 
-        Logistik::create([
+        $logistik = Logistik::create([
+            'siklus_id' => $request->siklus_id,
             'inventaris_id' => $inventaris,
             'tanggal' => $request->tanggal,
             'keterangan' => $request->keterangan,
             'stok_masuk' => $request->stok_masuk,
             'stok_keluar' => $request->stok_keluar,
-	        'sumber' => $request->sumber,
-	        'catatan' => $request->catatan
+            'sumber' => $request->sumber,
+            'catatan' => $request->catatan
         ]);
+
+        // Finansial
+
+        if ($request->input('keterangan') == 'stok_masuk') {
+            $jenisTransaksi = 'Pengeluaran';
+            $jumlahStok = $request->stok_masuk;
+            $keterangan = "Stok Masuk - " . $item->nama_barang;
+            $finansial->logistik_id = $logistik->id;
+            $finansial->siklus_id = $request->siklus_id;
+            $finansial->tanggal = $request->tanggal;
+            $finansial->jenis_transaksi = $jenisTransaksi;
+            $finansial->jumlah = $item->harga_satuan * $jumlahStok;
+            $finansial->keterangan = $keterangan;
+            $finansial->catatan = $request->catatan;
+            $finansial->save();
+            // Hitung total saldo berdasarkan transaksi sebelumnya
+            $totalSaldoSebelumnya = 0;
+
+            // Cek apakah ada transaksi sebelumnya
+            $dataSebelumnya = Finansial::where('id', '<', $finansial->id)->orderBy('id', 'desc')->first();
+
+            if ($dataSebelumnya) {
+                $totalSaldoSebelumnya = $dataSebelumnya->total_saldo;
+            }
+
+            $totalSaldo = $totalSaldoSebelumnya - $finansial->jumlah;
+
+            $finansial->update([
+                'total_saldo' => $totalSaldo
+            ]);
+        }
 
         return redirect()->route('logistik.index', $inventaris)->with('success', 'Data logistik berhasil ditambahkan');
     }
 
     public function show($inventaris, $logistik)
     {
-
     }
 
     public function edit($inventaris, $logistik)
     {
         $inventaris = Inventaris::find($inventaris);
         $logistik = Logistik::find($logistik);
-        return view('dashboard.inventaris.logistik.edit', compact('inventaris', 'logistik'));
+        $siklus = Siklus::all();
+        return view('dashboard.inventaris.logistik.edit', compact('inventaris', 'logistik', 'siklus'));
     }
 
     public function update(Request $request, $inventaris, $logistik)
@@ -81,7 +144,7 @@ class LogistikController extends Controller
         ]);
 
         $logistik = Logistik::find($logistik);
-        
+
         $item = Inventaris::find($inventaris);
         $stok_inventaris = $item->stok;
 
@@ -98,21 +161,62 @@ class LogistikController extends Controller
                 return redirect()->route('logistik.edit', ['inventaris' => $inventaris, 'logistik' => $logistik])->withErrors(['stok_keluar' => 'Stok keluar melebihi stok yang tersedia'])->withInput();
             }
         }
-        
-    // Update the Inventaris stok
+
+        // Update the Inventaris stok
         $item->stok = $stok_inventaris;
         $item->nilai_inventaris = $item->harga_satuan * $stok_inventaris;
         $item->save();
 
         $logistik->update([
             'inventaris_id' => $inventaris,
+            'siklus_id' => $request->siklus_id,
             'tanggal' => $request->tanggal,
             'keterangan' => $request->keterangan,
             'stok_masuk' => $request->stok_masuk,
             'stok_keluar' => $request->stok_keluar,
-	        'sumber' => $request->sumber,
-	        'catatan' => $request->catatan
+            'sumber' => $request->sumber,
+            'catatan' => $request->catatan
         ]);
+
+        // Finansial
+        $finansial = Finansial::where('logistik_id', $logistik->id)->first();
+        if (!$finansial) {
+            $finansial = new Finansial();
+        };
+        if ($request->input('keterangan') == 'stok_masuk') {
+            $jenisTransaksi = 'Pengeluaran';
+            $jumlahStok = $request->stok_masuk;
+            $keterangan = "Stok Masuk - " . $item->nama_barang;
+            $finansial->logistik_id = $logistik->id;
+            $finansial->siklus_id = $request->siklus_id;
+            $finansial->tanggal = $request->tanggal;
+            $finansial->jenis_transaksi = $jenisTransaksi;
+            $finansial->jumlah = $item->harga_satuan * $jumlahStok;
+            $finansial->keterangan = $keterangan;
+            $finansial->catatan = $request->catatan;
+            $finansial->save();
+            // Hitung total saldo berdasarkan transaksi sebelumnya
+            $totalSaldoSebelumnya = 0;
+
+            // Cek apakah ada transaksi sebelumnya
+            $dataSebelumnya = Finansial::where('id', '<', $finansial->id)->orderBy('id', 'desc')->first();
+
+            if ($dataSebelumnya) {
+                $totalSaldoSebelumnya = $dataSebelumnya->total_saldo;
+            }
+
+            $totalSaldo = $totalSaldoSebelumnya - $finansial->jumlah;
+
+            $finansial->update([
+                'total_saldo' => $totalSaldo
+            ]);
+
+            $this->updateTotalSaldo($finansial);
+
+        } elseif ($request->input('keterangan') == 'stok_keluar'){
+            $finansial->delete();
+            $this->updateTotalSaldo($finansial);
+        }
 
         return redirect()->route('logistik.index', $inventaris)->with('success', 'Data logistik berhasil diperbarui');
     }
@@ -120,6 +224,11 @@ class LogistikController extends Controller
     public function destroy($inventaris, $logistik)
     {
         $logistik = Logistik::find($logistik);
+        $finansial = Finansial::where('logistik_id', $logistik->id)->first();
+        if ($finansial) {
+            $finansial->delete();
+            $this->updateTotalSaldo($finansial);
+        }
         $logistik->delete();
 
         return redirect()->route('logistik.index', $inventaris)->with('success', 'Data logistik berhasil dihapus');

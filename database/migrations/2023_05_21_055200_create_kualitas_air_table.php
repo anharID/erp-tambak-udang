@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('kolam_id')->constrained('kolam');
             $table->foreignId('siklus_id')->constrained('siklus');
-            $table->foreignId('user_id')->constrained('users');
+            // $table->foreignId('user_id')->constrained('users');
             $table->float('suhu');
             $table->float('ph');
             $table->float('do');
@@ -31,6 +31,7 @@ return new class extends Migration
             $table->time('waktu_pengukuran');
             $table->date('tanggal');
             $table->string('catatan')->nullable();
+            $table->boolean('is_validated')->default(0);
             $table->timestamps();
         });
     }

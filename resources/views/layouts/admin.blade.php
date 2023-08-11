@@ -1,8 +1,6 @@
 <!DOCTYPE html>
-<html :class="{ 'dark': dark }"
-    x-data="{ dark: localStorage.getItem('dark') === 'true' || false,   isSideMenuOpen: false, isProfileMenuOpen: false}"
-    x-init="$watch('dark', value => localStorage.setItem('dark', value))" lang="{{ str_replace('_', '-', 
-app()->getLocale()) }}">
+<html :class="{ 'dark': dark }" x-data="data()" x-init="$watch('dark', value => localStorage.setItem('dark', value))"
+    lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="utf-8">
@@ -20,6 +18,7 @@ app()->getLocale()) }}">
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite('resources/js/focus-trap.js')
 
 </head>
 
@@ -80,14 +79,11 @@ app()->getLocale()) }}">
 
                         <!-- Profile menu -->
                         <li class="relative">
-                            <button class="align-middle rounded-full focus:shadow-outline-blue focus:outline-none"
-                                @click="isProfileMenuOpen = !isProfileMenuOpen" @keydown.escape="closeProfileMenu"
+                            <button class="align-middle" x-on:click="toggleProfileMenu" @keydown.escape="closeProfileMenu"
                                 aria-label="Account" aria-haspopup="true">
-                                <img class="object-cover w-8 h-8 rounded-full"
-                                    src="https://images.unsplash.com/photo-1502378735452-bc7d86632805?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max&s=aa3a807e1bbdfd4364d1f449eaa96d82"
-                                    alt="" aria-hidden="true" />
+                                <i class="fa-solid fa-circle-user fa-lg mr-2"></i>
                             </button>
-                            <template x-if="isProfileMenuOpen">
+                            <div x-cloak x-show="isProfileMenuOpen">
                                 <ul x-transition:leave="transition ease-in duration-150"
                                     x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
                                     @click.away="closeProfileMenu" @keydown.escape="closeProfileMenu"
@@ -138,24 +134,30 @@ app()->getLocale()) }}">
                                         </li>
                                     </form>
                                 </ul>
-                            </template>
+                            </div>
                         </li>
                     </ul>
                 </div>
             </header>
 
             <main class="h-full overflow-y-auto bg-gray-100 dark:bg-gray-900">
-                {{ $slot }}
+                <div class="min-h-screen">{{ $slot }}</div>
+                <footer>
+                    <nav class="bg-white py-2 border-t text-gray-500 md:py-2">
+                        <div class="text-center pl-3 text-sm">
+                            © 2023 CV Riz Samudera
+                        </div>
+                    </nav>
+                </footer>
             </main>
+
+
+
+
 
         </div>
     </div>
-    {{-- <script>
-        $(document).ready(function() {
-            $('.datatable').DataTable();
-        });
 
-    </script> --}}
 </body>
 
 </html>

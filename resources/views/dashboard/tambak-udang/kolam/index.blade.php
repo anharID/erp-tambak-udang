@@ -13,30 +13,43 @@
             <h1 class="mb-4 font-bold text-xl">Informasi Siklus Berjalan</h1>
             <div class="w-full md:w-1/2 p-6 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 @if ($siklusAktif)
-                <p>Tanggal mulai : {{ $siklusAktif->tanggal_mulai }}</p>
-                <p>DOC : {{ $doc }}</p>
-                <p>Jumlah kolam aktif: {{ $siklusAktif->kolam->count() }}</p>
-                <p class="mb-4">Total Tebar : {{ $siklusAktif->kolam->sum('pivot.jumlah_tebar') }}</p>
+                <table>
+                    <tr>
+                        <td>Tanggal Mulai</td>
+                        <td>: {{ $siklusAktif->tanggal_mulai }}</td>
+                    </tr>
+                    <tr>
+                        <td>DoC </td>
+                        <td>: {{ $doc }}</td>
+                    </tr>
+                    <tr>
+                        <td>Jumlah Kolam Aktif </td>
+                        <td>: {{ $siklusAktif->kolam->count() }}</td>
+                    </tr>
+                    <tr>
+                        <td>Total Tebar </td>
+                        <td>: {{ $siklusAktif->kolam->sum('pivot.jumlah_tebar') }}</td>
+                    </tr>
+                </table>
                 @can('hakTeknisi')
                 <div class="mt-4 flex items-center justify-center">
                     <a href="{{ route('edit_siklus', ['siklus'=>$siklusAktif->id]) }}"
-                        class="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
                         Edit Siklus
                     </a>
                     <form action="{{ route('tutup_siklus', ['siklus' => $siklusAktif->id]) }}" method="POST">
                         @csrf
                         @method('put')
                         <button type="submit"
-                            class="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded "
+                            class="ml-2 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-600 border border-transparent rounded-lg active:bg-red-600 hover:bg-red-700 focus:outline-none focus:shadow-outline-red"
                             onclick="return confirm('Apakah Anda yakin ingin menutup siklus saat ini?')">Tutup
                             Siklus</button>
                     </form>
                 </div>
                 @endcan
                 @else
-                <p class="text-sm italic mb-4">Saat ini tidak ada siklus yang berjalan. Untuk memulai siklus
-                    silahkan klik mulai siklus
-                    dibawah.</p>
+                <p class="text-sm italic mb-4">Saat ini tidak ada siklus yang berjalan. Untuk memulai siklus silahkan
+                    klik mulai siklus dibawah.</p>
                 @can('hakTeknisi')
                 <a href="{{ route('buat_siklus') }}"
                     class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
@@ -54,8 +67,8 @@
 
                 {{-- Tombol tambah kolam --}}
                 <a href="{{ route('kolam.create') }}"
-                    class="px-4 mr-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
-                    Tambah Kolam
+                    class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
+                    <i class="fa-solid fa-plus mr-1"></i> Tambah Kolam
                 </a>
 
                 <div class="w-full overflow-x-auto mt-4">
@@ -112,7 +125,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
-                                            onclick="return confirm('Aksi ini tidak dapat dibatalkan! Apakah Anda yakin ingin menghapus kolam ini? ')"
+                                            onclick="return confirm('Aksi ini tidak dapat dibatalkan! Apakah Anda yakin ingin menghapus kolam {{ $row->nama }}? ')"
                                             class="text-red-600"><i class="fa-solid fa-trash"></i></button>
                                     </form>
                                 </td>
@@ -123,6 +136,7 @@
                 </div>
             </div>
 
+            @can('hakDirektur')
             <h1 class="my-4 font-bold text-xl">Daftar Siklus</h1>
             <div class="w-full p-6 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="w-full overflow-x-auto mt-4">
@@ -151,6 +165,9 @@
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $row->tanggal_mulai }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $row->tanggal_selesai }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap flex">
+                                    <a href="{{ route('exportpdf', $row->id) }}" target="_blank"
+                                        class="text-blue-600 mr-4"><i class="fa-solid fa-file-pdf"></i></a>
+                                    @can('hakTeknisi')
                                     @if ($row->tanggal_selesai)
                                     <form action="{{ route('hapus_siklus', $row->id) }}" method="POST">
                                         @csrf
@@ -164,6 +181,7 @@
                                             class="fa-solid fa-pen-to-square"></i></a>
 
                                     @endif
+                                    @endcan
                                 </td>
                             </tr>
                             @endforeach
@@ -172,6 +190,7 @@
                     </table>
                 </div>
             </div>
+            @endcan
         </div>
     </div>
 </x-admin>

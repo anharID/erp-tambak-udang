@@ -13,7 +13,7 @@
 
                     <a href="{{ route('karyawan.create') }}"
                         class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
-                        Tambah Karyawan
+                        <i class="fa-solid fa-plus mr-1"></i> Tambah Karyawan
                     </a>
                     <div class="w-full mt-4">
                         <table class="w-full table-auto mt-4 datatable hover">
@@ -36,7 +36,7 @@
                                         Nomor HP</th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                        Email</th>
+                                        Alamat Email</th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                         Jabatan</th>
@@ -46,6 +46,9 @@
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                         Gaji</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        Bonus</th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                         Aksi</th>
@@ -67,15 +70,18 @@
                                             <td class="px-6 py-4 whitespace-nowrap">Cuti</td>
                                         @endif
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            {{ 'Rp ' . number_format($row->gaji, 2, ',', '.') }}
+                                            {{ 'Rp ' . number_format($row->gaji, 2, ',', '.') }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            {{ $row->bonus . '%' }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap flex">
                                             <a href="{{ route('karyawan.edit', $row->id) }}"
-                                                class="text-yellow-600 mr-4"><i class="fa-solid fa-pen-to-square"></i></a>
+                                                class="text-yellow-600 mr-4"><i
+                                                    class="fa-solid fa-pen-to-square"></i></a>
                                             <form action="{{ route('karyawan.destroy', $row->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit"
-                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus user ini?')"
+                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"
                                                     class="text-red-600"><i class="fa-solid fa-trash"></i></button>
                                             </form>
                                         </td>

@@ -17,12 +17,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('kolam_id')->constrained('kolam');
             $table->foreignId('siklus_id')->constrained('siklus');
-            $table->foreignId('user_id')->constrained('users');
+            // $table->foreignId('user_id')->constrained('users');
             $table->date('tanggal');
             $table->time('waktu_pemberian');
             $table->string('no_pakan');
             $table->float('jumlah_kg');
             $table->string('catatan')->nullable();
+            $table->boolean('is_validated')->default(0);
             $table->timestamps();
         });
     }

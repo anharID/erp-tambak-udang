@@ -6,7 +6,9 @@ use App\Models\Kolam;
 use App\Models\Pakan;
 use App\Models\Panen;
 use App\Models\Energi;
+use App\Models\Logistik;
 use App\Models\Sampling;
+use App\Models\Perlakuan;
 use App\Models\Monitoring;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -45,6 +47,10 @@ class Siklus extends Model
     public function energi()
     {
         return $this->hasMany(Energi::class);
+    }
+    public function logistik()
+    {
+        return $this->hasMany(Logistik::class);
     }
 
     // public function getRouteKeyName()

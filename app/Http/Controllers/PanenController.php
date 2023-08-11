@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 
 class PanenController extends Controller
 {
+    public function __construct()
+    {
+        // Middleware akan diterapkan hanya pada rute edit dan destroy
+        $this->middleware('validated.data')->only(['edit', 'destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -57,7 +63,7 @@ class PanenController extends Controller
         //Data yang diperlukan
         $kolam = Kolam::findOrFail($kolamId);
         $siklusSaatIni = $kolam->siklus()->whereNull('tanggal_selesai')->first();
-        $user = auth()->user();
+        // $user = auth()->user();
 
         //ABW
         $abw = 1000 / $validation['size_besar'];
@@ -82,7 +88,7 @@ class PanenController extends Controller
         $panen->status = $request->status;
         $panen->catatan = $request->catatan;
 
-        $panen->user()->associate($user);
+        // $panen->user()->associate($user);
         $panen->siklus()->associate($siklusSaatIni);
 
         $kolam->panen()->save($panen);
@@ -183,5 +189,17 @@ class PanenController extends Controller
         $panen->delete();
 
         return redirect()->route('panen.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data berhasil dihapus');
+    }
+
+    public function dataValidated($kolamId, $siklusId, $panenId)
+    {
+        $kolam = Kolam::findOrFail($kolamId);
+        $siklus = $kolam->siklus()->findOrFail($siklusId);
+        $panen = $siklus->panen()->findOrFail($panenId);
+
+        $panen->is_validated = 1;
+        $panen->save();
+
+        return redirect()->route('panen.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data berhasil divalidasi');
     }
 }
