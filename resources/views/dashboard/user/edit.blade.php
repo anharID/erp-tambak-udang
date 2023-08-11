@@ -12,14 +12,16 @@
                         <!-- Name -->
                         <div>
                             <x-input-label for="name" :value="__('Name')" />
-                            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value=" $user->name ?? old('name')" required autofocus autocomplete="name" />
+                            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name"
+                                :value=" $user->name ?? old('name')" required autofocus autocomplete="name" />
                             <x-input-error :messages="$errors->get('name')" class="mt-2" />
                         </div>
 
                         <!-- Email Address -->
                         <div class="mt-4">
                             <x-input-label for="email" :value="__('Email')" />
-                            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="$user->email ?? old('email')" required autocomplete="username" />
+                            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email"
+                                :value="$user->email ?? old('email')" required autocomplete="username" />
                             <x-input-error :messages="$errors->get('email')" class="mt-2" />
                         </div>
 
@@ -32,10 +34,12 @@
 
                         <div class="mt-4">
                             <x-input-label for="role" :value="__('Role')" />
-                            <select name="role" class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2">
+                            <select name="role"
+                                class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2">
                                 <option value="" disabled selected>Pilih satu opsi</option>
-                                <option value="superadmin" {{ $user->role == 'superadmin' ? 'selected' : '' }}>Super
-                                    Admin</option>
+                                {{-- <option value="superadmin" {{ $user->role == 'superadmin' ? 'selected' : ''
+                                    }}>Super
+                                    Admin</option> --}}
                                 <option value="direktur" {{ $user->role == 'direktur' ? 'selected' : '' }}>Direktur
                                 </option>
                                 <option value="manajer keuangan" {{ $user->role == 'manajer keuangan' ? 'selected' : ''
