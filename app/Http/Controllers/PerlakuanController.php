@@ -56,7 +56,7 @@ class PerlakuanController extends Controller
 
         $siklusSaatIni = $kolam->siklus()->where('kolam_id', $kolamId)->whereNull('tanggal_selesai')->first();
 
-        $user = auth()->user();
+        // $user = auth()->user();
 
         $validation = $request->validate([
             'tanggal' => 'required|date',
@@ -66,7 +66,7 @@ class PerlakuanController extends Controller
         $perlakuan = new Perlakuan();
         $perlakuan->tanggal = $validation['tanggal'];
         $perlakuan->catatan = $validation['catatan'];
-        $perlakuan->user()->associate($user);
+        // $perlakuan->user()->associate($user);
         $perlakuan->siklus()->associate($siklusSaatIni);
 
         $kolam->perlakuan()->save($perlakuan);

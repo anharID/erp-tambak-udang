@@ -27,10 +27,9 @@ return new class extends Migration
             $table->string("keterangan");
             $table->string("jenis_transaksi");
             $table->integer("jumlah");
-            $table->string("status");
-            $table->string("catatan");
+            $table->string("status")->nullable();
+            $table->string("catatan")->nullable();
             $table->date("tanggal");
-            $table->integer("total_saldo")->default(0);
             $table->timestamps();
         });
     }

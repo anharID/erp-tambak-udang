@@ -23,6 +23,9 @@
                             <select name="jenis_transaksi" id="jenis_transaksi"
                                 class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2">
                                 <option value="" disabled selected>Pilih satu opsi</option>
+                                <option value="Saldo Awal"
+                                    {{ $finansial->jenis_transaksi == 'Saldo Awal' ? 'selected' : '' }}>Saldo Awal
+                                </option>
                                 <option value="Pemasukan"
                                     {{ $finansial->jenis_transaksi == 'Pemasukan' ? 'selected' : '' }}>Pemasukan
                                 </option>
@@ -96,7 +99,7 @@
                         <div class="mt-4">
                             <x-input-label for="catatan" :value="__('Catatan')" />
                             <x-text-input id="catatan" class="block mt-1 w-full" type="text" name="catatan"
-                                :value="$finansial->catatan ?? old('catatan')" required autocomplete="catatan" />
+                                :value="$finansial->catatan ?? old('catatan')" autocomplete="catatan" />
                             <x-input-error :messages="$errors->get('catatan')" class="mt-2" />
                         </div>
 
@@ -104,7 +107,7 @@
                         <div class="mt-4">
                             <x-input-label for="status" :value="__('Status')" />
                             <x-text-input id="status" class="block mt-1 w-full" type="text" name="status"
-                                :value="$finansial->status ?? old('status')" required autocomplete="status" />
+                                :value="$finansial->status ?? old('status')" autocomplete="status" />
                             <x-input-error :messages="$errors->get('status')" class="mt-2" />
                         </div>
                         <div class="flex items-center justify-end mt-4">
@@ -119,4 +122,4 @@
         </div>
     </div>
 </x-admin>
-<script src="{{ Vite::asset('resources/js/finansial.js') }}" defer></script>
+@vite('resources/js/finansial.js')

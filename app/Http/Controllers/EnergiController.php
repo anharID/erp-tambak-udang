@@ -31,7 +31,7 @@ class EnergiController extends Controller
     {
         $kolam = Kolam::findOrFail($kolamId);
         $siklusSaatIni = $kolam->siklus()->whereNull('tanggal_selesai')->first();
-        $user = auth()->user();
+        // $user = auth()->user();
 
         $validation = $request->validate([
             'tanggal' => 'required|date',
@@ -53,7 +53,7 @@ class EnergiController extends Controller
         $energi->lama_penggunaan = $validation['lama_penggunaan'];
         $energi->kwh = $kwh;
         $energi->catatan = $request->catatan;
-        $energi->user()->associate($user);
+        // $energi->user()->associate($user);
         $energi->siklus()->associate($siklusSaatIni);
 
         $kolam->energi()->save($energi);

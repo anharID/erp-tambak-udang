@@ -63,7 +63,7 @@ class PanenController extends Controller
         //Data yang diperlukan
         $kolam = Kolam::findOrFail($kolamId);
         $siklusSaatIni = $kolam->siklus()->whereNull('tanggal_selesai')->first();
-        $user = auth()->user();
+        // $user = auth()->user();
 
         //ABW
         $abw = 1000 / $validation['size_besar'];
@@ -88,7 +88,7 @@ class PanenController extends Controller
         $panen->status = $request->status;
         $panen->catatan = $request->catatan;
 
-        $panen->user()->associate($user);
+        // $panen->user()->associate($user);
         $panen->siklus()->associate($siklusSaatIni);
 
         $kolam->panen()->save($panen);

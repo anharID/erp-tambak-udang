@@ -2,6 +2,9 @@ const jenisTransaksi = document.getElementById("jenis_transaksi");
 const keteranganField = document.getElementById("keterangan_field");
 const karyawanField = document.getElementById("karyawan_field");
 const kolamField = document.getElementById("kolam_field");
+const selectKaryawan = document.getElementById("karyawan");
+const inputJumlah = document.getElementById("jumlah");
+const inputKeterangan = document.getElementById("keterangan");
 
 keteranganField.style.display =
     jenisTransaksi.value === "Gaji Karyawan" ||
@@ -31,23 +34,21 @@ jenisTransaksi.addEventListener("change", () => {
             : "none";
     kolamField.style.display =
         jenisTransaksi.value === "Penjualan Udang" ? "block" : "none";
+    inputJumlah.value = "";
+    inputKeterangan.value = "";
     // keterangan.removeAttribute('required');
 });
-
-const selectKaryawan = document.getElementById("karyawan");
-const inputJumlah = document.getElementById("jumlah");
-const inputKeterangan = document.getElementById("keterangan");
 
 selectKaryawan.addEventListener("change", () => {
     const selectedOption = selectKaryawan.options[selectKaryawan.selectedIndex];
     const gaji = selectedOption.getAttribute("gaji");
     const bonus = selectedOption.getAttribute("bonus");
     const nama = selectedOption.getAttribute("nama");
-    if (jenisTransaksi.value === 'Gaji Karyawan') {
+    if (jenisTransaksi.value === "Gaji Karyawan") {
         inputJumlah.value = gaji;
         inputKeterangan.value = `Gaji Karyawan - ${nama}`;
-    } else if (jenisTransaksi.value === 'Bonus Karyawan') {
-        inputJumlah.value = Math.round(bonus/100 * keuntunganKotor);
+    } else if (jenisTransaksi.value === "Bonus Karyawan") {
+        inputJumlah.value =  Math.round((bonus / 100) * keuntunganKotor);
         inputKeterangan.value = `Bonus Karyawan - ${nama}`;
     }
 });

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
@@ -121,11 +121,12 @@
                 <tbody>
                     @foreach ($dataRekap as $d)
                     <tr>
+                        {{-- {{ 'Rp ' . number_format($totalPemasukan ?? 0, 2, ',', '.') }} --}}
                         <td><a href="#{{ $d['kolam']->nama }}">{{ $d['kolam']->nama }}</a>
                         </td>
                         <td>{{ $d['kolam']->tipe }}</td>
                         <td>{{ $d['kolam']->luas }}</td>
-                        <td>{{ $d['kolam']->pivot->jumlah_tebar }}</td>
+                        <td>{{ number_format($d['kolam']->pivot->jumlah_tebar) }}</td>
                         <td>{{ $d['pakan']->sum('jumlah_kg') }}</td>
                         <td>{{ $d['panen']->sum('tonase_jumlah') }}</td>
                         <td>{{ $d['sr'] }}</td>
@@ -178,10 +179,10 @@
                             tidak ideal.</p>
                         <p class="caption">*Nilai ADG ideal 0.2 - 0.5</p>
                         @endif
-                        @if (($rataSuhu <26 || $rataSuhu> 32) && ($rataPH <7.5 || $rataPH> 8.5) && ($rataDO <5 ||
-                                    $rataDO> 8) && ($rataSal <20 || $rataSal> 35) ) <h4>Kualitas air kolam <span
-                                                class="text-green">sudah
-                                                stabil</span></h4>
+                        @if (($rataSuhu >26 && $rataSuhu< 32) && ($rataPH>7.5 && $rataPH< 8.5) && ($rataDO>5 && $rataDO<
+                                    8) && ($rataSal>15 && $rataSal< 25) ) <h4>Kualitas air kolam <span
+                                            class="text-green">sudah
+                                            stabil</span></h4>
                                         <p>Kolam yang stabil dapat meningkatkan pertumbuhan dan kelangsungan hidup
                                             udang.</p>
                                         @else
@@ -189,7 +190,7 @@
                                         <p>Kolam yang kurang stabil dapat menurunkan pertumbuhan dan kelangsungan hidup
                                             udang. Silahkan cek detail monitoring kualitas air masing-masing kolam.</p>
                                         <p class="caption">*Parameter ideal : pH 7.5 -8.5; Suhu 26-32 &deg;C; DO 5-8
-                                            mg/L; Salinitas 20-35ppt.</p>
+                                            mg/L; Salinitas 15-25ppt.</p>
                                         @endif
         </div>
     </section>
@@ -223,7 +224,7 @@
             </tr>
             <tr>
                 <td>Jumlah Tebar</td>
-                <td>: {{ $d['kolam']->pivot->jumlah_tebar }}</td>
+                <td>: {{ number_format($d['kolam']->pivot->jumlah_tebar) }}</td>
             </tr>
         </table>
 
@@ -290,7 +291,7 @@
                     </tr>
                 </tbody>
             </table>
-            <p class="caption">*Parameter ideal : pH 7.5 -8.5; Suhu 26-32 &deg;C; DO 5-8 mg/L; Salinitas 20-35ppt.</p>
+            <p class="caption">*Parameter ideal : pH 7.5 -8.5; Suhu 26-32 &deg;C; DO 5-8 mg/L; Salinitas 15-25ppt.</p>
         </div>
 
         <div>

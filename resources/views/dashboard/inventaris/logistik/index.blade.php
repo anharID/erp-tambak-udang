@@ -12,7 +12,7 @@
                     @endif
 
                     <a href="{{ route('logistik.create', ['inventaris'=>$data_inventaris->id]) }}" class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
-                        Tambah Catatan Logistik
+                        <i class="fa-solid fa-plus mr-1"></i> Tambah Catatan Logistik
                     </a>
                     <a href="{{ route('inventaris.index') }}" class="ml-4 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
                         Manajemen Inventaris
@@ -27,7 +27,6 @@
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Stok Masuk</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Stok Keluar</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Sumber</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Catatan</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Aksi</th>
                                 </tr>
@@ -40,7 +39,6 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->stok_masuk }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->stok_keluar }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->sumber }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->status }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->catatan }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap flex">
                                         <a href="{{ route('logistik.edit', ['inventaris'=> $data_inventaris->id, 'logistik'=>$row->id]) }}" class="text-yellow-600 mr-4"><i class="fa-solid fa-pen-to-square"></i></a>

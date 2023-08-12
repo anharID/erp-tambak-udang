@@ -7,18 +7,17 @@ const ctx = document.getElementById("myChart");
 new Chart(ctx, {
     type: "bar",
     data: {
-        labels: dataPemasukan.labels,
         datasets: [
             {
                 label: "Pemasukan",
-                data: dataPemasukan.values,
+                data: Object.entries(dataPemasukan).map(([x, y]) => ({ x, y })),
                 borderWidth: 1,
                 backgroundColor: "rgba(34, 197, 94, 0.3)",
                 borderColor: "rgb(34, 197, 94)",
             },
             {
                 label: "Pengeluaran",
-                data: dataPengeluaran.values,
+                data: Object.entries(dataPengeluaran).map(([x, y]) => ({ x, y })),
                 borderWidth: 1,
                 backgroundColor: "rgba(239, 68, 68, 0.3)",
                 borderColor: "rgb(239, 68, 68)",

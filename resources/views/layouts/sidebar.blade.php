@@ -17,12 +17,12 @@
       </li>
     </ul>
     <ul>
-      @can('aksesPengguna')
+      @can('hakSuperadmin')
       <li class="relative px-6 py-3">
-        @if (request()->routeIs('users.index'))
+        @if (request()->is('users*'))
         <span class="absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
         @endif
-        <a class="{{ request()->routeIs('users.index') ? 'text-gray-800 dark:text-gray-100' : '' }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 "
+        <a class="{{ request()->is('users*') ? 'text-gray-800 dark:text-gray-100' : '' }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 "
           href="{{ route('users.index') }}">
           <i class="fa-solid fa-key"></i>
           <span class="ml-4">Manajemen Akun</span>
@@ -32,10 +32,10 @@
 
       @can('aksesKaryawan')
       <li class="relative px-6 py-3">
-        @if (request()->routeIs('karyawan.index'))
+        @if (request()->is('karyawan*'))
         <span class="absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
         @endif
-        <a class="{{ request()->routeIs('karyawan.index') ? 'text-gray-800 dark:text-gray-100' : '' }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+        <a class="{{ request()->is('karyawan*') ? 'text-gray-800 dark:text-gray-100' : '' }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
           href="{{ route('karyawan.index') }}">
           <i class="fa-solid fa-users"></i>
           <span class="ml-4">Manajemen Karyawan</span>
@@ -45,10 +45,10 @@
 
       @can('aksesFinansial')
       <li class="relative px-6 py-3">
-        @if (request()->routeIs('finansial.index'))
+        @if (request()->is('finansial*'))
         <span class="absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
         @endif
-        <a class="{{ request()->routeIs('finansial.index') ? 'text-gray-800 dark:text-gray-100' : '' }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+        <a class="{{ request()->is('finansial*') ? 'text-gray-800 dark:text-gray-100' : '' }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
           href="{{ route('finansial.index') }}">
           <i class="fa-solid fa-money-bill"></i>
           <span class="ml-4">Manajemen Finansial</span>
@@ -58,10 +58,10 @@
 
       @can('aksesInventarisKolamPeralatan')
       <li class="relative px-6 py-3">
-        @if (request()->routeIs('inventaris.index'))
-        <span class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
+        @if (request()->is('inventaris*'))
+        <span class="absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
         @endif
-        <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+        <a class="{{ request()->is('inventaris*') ? 'text-gray-800 dark:text-gray-100' : '' }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
           href="{{ route('inventaris.index') }}">
           <i class="fa-solid fa-warehouse fa-sm"></i>
           <span class="ml-4">Manajemen Inventaris</span>
@@ -71,10 +71,10 @@
 
       @can('aksesInventarisKolamPeralatan')
       <li class="relative px-6 py-3">
-        @if (request()->routeIs('kolam.index'))
+        @if ( request()->is('kolam*', 'siklus*'))
         <span class="absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
         @endif
-        <a class="{{ request()->routeIs('kolam.index') ? 'text-gray-800 dark:text-gray-100' : '' }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+        <a class="{{ request()->is('kolam*', 'siklus*') ? 'text-gray-800 dark:text-gray-100' : '' }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
           href="{{ route('kolam.index') }}">
           <i class="fa-solid fa-shrimp"></i>
           <span class="ml-4">Manajemen Tambak Udang</span>
@@ -84,10 +84,10 @@
 
       @can('aksesInventarisKolamPeralatan')
       <li class="relative px-6 py-3">
-        @if (request()->routeIs('peralatan.index'))
+        @if (request()->is('peralatan*'))
         <span class="absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
         @endif
-        <a class="{{ request()->routeIs('peralatan.index') ? 'text-gray-800 dark:text-gray-100' : '' }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+        <a class="{{ request()->is('peralatan*') ? 'text-gray-800 dark:text-gray-100' : '' }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
           href="{{ route('peralatan.index') }}">
           <i class="fa-solid fa-wrench"></i>
           <span class="ml-4">Manajemen Peralatan</span>
@@ -130,12 +130,12 @@
       </li>
     </ul>
     <ul>
-      @can('aksesPengguna')
+      @can('hakSuperadmin')
       <li class="relative px-6 py-3">
-        @if (request()->routeIs('users.index'))
+        @if (request()->is('users*'))
         <span class="absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
         @endif
-        <a class="{{ request()->routeIs('users.index') ? 'text-gray-800 dark:text-gray-100' : '' }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+        <a class="{{ request()->is('users*') ? 'text-gray-800 dark:text-gray-100' : '' }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
           href="{{ route('users.index') }}">
           <i class="fa-solid fa-key"></i>
           <span class="ml-4">Manajemen User</span>
@@ -145,10 +145,10 @@
 
       @can('aksesKaryawan')
       <li class="relative px-6 py-3">
-        @if (request()->routeIs('karyawan.index'))
+        @if (request()->is('karyawan*'))
         <span class="absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
         @endif
-        <a class="{{ request()->routeIs('karyawan.index') ? 'text-gray-800 dark:text-gray-100' : '' }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+        <a class="{{ request()->is('karyawan*') ? 'text-gray-800 dark:text-gray-100' : '' }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
           href="{{ route('karyawan.index') }}">
           <i class="fa-solid fa-users"></i>
           <span class="ml-4">Manajemen Karyawan</span>
@@ -158,10 +158,10 @@
 
       @can('aksesFinansial')
       <li class="relative px-6 py-3">
-        @if (request()->routeIs('finansial.index'))
+        @if (request()->is('finansial*'))
         <span class="absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
         @endif
-        <a class="{{ request()->routeIs('finansial.index') ? 'text-gray-800 dark:text-gray-100' : '' }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+        <a class="{{ request()->is('finansial*') ? 'text-gray-800 dark:text-gray-100' : '' }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
           href="{{ route('finansial.index') }}">
           <i class="fa-solid fa-money-bill"></i>
           <span class="ml-4">Manajemen Finansial</span>
@@ -171,10 +171,10 @@
 
       @can('aksesInventarisKolamPeralatan')
       <li class="relative px-6 py-3">
-        @if (request()->routeIs('inventaris.index'))
-        <span class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
+        @if (request()->is('inventaris*'))
+        <span class="absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
         @endif
-        <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+        <a class="{{ request()->is('inventaris*') ? 'text-gray-800 dark:text-gray-100' : '' }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
           href="buttons.html">
           <i class="fa-solid fa-warehouse fa-sm"></i>
           <span class="ml-4">Manajemen Inventaris</span>
@@ -184,10 +184,10 @@
 
       @can('aksesInventarisKolamPeralatan')
       <li class="relative px-6 py-3">
-        @if (request()->routeIs('kolam.index'))
+        @if (request()->is('kolam*', 'siklus*'))
         <span class="absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
         @endif
-        <a class="{{ request()->routeIs('kolam.index') ? 'text-gray-800 dark:text-gray-100' : '' }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+        <a class="{{ request()->is('kolam*', 'siklus*') ? 'text-gray-800 dark:text-gray-100' : '' }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
           href="{{ route('kolam.index') }}">
           <i class="fa-solid fa-shrimp"></i>
           <span class="ml-4">Manajemen Tambak Udang</span>
@@ -197,11 +197,11 @@
 
       @can('aksesInventarisKolamPeralatan')
       <li class="relative px-6 py-3">
-        @if (request()->routeIs('peralatan.index'))
-        <span class="absolute inset-y-0 left-0 w-1 bg-purple-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
+        @if (request()->is('peralatan*'))
+        <span class="absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
         @endif
-        <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-          href="tables.html">
+        <a class="{{ request()->is('peralatan*') ? 'text-gray-800 dark:text-gray-100' : '' }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
+          href="{{ route('peralatan.index') }}">
           <i class="fa-solid fa-wrench"></i>
           <span class="ml-4">Manajemen Peralatan</span>
         </a>

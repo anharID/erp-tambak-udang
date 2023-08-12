@@ -1,6 +1,3 @@
-@php
-$param = request()->input('chart');
-@endphp
 <x-admin>
     <div class="container grid py-12">
         <div class="w-full mx-auto px-4 sm:px-6 lg:px-8 text-gray-900 dark:text-gray-100 overflow-hidden">
@@ -17,16 +14,11 @@ $param = request()->input('chart');
             <div class="mb-8">
                 <select
                     class="mr-2 mb-2 w-60 rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2"
-                    name="chart" onchange="location = this.value;">
-                    <option value="">Pilih Grafik</option>
-                    <option
-                        value="{{ route('pakan.index', ['chart' => 'pakan_harian', 'kolamId' => $kolam->id, 'siklus' => $siklus->id]) }}"
-                        {{ $param=='pakan_harian' ? 'selected' : '' }}>
-                        Chart Pakan Harian</option>
-                    <option
-                        value="{{ route('pakan.index', ['chart' => 'pakan_kumulatif', 'kolamId' => $kolam->id, 'siklus' => $siklus->id]) }}"
-                        {{ $param=='pakan_kumulatif' ? 'selected' : '' }}>
-                        Chart Pakan Kumulatif</option>
+                    name="chart" id="selectChart">
+                    <option value="total_pakan" chartLabel="Pakan Harian" selected>
+                        Grafik Pakan Harian</option>
+                    <option value="total_pakan_kumulatif" chartLabel="Pakan Kumulatif">
+                        Grafik Pakan Kumulatif</option>
                 </select>
                 <div class="min-w-0 h-96 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
                     <canvas id="myChart">
@@ -91,20 +83,23 @@ $param = request()->input('chart');
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $row->catatan }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $row->is_validated == 0 ? 'Belum' :
                                     'Sudah' }}</td>
+
                                 @if ($siklusBerjalan)
-                                @if ($row->is_validated == 0)
                                 <td class="px-6 py-4 whitespace-nowrap flex">
                                     @can('hakTeknisi')
+                                    @if ($row->is_validated == 0)
                                     <form
                                         action="{{ route('validasi_pakan', ['kolamId'=>$kolam->id,'siklus'=>$siklus->id,'pakan'=>$row->id]) }}"
                                         method="POST">
                                         @csrf
                                         <button type="submit"
-                                            onclick="return confirm('Aksi ini tidak dapat dibatalkan! Tandai entri ini sebagai sudah divalidasi? ')"
+                                            onclick="return confirm('Aksi ini tidak dapat dibatalkan! Tandai catatan ini sebagai sudah divalidasi? ')"
                                             class="text-green-600 mr-4"><i
                                                 class="fa-regular fa-circle-check"></i></button>
                                     </form>
+                                    @endif
                                     @endcan
+                                    @if ($row->is_validated == 0 || auth()->user()->role === "superadmin")
                                     <a href="{{ route('pakan.edit', ['kolamId'=>$kolam->id, 'siklus'=>$siklus->id, 'pakan'=>$row->id]) }}"
                                         class="text-yellow-600 mr-4"><i class="fa-solid fa-pen-to-square"></i></a>
                                     <form
@@ -113,13 +108,13 @@ $param = request()->input('chart');
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
-                                            onclick="return confirm('Aksi ini tidak dapat dibatalkan! Apakah Anda yakin ingin menghapus kolam ini? ')"
+                                            onclick="return confirm('Aksi ini tidak dapat dibatalkan! Apakah Anda yakin ingin menghapus catatan ini? ')"
                                             class="text-red-600"><i class="fa-solid fa-trash"></i></button>
                                     </form>
+                                    @else
+                                    -
+                                    @endif
                                 </td>
-                                @else
-                                <td>-</td>
-                                @endif
                                 @endif
                             </tr>
                             @endforeach

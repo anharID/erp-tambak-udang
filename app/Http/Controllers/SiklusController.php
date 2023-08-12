@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use App\Models\Kolam;
 use App\Models\Siklus;
 use Illuminate\Http\Request;
@@ -119,8 +118,6 @@ class SiklusController extends Controller
         $siklus = Siklus::findOrFail($siklusId);
         $kolam = $siklus->kolam()->get();
 
-        // dd($kolam);
-
         $dataRekap = [];
         foreach ($kolam as $k) {
             // data monitoring
@@ -145,7 +142,6 @@ class SiklusController extends Controller
 
             // Data perlakuan
             $perlakuanData = $k->perlakuan()->where('siklus_id', $siklusId)->get();
-            // dd($perlakuanData);
 
             //Data panen
             $panenData = $k->panen()->where('siklus_id', $siklusId)->get();
@@ -214,7 +210,6 @@ class SiklusController extends Controller
             'rataDO' => $rataDO,
             'rataSal' => $rataSal,
         ];
-
 
         $pdf = Pdf::loadView('dashboard.tambak-udang.reportpdf', $data);
         return $pdf->stream();

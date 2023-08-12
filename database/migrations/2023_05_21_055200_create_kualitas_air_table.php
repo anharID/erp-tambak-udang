@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('kolam_id')->constrained('kolam');
             $table->foreignId('siklus_id')->constrained('siklus');
-            $table->foreignId('user_id')->constrained('users');
+            // $table->foreignId('user_id')->constrained('users');
             $table->float('suhu');
             $table->float('ph');
             $table->float('do');

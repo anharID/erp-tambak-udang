@@ -1,7 +1,7 @@
 <x-admin>
     <div class="py-12">
         <div class="max-w-7xl mx-auto px-6 lg:px-8 text-gray-900 dark:text-gray-100">
-            <h1 class="mb-4 text-xl font-bold">Edit Siklus Berjalan</h1>
+            <h1 class="mb-4 text-xl font-bold">Ubah Siklus Berjalan</h1>
             <div class="mb-4 bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg">
                 <div class="p-6 ">
                     <form method="POST" action="{{ route('update_siklus', ['siklus'=>$siklus->id]) }}">
@@ -29,6 +29,14 @@
                             <x-input-error :messages="$errors->get('total_tebar')" class="mt-2" />
                         </div>
                         @endforeach
+
+                        <!-- Catatan -->
+                        <div class="mt-4">
+                            <x-input-label for="catatan" :value="__('Catatan Siklus')" />
+                            <x-text-input id="catatan" class="block mt-1 w-full" type="text" name="catatan"
+                                :value="$siklus->catatan ?? old('catatan')" autocomplete="catatan" />
+                            <x-input-error :messages="$errors->get('catatan')" class="mt-2" />
+                        </div>
 
                         <div class="flex items-center justify-end mt-4">
                             <x-primary-button class="ml-4">

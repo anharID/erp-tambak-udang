@@ -29,30 +29,11 @@ class SamplingController extends Controller
 
         $siklusBerjalan = ($siklus->tanggal_selesai === null);
 
-        $chart = $request->query('chart');
-
-        if (!$chart) {
-            return redirect()->route('sampling.index', ['chart' => 'abw', 'kolamId' => $kolam->id, 'siklus' => $siklus->id]);
-        }
-
-        function getChartData($siklusTerpilih, $chart)
-        {
-            $data = $siklusTerpilih->sortBy('tanggal')->pluck($chart)->all();
-            $label = $chart;
-            return ['data' => $data, 'label' => $label];
-        };
-
-        $tanggal = $siklusTerpilih->sort()->groupby(function ($item) {
+        $chartData = $siklusTerpilih->sortBy('tanggal')->groupby(function ($item) {
             return Carbon::parse($item->tanggal)->format('j M o');
+        })->map(function ($group) {
+            return $group->first();
         });
-
-        $data = getChartData($siklusTerpilih, $chart);
-
-        $chartData = [
-            'label' => $data['label'],
-            'labels' => $tanggal->keys(),
-            'data' => $data['data']
-        ];
 
         return view('dashboard.tambak-udang.sampling.index', compact('kolam', 'siklus', 'siklusTerpilih', 'siklusBerjalan', 'chartData'));
     }
@@ -86,12 +67,12 @@ class SamplingController extends Controller
 
         //Data yang diperlukan
         $kolam = Kolam::findOrFail($kolamId);
-        $siklusSaatIni = $kolam->siklus()->where('kolam_id', $kolamId)->whereNull('tanggal_selesai')->first();
-        $user = auth()->user();
+        $siklusSaatIni = $kolam->siklus()->findOrFail($siklusId);
+        // $user = auth()->user();
         $tanggalSebelumSampling = date('Y-m-d', strtotime('-1 day', strtotime($validation['tanggal'])));
-        $pakanKemarin = $siklusSaatIni->pakan()->where('tanggal', $tanggalSebelumSampling)->get();
+        $pakanKemarin = $siklusSaatIni->pakan()->where('kolam_id', $kolamId)->where('tanggal', $tanggalSebelumSampling)->get();
         $totalPakan = $pakanKemarin->sum('jumlah_kg');
-        $pakanKomulatif = $siklusSaatIni->pakan()->where('tanggal', '<', now()->subDay())->sum('jumlah_kg');
+        $pakanKomulatif = $siklusSaatIni->pakan()->where('kolam_id', $kolamId)->where('tanggal', '<', now()->subDay())->sum('jumlah_kg');
 
 
         //UMUR
@@ -143,12 +124,12 @@ class SamplingController extends Controller
         $sampling->fcr = $fcr;
         $sampling->catatan = $request->catatan;
 
-        $sampling->user()->associate($user);
+        // $sampling->user()->associate($user);
         $sampling->siklus()->associate($siklusSaatIni);
 
         $kolam->sampling()->save($sampling);
 
-        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId, 'chart' => 'abw'])->with('success', 'Data sampling berhasil disimpan.');
+        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data sampling berhasil disimpan.');
     }
 
     /**
@@ -197,11 +178,11 @@ class SamplingController extends Controller
         // dd($siklusSaatIni);
         $sampling = $siklusSaatIni->sampling()->findOrFail($samplingId);
 
-        $user = auth()->user();
+        // $user = auth()->user();
         $tanggalSebelumSampling = date('Y-m-d', strtotime('-1 day', strtotime($validation['tanggal'])));
-        $pakanKemarin = $siklusSaatIni->pakan()->where('tanggal', $tanggalSebelumSampling)->get();
+        $pakanKemarin = $siklusSaatIni->pakan()->where('kolam_id', $kolamId)->where('tanggal', $tanggalSebelumSampling)->get();
         $totalPakan = $pakanKemarin->sum('jumlah_kg');
-        $pakanKomulatif = $siklusSaatIni->pakan()->where('tanggal', '<', now()->subDay())->sum('jumlah_kg');
+        $pakanKomulatif = $siklusSaatIni->pakan->where('kolam_id', $kolamId)()->where('tanggal', '<', now()->subDay())->sum('jumlah_kg');
 
 
         //UMUR
@@ -253,7 +234,7 @@ class SamplingController extends Controller
             'catatan' => $request->catatan
         ]);
 
-        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId, 'chart' => 'abw'])->with('success', 'Data sampling berhasil diubah.');
+        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data sampling berhasil diubah.');
     }
 
     /**
@@ -269,7 +250,7 @@ class SamplingController extends Controller
 
         $sampling->delete();
 
-        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId, 'chart' => 'abw'])->with('success', 'Data sampling berhasil dihapus.');
+        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data sampling berhasil dihapus.');
     }
 
     public function dataValidated($kolamId, $siklusId, $samplingId)
@@ -281,6 +262,6 @@ class SamplingController extends Controller
         $sampling->is_validated = 1;
         $sampling->save();
 
-        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId, 'chart' => 'abw'])->with('success', 'Data berhasil divalidasi');
+        return redirect()->route('sampling.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data berhasil divalidasi');
     }
 }

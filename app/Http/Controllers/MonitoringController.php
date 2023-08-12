@@ -21,40 +21,39 @@ class MonitoringController extends Controller
         $kolam = Kolam::findOrFail($kolamId);
         $siklus = $kolam->siklus()->findOrFail($siklusId);
 
-        // dd($kolam);
-
         $siklusTerpilih = $siklus->monitoring()->where('kolam_id', $kolam->id)->orderBy('tanggal', 'desc')->orderBy('waktu_pengukuran', 'desc')->get();
 
         $siklusBerjalan = ($siklus->tanggal_selesai === null);
 
-        $chart = $request->query('chart');
-        if (!$chart) {
-            return redirect()->route('monitoring.index', ['chart' => 'suhu', 'kolamId' => $kolam->id, 'siklus' => $siklus->id]);
-        }
-
-        function getChartData($siklusTerpilih, $chart)
+        function getChartData($siklusTerpilih)
         {
             $dataPagi = $siklusTerpilih->filter(function ($item) {
                 $time = Carbon::parse($item->waktu_pengukuran);
                 return $time->between('00:00:00', '12:00:00');
-            })->sortBy('tanggal')->pluck($chart)->all();
+            })->sortBy('tanggal')->groupby(function ($item) {
+                return Carbon::parse($item->tanggal)->format('j M o');
+            })->map(function ($group) {
+                return $group->first();
+            });
             $dataSore = $siklusTerpilih->filter(function ($item) {
                 $time = Carbon::parse($item->waktu_pengukuran);
                 return $time->between('12:00:00', '23:59:59');
-            })->sortBy('tanggal')->pluck($chart)->all();
-            $label = $chart;
-            return ['dataPagi' => $dataPagi, 'dataSore' => $dataSore, 'label' => $label];
+            })->sortBy('tanggal')->groupby(function ($item) {
+                return Carbon::parse($item->tanggal)->format('j M o');
+            })->map(function ($group) {
+                return $group->first();
+            });
+            return ['dataPagi' => $dataPagi, 'dataSore' => $dataSore];
         };
+
 
         $tanggal = $siklusTerpilih->sort()->groupby(function ($item) {
             return Carbon::parse($item->tanggal)->format('j M o');
         });
 
-        $data = getChartData($siklusTerpilih, $chart);
+        $data = getChartData($siklusTerpilih);
 
         $chartData = [
-            'label' => $data['label'],
-            'labels' => $tanggal->keys(),
             'dataPagi' => $data['dataPagi'],
             'dataSore' => $data['dataSore']
         ];
@@ -90,7 +89,7 @@ class MonitoringController extends Controller
 
         $siklusSaatIni = $kolam->siklus()->whereNull('tanggal_selesai')->first();
 
-        $user = auth()->user();
+        // $user = auth()->user();
 
         $monitoring = new Monitoring();
 
@@ -108,12 +107,12 @@ class MonitoringController extends Controller
         $monitoring->waktu_pengukuran = $validation['waktu_pengukuran'];
         $monitoring->catatan = $request->catatan;
 
-        $monitoring->user()->associate($user);
+        // $monitoring->user()->associate($user);
         $monitoring->siklus()->associate($siklusSaatIni);
 
         $kolam->monitoring()->save($monitoring);
 
-        return redirect()->route('monitoring.index', ['kolamId' => $kolamId, 'siklus' => $siklusId, 'chart' => 'suhu'])->with('success', 'Data monitoring berhasil disimpan.');
+        return redirect()->route('monitoring.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data monitoring berhasil disimpan.');
     }
 
     public function edit($kolamId, $siklusId, $monitoringId)
@@ -161,7 +160,7 @@ class MonitoringController extends Controller
             'user_id' => auth()->user()->id,
         ]);
 
-        return redirect()->route('monitoring.index', ['kolamId' => $kolam->id, 'siklus' => $siklus->id, 'chart' => 'suhu'])->with('success', 'Data berhasil diubah');
+        return redirect()->route('monitoring.index', ['kolamId' => $kolam->id, 'siklus' => $siklus->id])->with('success', 'Data berhasil diubah');
     }
 
     public function destroy($kolamId, $siklusId, $monitoringId)
@@ -172,7 +171,7 @@ class MonitoringController extends Controller
 
         $monitoring->delete();
 
-        return redirect()->route('monitoring.index', ['kolamId' => $kolamId, 'siklus' => $siklusId, 'chart' => 'suhu'])->with('success', 'Data berhasil dihapus');
+        return redirect()->route('monitoring.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data berhasil dihapus');
     }
 
     public function dataValidated($kolamId, $siklusId, $monitoringId)
@@ -184,6 +183,6 @@ class MonitoringController extends Controller
         $monitoring->is_validated = 1;
         $monitoring->save();
 
-        return redirect()->route('monitoring.index', ['kolamId' => $kolamId, 'siklus' => $siklusId, 'chart' => 'suhu'])->with('success', 'Data berhasil divalidasi');
+        return redirect()->route('monitoring.index', ['kolamId' => $kolamId, 'siklus' => $siklusId])->with('success', 'Data berhasil divalidasi');
     }
 }

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string("nama_barang");
             $table->string("jenis_barang");
             $table->date("tanggal_peroleh");
-            $table->integer("stok");
+            $table->float("stok");
             $table->integer('harga_satuan');
             $table->integer('nilai_inventaris')->nullable();
             $table->string("lokasi");
