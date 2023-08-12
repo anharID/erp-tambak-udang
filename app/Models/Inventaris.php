@@ -13,13 +13,11 @@ class Inventaris extends Model
     protected $guarded = ['id'];
     protected $table = 'inventaris';
 
-    // One-to-One Relationship
     public function kelolajenisbarang()
     {
-        return $this->hasMany(KelolaJenisBarang::class);
+        return $this->belongsTo(KelolaJenisBarang::class, 'jenisbarang_id');
     }
     
-    // One-to-One Relationship
     public function logistik()
     {
         return $this->hasMany(Logistik::class);

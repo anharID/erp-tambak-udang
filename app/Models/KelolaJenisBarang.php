@@ -12,21 +12,8 @@ class KelolaJenisBarang extends Model
     protected $guarded = ['id'];
     protected $table = 'kelolajenisbarang';
 
-    // One-to-Many Relationship
     public function inventaris()
     {
-        return $this->belongsTo(Inventaris::class);
-    }
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::updating(function ($kelolajenisbarang) {
-            if ($kelolajenisbarang->isDirty('jenisbarang')) {
-                Inventaris::where('jenis_barang', $kelolajenisbarang->getOriginal('jenisbarang'))
-                    ->update(['jenis_barang' => $kelolajenisbarang->jenisbarang]);
-            }
-        });
+        return $this->HasMany(Inventaris::class);
     }
 }

@@ -40,7 +40,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <a href="{{ route('logistik.index', $row->id) }}">{{ $row->nama_barang }}</a>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->jenis_barang }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->kelolajenisbarang->jenisbarang }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->tanggal_peroleh }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->stok }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->harga_satuan }}</td>

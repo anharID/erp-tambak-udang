@@ -11,7 +11,7 @@
                         <p>{{ session('error') }}</p>
                     </div>
                     @endif
-                    <form method="POST" action="{{ route('kelola_barang.update', ['kelolajenisbarang'=>$kelolajenisbarang->id]) }}">
+                    <form method="POST" action="{{ route('kelola_barang.update', ['kelolajenisbarang' => $kelolajenisbarang->id]) }}">
                         @csrf
                         @method('put')
 
@@ -20,9 +20,6 @@
                             <x-input-label for="jenisbarang" :value="__('Jenis Barang')" />
                             <x-text-input id="jenisbarang" class="block mt-1 w-full" type="text" name="jenisbarang" :value="old('jenisbarang', $kelolajenisbarang->jenisbarang ?? '')" required autofocus autocomplete="jenisbarang" />
                             <x-input-error :messages="$errors->get('jenisbarang')" class="mt-2" />
-                            @error('jenisbarang_duplicate')
-                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                            @enderror
                         </div>
 
                         <div class="flex items-center justify-end mt-4">

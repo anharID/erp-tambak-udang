@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Inventaris;
 use App\Models\KelolaJenisBarang;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 
 class KelolaJenisBarangController extends Controller
 {
@@ -18,62 +15,44 @@ class KelolaJenisBarangController extends Controller
     
     public function create()
     {
-        $availableJenisBarang = KelolaJenisBarang::pluck('jenisbarang', 'jenisbarang')->toArray();
-        return view('dashboard.inventaris.kelolajenisbarang.create', compact('availableJenisBarang'));
+        return view('dashboard.inventaris.kelolajenisbarang.create');
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'jenisbarang' => ['required', 'string', 'max:100', 'unique:kelolajenisbarang'],
-        ],
-        [
-            'jenisbarang.unique' => 'Data ini sudah ada.',
+        $validation = $request->validate([
+            'jenisbarang' => 'required',
         ]);
 
         KelolaJenisBarang::create([
-            'jenis_barang_id' => $request->jenis_barang_id,
-            'jenisbarang' => $request->jenisbarang,
+            'jenisbarang' => $validation['jenisbarang']
         ]);
 
         return redirect()->route('kelola_barang')->with('success', 'Data berhasil ditambahkan');
     }
 
-    public function show(KelolaJenisBarang $kelolajenisbarang)
+    public function edit($kelolajenisbarangId)
     {
+        $kelolajenisbarang = KelolaJenisBarang::find($kelolajenisbarangId);
+
+        return view('dashboard.inventaris.kelolajenisbarang.edit', compact('kelolajenisbarang'));
     }
 
-    public function edit(KelolaJenisBarang $kelolajenisbarang)
+    public function update(Request $request, $kelolajenisbarangId)
     {
-        $availableJenisBarang = KelolaJenisBarang::pluck('jenisbarang', 'jenisbarang')->toArray();
-        return view('dashboard.inventaris.kelolajenisbarang.edit', compact('kelolajenisbarang', 'availableJenisBarang'));
-    }
-
-    public function update(Request $request, KelolaJenisBarang $kelolajenisbarang)
-    {
-        $request->validate([
-            'jenisbarang' => ['required', 'string', 'max:100', Rule::unique('kelolajenisbarang')->ignore($kelolajenisbarang->id)],
-        ],
-        [
-            'jenisbarang.unique' => 'Data ini sudah ada.',
+        $validation = $request->validate([
+            'jenisbarang' => 'required',
         ]);
 
-        DB::transaction(function () use ($request, $kelolajenisbarang) {
-            $oldJenisBarang = $kelolajenisbarang->jenisbarang;
-            $newJenisBarang = $request->jenisbarang;
+        $kelolajenisbarang = KelolaJenisBarang::find($kelolajenisbarangId);
 
-            $kelolajenisbarang->update([
-                'jenisbarang' => $newJenisBarang,
-            ]);
-
-            Inventaris::where('jenis_barang', $oldJenisBarang)
-            ->update(['jenis_barang' => $newJenisBarang]);
-        });
+        $kelolajenisbarang->jenisbarang = $validation['jenisbarang'];
+        $kelolajenisbarang->save();
 
         return redirect()->route('kelola_barang')->with('success', "Data berhasil diperbarui");
     }
 
-    public function destroy(KelolaJenisBarang $kelolajenisbarang)
+    public function destroy($kelolajenisbarang)
     {
         $kelolajenisbarang->delete();
 
