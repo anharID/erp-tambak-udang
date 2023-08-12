@@ -13,6 +13,7 @@ use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\SamplingController;
 use App\Http\Controllers\FinansialController;
 use App\Http\Controllers\InventarisController;
+use App\Http\Controllers\KelolaJenisBarangController;
 use App\Http\Controllers\LogistikController;
 use App\Http\Controllers\PeralatanController;
 use App\Http\Controllers\PerlakuanController;
@@ -60,6 +61,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/kolam/{kolamId}/siklus/{siklus}/sampling/{sampling}/validasi', [SamplingController::class, 'dataValidated'])->middleware('role:superadmin,teknisi')->name('validasi_sampling');
     Route::post('/kolam/{kolamId}/siklus/{siklus}/perlakuan/{perlakuan}/validasi', [PerlakuanController::class, 'dataValidated'])->middleware('role:superadmin,teknisi')->name('validasi_perlakuan');
     Route::post('/kolam/{kolamId}/siklus/{siklus}/panen/{panen}/validasi', [PanenController::class, 'dataValidated'])->middleware('role:superadmin,teknisi')->name('validasi_panen');
+
+    //Kelola Jenis Barang
+    Route::get('/inventaris/kelolajenisbarang', [KelolaJenisBarangController::class, 'index'])->middleware('role:superadmin')->name('kelola_barang');
+    Route::get('/inventaris/kelolajenisbarang/create', [KelolaJenisBarangController::class, 'create'])->middleware('role:superadmin')->name('kelola_barang.create');
+    Route::post('/inventaris/kelolajenisbarang/store', [KelolaJenisBarangController::class, 'store'])->middleware('role:superadmin')->name('kelola_barang.store');
+    Route::get('/inventaris/kelolajenisbarang/{kelolajenisbarang}/edit', [KelolaJenisBarangController::class, 'edit'])->middleware('role:superadmin')->name('kelola_barang.edit');
+    Route::put('/inventaris/kelolajenisbarang/{kelolajenisbarang}/update', [KelolaJenisBarangController::class, 'update'])->middleware('role:superadmin')->name('kelola_barang.update');
+    Route::delete('/inventaris/kelolajenisbarang/{kelolajenisbarang}/destroy', [KelolaJenisBarangController::class, 'destroy'])->middleware('role:superadmin')->name('kelola_barang.destroy');
 
     //Kolam
     Route::get('/kolam/{kolam}/siklus/{siklus}', [KolamController::class, 'dataKolam'])->middleware('role:superadmin,admin,direktur,teknisi')->name('data_kolam');

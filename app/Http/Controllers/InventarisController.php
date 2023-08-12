@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Inventaris;
+use App\Models\KelolaJenisBarang;
 use App\Models\Logistik;
 use Illuminate\Http\Request;
 
@@ -28,7 +29,8 @@ class InventarisController extends Controller
     public function create()
     {
         //
-        return view('dashboard.inventaris.create');
+        $availableJenisBarang = KelolaJenisBarang::all();
+        return view('dashboard.inventaris.create', compact('availableJenisBarang'));
     }
 
     /**
@@ -82,10 +84,11 @@ class InventarisController extends Controller
      * @param  \App\Models\Inventaris  $inventaris
      * @return \Illuminate\Http\Response
      */
-    public function edit(Inventaris $inventari)
+    public function edit($id)
     {
-        //
-        return view('dashboard.inventaris.edit', compact('inventari'));
+        $inventari = Inventaris::find($id);
+        $availableJenisBarang = KelolaJenisBarang::all();
+        return view('dashboard.inventaris.edit', compact('inventari', 'availableJenisBarang'));
     }
 
     /**
