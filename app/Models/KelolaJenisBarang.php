@@ -17,4 +17,16 @@ class KelolaJenisBarang extends Model
     {
         return $this->belongsTo(Inventaris::class);
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::updating(function ($kelolajenisbarang) {
+            if ($kelolajenisbarang->isDirty('jenisbarang')) {
+                Inventaris::where('jenis_barang', $kelolajenisbarang->getOriginal('jenisbarang'))
+                    ->update(['jenis_barang' => $kelolajenisbarang->jenisbarang]);
+            }
+        });
+    }
 }

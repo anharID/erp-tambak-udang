@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Inventaris;
 use App\Models\KelolaJenisBarang;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -31,6 +32,7 @@ class KelolaJenisBarangController extends Controller
         ]);
 
         KelolaJenisBarang::create([
+            'jenis_barang_id' => $request->jenis_barang_id,
             'jenisbarang' => $request->jenisbarang,
         ]);
 
@@ -56,9 +58,17 @@ class KelolaJenisBarangController extends Controller
             'jenisbarang.unique' => 'Data ini sudah ada.',
         ]);
 
-        KelolaJenisBarang::where('id', $kelolajenisbarang->id)->update([
-            'jenisbarang' => $request->jenisbarang,
-        ]);
+        DB::transaction(function () use ($request, $kelolajenisbarang) {
+            $oldJenisBarang = $kelolajenisbarang->jenisbarang;
+            $newJenisBarang = $request->jenisbarang;
+
+            $kelolajenisbarang->update([
+                'jenisbarang' => $newJenisBarang,
+            ]);
+
+            Inventaris::where('jenis_barang', $oldJenisBarang)
+            ->update(['jenis_barang' => $newJenisBarang]);
+        });
 
         return redirect()->route('kelola_barang')->with('success', "Data berhasil diperbarui");
     }

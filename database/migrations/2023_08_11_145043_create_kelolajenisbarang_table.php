@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('kelolajenisbarang', function (Blueprint $table) {
             $table->id();
-            $table->string('jenisbarang');
+            $table->foreignId('jenis_barang_id')->nullable()->constrained('inventaris');
+            $table->string('jenisbarang')->nullable();
             $table->timestamps();
         });
     }
