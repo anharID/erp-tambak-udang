@@ -8,6 +8,7 @@ use App\Models\Panen;
 use App\Models\Energi;
 use App\Models\Logistik;
 use App\Models\Sampling;
+use App\Models\Finansial;
 use App\Models\Perlakuan;
 use App\Models\Monitoring;
 use Illuminate\Database\Eloquent\Model;
@@ -51,6 +52,10 @@ class Siklus extends Model
     public function logistik()
     {
         return $this->hasMany(Logistik::class);
+    }
+    public function finansial()
+    {
+        return $this->hasMany(Finansial::class);
     }
 
     // public function getRouteKeyName()

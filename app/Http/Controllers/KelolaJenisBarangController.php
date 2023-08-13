@@ -12,7 +12,7 @@ class KelolaJenisBarangController extends Controller
         $kelolajenisbarang = KelolaJenisBarang::all();
         return view('dashboard.inventaris.kelolajenisbarang.index', compact('kelolajenisbarang'));
     }
-    
+
     public function create()
     {
         return view('dashboard.inventaris.kelolajenisbarang.create');
@@ -52,11 +52,11 @@ class KelolaJenisBarangController extends Controller
         return redirect()->route('kelola_barang')->with('success', "Data berhasil diperbarui");
     }
 
-    public function destroy($kelolajenisbarang)
+    public function destroy($kelolajenisbarangId)
     {
+        $kelolajenisbarang = KelolaJenisBarang::find($kelolajenisbarangId);
         $kelolajenisbarang->delete();
 
         return redirect()->route('kelola_barang')->with('success', 'Data berhasil dihapus');
     }
 }
-

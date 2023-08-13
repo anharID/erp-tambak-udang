@@ -7,7 +7,7 @@
                     class="mr-2 flex items-center justify-center bg-gray-300 rounded-full w-8 h-8">
                     <i class="fa-solid fa-arrow-left fa-lg"></i>
                 </a> --}}
-                <h1 class="font-bold text-2xl">Kelola Energi</h1>
+                <h1 class="font-bold text-2xl">Kategori Penggunaan Energi</h1>
             </div>
 
             <div class="my-4 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -51,7 +51,7 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
-                                                onclick="return confirm('Aksi ini tidak dapat dibatalkan! Apakah Anda yakin ingin menghapus catatan ini? ')"
+                                                onclick="return confirm('Aksi ini tidak dapat dibatalkan! Aksi ini akan menghapus semua data yang berhubungnan dengan penggunaan {{ $row->penggunaan }}. Apakah Anda yakin ingin menghapus catatan ini?  ')"
                                                 class="text-red-600"><i class="fa-solid fa-trash"></i></button>
                                         </form>
                                     </td>

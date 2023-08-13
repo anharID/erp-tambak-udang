@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PenggunaanEnergi;
+use App\Models\Energi;
 use Illuminate\Http\Request;
+use App\Models\PenggunaanEnergi;
 
 class PenggunaanEnergiController extends Controller
 {
@@ -57,6 +58,11 @@ class PenggunaanEnergiController extends Controller
     public function destroy($penggunaanId)
     {
         $penggunaan = PenggunaanEnergi::findOrFail($penggunaanId);
+        $energi = Energi::where('penggunaan_id', $penggunaanId)->get();
+
+        foreach ($energi as $energiItem) {
+            $energiItem->delete();
+        }
 
         $penggunaan->delete();
 

@@ -107,6 +107,8 @@ class SiklusController extends Controller
         $siklus->perlakuan()->delete();
         $siklus->panen()->delete();
         $siklus->energi()->delete();
+        $siklus->finansial()->delete();
+        $siklus->logistik()->delete();
 
         $siklus->delete();
 
