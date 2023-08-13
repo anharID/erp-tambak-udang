@@ -214,9 +214,9 @@
                         @foreach ($karyawan as $row)
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $row->nama }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ $row->bonus . '%' }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ $row->jabatan->bonus . '%' }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    {{ 'Rp ' . number_format(($row->bonus / 100) * $keuntunganKotor, 2, ',', '.') }}
+                                    {{ 'Rp ' . number_format(($row->jabatan->bonus / 100) * $keuntunganKotor, 2, ',', '.') }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap flex">
                                     <a href="{{ route('karyawan.edit', $row->id) }}" target="_blank"

@@ -13,6 +13,7 @@ use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\SamplingController;
 use App\Http\Controllers\FinansialController;
 use App\Http\Controllers\InventarisController;
+use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\LogistikController;
 use App\Http\Controllers\PeralatanController;
 use App\Http\Controllers\PerlakuanController;
@@ -77,6 +78,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/users', UserController::class)->middleware('role:superadmin');
 
     Route::resource('/karyawan', KaryawanController::class)->middleware('role:superadmin,admin,direktur');
+    Route::resource('/jabatan', JabatanController::class)->middleware('role:superadmin');
 
     Route::resource('/finansial', FinansialController::class)->middleware('role:superadmin,direktur,manajer keuangan');
 

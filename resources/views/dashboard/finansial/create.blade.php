@@ -12,13 +12,14 @@
                         @csrf
 
                         <!-- SiklusID -->
-                        <input type="hidden" name="siklus_id" value="{{ $siklusId }}">
+                        <x-text-input type="hidden" id="siklus_id" name="siklus_id" value="{{ $siklusId }}" />
+                            <x-input-error :messages="$errors->get('siklus_id')" class="mb-4 text-lg italic" />
 
                         <!-- Tanggal -->
                         <div>
                             <x-input-label for="tanggal" :value="__('Tanggal')" />
-                            <x-text-input id="tanggal" class="block mt-1 w-full" type="date" format="dd-mm-yyyy" name="tanggal"
-                                :value="$today ?? old('tanggal')" required autofocus autocomplete="tanggal" />
+                            <x-text-input id="tanggal" class="block mt-1 w-full" type="date" format="dd-mm-yyyy"
+                                name="tanggal" :value="$today ?? old('tanggal')" required autofocus autocomplete="tanggal" />
                             <x-input-error :messages="$errors->get('tanggal')" class="mt-2" />
                         </div>
 
@@ -62,7 +63,7 @@
                                 @endforeach
                             </select>
 
-                            <x-input-error :messages="$errors->get('jenis_transaksi')" class="mt-2" />
+                            <x-input-error :messages="$errors->get('karyawan')" class="mt-2" />
                         </div>
 
                         <!-- Kolam -->
@@ -76,7 +77,7 @@
                                 @endforeach
                             </select>
 
-                            <x-input-error :messages="$errors->get('jenis_transaksi')" class="mt-2" />
+                            <x-input-error :messages="$errors->get('kolam')" class="mt-2" />
                         </div>
 
                         <!-- Jumlah -->
