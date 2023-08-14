@@ -182,7 +182,7 @@ class SamplingController extends Controller
         $tanggalSebelumSampling = date('Y-m-d', strtotime('-1 day', strtotime($validation['tanggal'])));
         $pakanKemarin = $siklusSaatIni->pakan()->where('kolam_id', $kolamId)->where('tanggal', $tanggalSebelumSampling)->get();
         $totalPakan = $pakanKemarin->sum('jumlah_kg');
-        $pakanKomulatif = $siklusSaatIni->pakan->where('kolam_id', $kolamId)()->where('tanggal', '<', now()->subDay())->sum('jumlah_kg');
+        $pakanKomulatif = $siklusSaatIni->pakan->where('kolam_id', $kolamId)->where('tanggal', '<', now()->subDay())->sum('jumlah_kg');
 
 
         //UMUR
