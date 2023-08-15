@@ -34,12 +34,13 @@
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700">
-                                @foreach($users as $user)
+                                @foreach($users as $index => $user)
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $user->name }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $user->email }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $user->role }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap flex">
+                                        @if ($index >=1)
                                         <a href="{{ route('users.edit', $user->id) }}" class="text-yellow-600 mr-4"><i
                                                 class="fa-solid fa-pen-to-square"></i></a>
                                         <form action="{{ route('users.destroy', $user->id) }}" method="POST">
@@ -49,6 +50,7 @@
                                                 onclick="return confirm('Apakah Anda yakin ingin menghapus user ini?')"
                                                 class="text-red-600"><i class="fa-solid fa-trash"></i></button>
                                         </form>
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach
