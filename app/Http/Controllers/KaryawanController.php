@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Jabatan;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
 
@@ -25,7 +26,8 @@ class KaryawanController extends Controller
      */
     public function create()
     {
-        return view("dashboard.karyawan.create");
+        $jabatan = Jabatan::all();
+        return view("dashboard.karyawan.create", compact('jabatan'));
     }
 
     /**
@@ -43,23 +45,19 @@ class KaryawanController extends Controller
             'tanggal_lahir' => ['required', 'date'],
             'no_hp' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255'],
-            'jabatan' => ['required', 'string', 'max:255'],
             'status' => ['required', 'boolean'],
-            'gaji' => ['required', 'numeric', 'digits_between:1,11'],
-            'bonus' => ['required', 'numeric', 'digits_between:1,3'],
+
         ]);
 
         Karyawan::create([
+            'jabatan_id' => $request->jabatan_id,
             'nama' => $request->nama,
             'alamat' => $request->alamat,
             'tempat_lahir' => $request->tempat_lahir,
             'tanggal_lahir' => $request->tanggal_lahir,
             'no_hp' => $request->no_hp,
             'email' => $request->email,
-            'jabatan' => $request->jabatan,
             'status' => $request->status,
-            'gaji' => $request->gaji,
-            'bonus' => $request->bonus,
         ]);
 
         return redirect()->route('karyawan.index')->with('success', "Data berhasil ditambahkan");
@@ -84,7 +82,8 @@ class KaryawanController extends Controller
      */
     public function edit(Karyawan $karyawan)
     {
-        return view("dashboard.karyawan.edit", compact('karyawan'));
+        $jabatan = Jabatan::all();
+        return view("dashboard.karyawan.edit", compact('karyawan', 'jabatan'));
     }
 
     /**
@@ -103,10 +102,7 @@ class KaryawanController extends Controller
             'tanggal_lahir' => ['required', 'date'],
             'no_hp' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255'],
-            'jabatan' => ['required', 'string', 'max:255'],
             'status' => ['required', 'boolean'],
-            'gaji' => ['required', 'numeric', 'digits_between:1,11'],
-            'bonus' => ['required', 'numeric', 'digits_between:1,3'],
         ]);
 
 
@@ -117,10 +113,7 @@ class KaryawanController extends Controller
             'tanggal_lahir' => $request->tanggal_lahir,
             'no_hp' => $request->no_hp,
             'email' => $request->email,
-            'jabatan' => $request->jabatan,
             'status' => $request->status,
-            'gaji' => $request->gaji,
-            'bonus' => $request->bonus,
         ]);
 
         return redirect()->route('karyawan.index')->with('success', "Data berhasil diubah");

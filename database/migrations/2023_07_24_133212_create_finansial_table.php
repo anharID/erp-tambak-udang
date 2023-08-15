@@ -26,7 +26,7 @@ return new class extends Migration
             // $table->foreign('logistik_id')->references('id')->on('logistik');
             $table->string("keterangan");
             $table->string("jenis_transaksi");
-            $table->integer("jumlah");
+            $table->bigInteger("jumlah");
             $table->string("status")->nullable();
             $table->string("catatan")->nullable();
             $table->date("tanggal");

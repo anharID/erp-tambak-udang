@@ -69,7 +69,8 @@ class FinansialController extends Controller
         // Keuntungan Kotor
         $keuntunganKotor = $totalPemasukan - ($totalPengeluaran - $totalBonus);
         // Bonus Karyawan
-        $totalBonusKaryawan = (Karyawan::sum('bonus') / 100) * $keuntunganKotor;
+        $totalBonusKaryawan = (Karyawan::join('jabatan', 'karyawan.jabatan_id', '=', 'jabatan.id')
+        ->sum('jabatan.bonus') / 100) * $keuntunganKotor;
 
         // Pemasukan
         $pemasukanBulanan = $pemasukan->groupBy(function ($item) {
@@ -171,10 +172,13 @@ class FinansialController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'siklus_id' => 'required',
             'tanggal' => ['required', 'date'],
             'jenis_transaksi' => ['required', 'string', 'max:255'],
             'keterangan' => ['required', 'string', 'max:255'],
             'jumlah' => ['required', 'numeric'],
+        ], [
+            'siklus_id.required' => 'Silahkan Pilih Siklus Terlebih Dahulu di Halaman Manajemen Finansial'
         ]);
 
         $jenisTransaksi = $request->input('jenis_transaksi');
@@ -341,7 +345,8 @@ class FinansialController extends Controller
         // Keuntungan
         $keuntungan = $totalPemasukan - ($totalPengeluaran - $totalBonus);
         // Bonus Karyawan
-        $totalBonusKaryawan = (Karyawan::sum('bonus') / 100) * $keuntungan;
+        $totalBonusKaryawan = (Karyawan::join('jabatan', 'karyawan.jabatan_id', '=', 'jabatan.id')
+        ->sum('jabatan.bonus') / 100) * $keuntungan;
 
         // dd($kolam);
 

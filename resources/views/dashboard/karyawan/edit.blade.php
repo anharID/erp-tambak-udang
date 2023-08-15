@@ -53,16 +53,13 @@
 
                         <!-- Jabatan -->
                         <div class="mt-4">
-                            <x-input-label for="jabatan" :value="__('Jabatan')" />
-                            <select name="jabatan" class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2">
-                                <option value="" disabled selected>Pilih satu opsi</option>
-                                <option value="superadmin" {{ $karyawan->jabatan == 'superadmin' ? 'selected' : '' }}>Super Admin</option>
-                                <option value="direktur" {{ $karyawan->jabatan == 'direktur' ? 'selected' : '' }}>Direktur</option>
-                                <option value="manajer keuangan" {{ $karyawan->jabatan == 'manajer keuangan' ? 'selected' : '' }}>Manajer Keuangan</option>
-                                <option value="teknisi" {{ $karyawan->jabatan == 'teknisi' ? 'selected' : '' }}>Teknisi</option>
-                                <option value="admin" {{ $karyawan->jabatan == 'admin' ? 'selected' : '' }}>Admin</option>
+                            <x-input-label for="jabatan_id" :value="__('Jabatan')" />
+                            <select name="jabatan_id" class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2">
+                                <option value="">Pilih Jabatan</option>
+                                @foreach($jabatan as $row)
+                                <option value="{{ $row->id }}" {{ $karyawan->jabatan_id == $row->id ? 'selected' : '' }}>{{ $row->jabatan }}</option>
+                                @endforeach
                             </select>
-
                             <x-input-error :messages="$errors->get('jabatan')" class="mt-2" />
                         </div>
 
@@ -74,20 +71,6 @@
                             <input type="radio" id="bekerja" name="status" value="1" class="form-radio h-3 w-3 mx-1" {{ $karyawan->status == '1' ? 'checked' : '' }}>
                             <x-input-label for="cuti" class="inline font-normal" for="bekerja">Bekerja</x-input-label><br>
                             <x-input-error :messages="$errors->get('status')" class="mt-2" />
-                        </div>
-
-                        <!-- Gaji -->
-                        <div class="mt-4">
-                            <x-input-label for="gaji" :value="__('Gaji')" />
-                            <x-text-input id="gaji" class="block mt-1 w-full" type="number" name="gaji" min="0" :value="$karyawan->gaji ?? old('gaji')" required autocomplete="gaji" />
-                            <x-input-error :messages="$errors->get('gaji')" class="mt-2" />
-                        </div>
-
-                        <!-- Bonus -->
-                        <div class="mt-4">
-                            <x-input-label for="bonus" :value="__('Bonus (%)')" />
-                            <x-text-input id="bonus" class="block mt-1 w-full" type="number" name="bonus" min="0" :value="$karyawan->bonus ?? old('bonus')" required autocomplete="bonus" />
-                            <x-input-error :messages="$errors->get('bonus')" class="mt-2" />
                         </div>
 
                         <div class="flex items-center justify-end mt-4">
