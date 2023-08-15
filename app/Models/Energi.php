@@ -18,9 +18,9 @@ class Energi extends Model
     {
         return $this->belongsTo(Kolam::class);
     }
-    public function user()
+    public function penggunaan()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(PenggunaanEnergi::class);
     }
     public function siklus()
     {

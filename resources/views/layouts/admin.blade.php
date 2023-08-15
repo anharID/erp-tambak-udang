@@ -79,8 +79,8 @@
 
                         <!-- Profile menu -->
                         <li class="relative">
-                            <button class="align-middle" x-on:click="toggleProfileMenu" @keydown.escape="closeProfileMenu"
-                                aria-label="Account" aria-haspopup="true">
+                            <button class="align-middle" x-on:click="toggleProfileMenu"
+                                @keydown.escape="closeProfileMenu" aria-label="Account" aria-haspopup="true">
                                 <i class="fa-solid fa-circle-user fa-lg mr-2"></i>
                             </button>
                             <div x-cloak x-show="isProfileMenuOpen">

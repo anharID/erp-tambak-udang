@@ -23,13 +23,13 @@ $today = now()->format('Y-m-d');
                             </div>
 
                             <div>
-                                <x-input-label for="penggunaan" :value="__('Penggunaan Energi')" />
-                                <select name="penggunaan"
+                                <x-input-label for="penggunaan_id" :value="__('Penggunaan Energi')" />
+                                <select name="penggunaan_id"
                                     class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2">
                                     <option value="" disabled selected>Pilih satu opsi</option>
-                                    <option value="Kincir">Kincir</option>
-                                    <option value="Penerangan">Penerangan</option>
-                                    <option value="Utility">Utility</option>
+                                    @foreach ($penggunaan as $item)
+                                    <option value={{ $item->id }}>{{ $item->penggunaan }}</option>
+                                    @endforeach
                                 </select>
                                 <x-input-error :messages="$errors->get('penggunaan')" class="mt-2" />
                             </div>

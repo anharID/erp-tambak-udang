@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Inventaris;
+use App\Models\KelolaJenisBarang;
 use App\Models\Logistik;
 use Illuminate\Http\Request;
 
@@ -28,7 +29,8 @@ class InventarisController extends Controller
     public function create()
     {
         //
-        return view('dashboard.inventaris.create');
+        $kelolajenisbarang = KelolaJenisBarang::all();
+        return view('dashboard.inventaris.create', compact('kelolajenisbarang'));
     }
 
     /**
@@ -41,9 +43,9 @@ class InventarisController extends Controller
     {
         //dd($request->all());
         // $validation =  
-        $request->validate([
+        $validation = $request->validate([
             'nama_barang' => ['required', 'string', 'max:100'],
-            'jenis_barang' => ['required', 'string', 'max:100'],
+            'jenisbarang_id' => 'required',
             'tanggal_peroleh' => ['required', 'date'],
             'stok' => ['required', 'numeric'],
             'lokasi' => ['required', 'string', 'max:100'],
@@ -52,7 +54,7 @@ class InventarisController extends Controller
         // Inventaris::create($validation);
         Inventaris::create([
             'nama_barang' => $request->nama_barang,
-            'jenis_barang' => $request->jenis_barang,
+            'jenisbarang_id' => $request->jenisbarang_id,
             'tanggal_peroleh' => $request->tanggal_peroleh,
             'stok' => $request->stok,
             'harga_satuan' => $request->harga_satuan,
@@ -82,10 +84,11 @@ class InventarisController extends Controller
      * @param  \App\Models\Inventaris  $inventaris
      * @return \Illuminate\Http\Response
      */
-    public function edit(Inventaris $inventari)
+    public function edit($id)
     {
-        //
-        return view('dashboard.inventaris.edit', compact('inventari'));
+        $inventari = Inventaris::find($id);
+        $kelolajenisbarang = KelolaJenisBarang::all();
+        return view('dashboard.inventaris.edit', compact('inventari', 'kelolajenisbarang'));
     }
 
     /**
@@ -98,9 +101,9 @@ class InventarisController extends Controller
     public function update(Request $request, Inventaris $inventari)
     {
         //
-        $request->validate([
+        $validation = $request->validate([
             'nama_barang' => ['required', 'string', 'max:100'],
-            'jenis_barang' => ['required', 'string', 'max:100'],
+            'jenisbarang_id' => 'required',
             'tanggal_peroleh' => ['required', 'date'],
             'stok' => ['required', 'numeric'],
             'lokasi' => ['required', 'string', 'max:100'],
@@ -108,7 +111,7 @@ class InventarisController extends Controller
 
         Inventaris::where('id', $inventari->id)->update([
             'nama_barang' => $request->nama_barang,
-            'jenis_barang' => $request->jenis_barang,
+            'jenisbarang_id' => $request->jenisbarang_id,
             'tanggal_peroleh' => $request->tanggal_peroleh,
             'stok' => $request->stok,
             'harga_satuan' => $request->harga_satuan,

@@ -125,7 +125,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
-                                            onclick="return confirm('Aksi ini tidak dapat dibatalkan! Apakah Anda yakin ingin menghapus kolam {{ $row->nama }}? ')"
+                                            onclick="return confirm('Aksi ini tidak dapat dibatalkan! Aksi ini akan menghapus semua data yang berhubungan denga kolam {{ $row->nama }}. Apakah Anda yakin ingin menghapus kolam {{ $row->nama }}? ')"
                                             class="text-red-600"><i class="fa-solid fa-trash"></i></button>
                                     </form>
                                 </td>
@@ -173,7 +173,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
-                                            onclick="return confirm('Aksi ini tidak dapat dibatalkan! Apakah Anda yakin ingin menghapus siklus ini? ')"
+                                            onclick="return confirm('Aksi ini tidak dapat dibatalkan! Aksi ini akan menghapus semua data yang berhubungan denga siklus {{ $row->tanggal_mulai }}. Apakah Anda yakin ingin menghapus siklus ini? ')"
                                             class="text-red-600"><i class="fa-solid fa-trash"></i></button>
                                     </form>
                                     @else

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Kolam;
 use App\Models\Pakan;
-use App\Models\Siklus;
 use App\Models\Logistik;
 use App\Models\Inventaris;
 use Illuminate\Http\Request;
@@ -63,7 +62,7 @@ class PakanController extends Controller
         $kolam = Kolam::findOrFail($kolamId);
         $siklus = $kolam->siklus()->findOrFail($siklusId);
 
-        $inventaris = Inventaris::where('jenis_barang', 'Pakan')->get();
+        $inventaris = Inventaris::where('jenisbarang_id', 1)->get();
 
         return view('dashboard.tambak-udang.pakan.create', compact('kolam', 'siklus', 'inventaris'));
     }

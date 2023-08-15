@@ -18,14 +18,14 @@
 
                         <!-- Jenis Barang -->
                         <div class="mt-4">
-                            <x-input-label for="jenis_barang" :value="__('Jenis Barang')" />
-                            <select name="jenis_barang" class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2">
+                            <x-input-label for="jenisbarang_id" :value="__('Jenis Barang')" />
+                            <select name="jenisbarang_id" class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2">
                                 <option value="" disabled selected>Pilih satu opsi</option>
-                                <option value="Barang" {{ $inventari->jenis_barang == 'Barang' ? 'selected' : '' }}>Barang</option>
-                                <option value="Obat" {{ $inventari->jenis_barang == 'Obat' ? 'selected' : '' }}>Obat</option>
-                                <option value="Pakan" {{ $inventari->jenis_barang == 'Pakan' ? 'selected' : '' }}>Pakan</option>
+                                @foreach($kelolajenisbarang as $item)
+                                    <option value="{{ $item->id }}" {{ $inventari->jenisbarang_id == $item->id ? 'selected' : '' }}>{{ $item->jenisbarang_id }}</option>
+                                @endforeach
                             </select>
-                            <x-input-error :messages="$errors->get('jenis_barang')" class="mt-2" />
+                            <x-input-error :messages="$errors->get('jenisbarang_id')" class="mt-2" />
                         </div>
 
                         <!-- Tanggal Peroleh -->

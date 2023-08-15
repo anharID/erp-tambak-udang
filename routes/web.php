@@ -13,11 +13,14 @@ use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\SamplingController;
 use App\Http\Controllers\FinansialController;
 use App\Http\Controllers\InventarisController;
+use App\Http\Controllers\KelolaJenisBarangController;
 use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\LogistikController;
 use App\Http\Controllers\PeralatanController;
 use App\Http\Controllers\PerlakuanController;
 use App\Http\Controllers\MonitoringController;
+use App\Http\Controllers\PenggunaanEnergiController;
+use App\Models\PenggunaanEnergi;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -31,12 +34,13 @@ use Illuminate\Support\Facades\Auth;
 |
  */
 
+Auth::routes(['verify' => true]);
+
 Route::redirect('/', '/dashboard');
 
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
-Auth::routes(['verify' => true]);
 
 //TODO perbaiki route dan midleware
 Route::middleware('auth')->group(function () {
@@ -55,12 +59,28 @@ Route::middleware('auth')->group(function () {
     Route::get('/siklus/budidaya/{siklus}/exportpdf', [SiklusController::class, 'export'])->name('exportpdf');
     Route::get('/finansial/{siklus}/exportpdf', [FinansialController::class, 'export'])->name('finansial_exportpdf');
 
+    //penggunaan energi
+    Route::get('/kolam/kategori-penggunan-energi', [PenggunaanEnergiController::class, 'index'])->middleware('role:superadmin')->name('kategori_penggunaan');
+    Route::get('/kolam/kategori-penggunan-energi/create', [PenggunaanEnergiController::class, 'create'])->middleware('role:superadmin')->name('penggunaan.create');
+    Route::post('/kolam/kategori-penggunan-energi/store', [PenggunaanEnergiController::class, 'store'])->middleware('role:superadmin')->name('penggunaan.store');
+    Route::get('/kolam/kategori-penggunan-energi/{penggunaanId}/edit', [PenggunaanEnergiController::class, 'edit'])->middleware('role:superadmin')->name('penggunaan.edit');
+    Route::put('/kolam/kategori-penggunan-energi/{penggunaanId}/update', [PenggunaanEnergiController::class, 'update'])->middleware('role:superadmin')->name('penggunaan.update');
+    Route::delete('/kolam/kategori-penggunan-energi/{penggunaanId}/delete', [PenggunaanEnergiController::class, 'destroy'])->middleware('role:superadmin')->name('penggunaan.destroy');
+
     // Validasi
     Route::post('/kolam/{kolamId}/siklus/{siklus}/monitoring/{monitoring}/validasi', [MonitoringController::class, 'dataValidated'])->middleware('role:superadmin,teknisi')->name('validasi_monitoring');
     Route::post('/kolam/{kolamId}/siklus/{siklus}/pakan/{pakan}/validasi', [PakanController::class, 'dataValidated'])->middleware('role:superadmin,teknisi')->name('validasi_pakan');
     Route::post('/kolam/{kolamId}/siklus/{siklus}/sampling/{sampling}/validasi', [SamplingController::class, 'dataValidated'])->middleware('role:superadmin,teknisi')->name('validasi_sampling');
     Route::post('/kolam/{kolamId}/siklus/{siklus}/perlakuan/{perlakuan}/validasi', [PerlakuanController::class, 'dataValidated'])->middleware('role:superadmin,teknisi')->name('validasi_perlakuan');
     Route::post('/kolam/{kolamId}/siklus/{siklus}/panen/{panen}/validasi', [PanenController::class, 'dataValidated'])->middleware('role:superadmin,teknisi')->name('validasi_panen');
+
+    //Kelola Jenis Barang
+    Route::get('/inventaris/kelolajenisbarang', [KelolaJenisBarangController::class, 'index'])->middleware('role:superadmin')->name('kelola_barang');
+    Route::get('/inventaris/kelolajenisbarang/create', [KelolaJenisBarangController::class, 'create'])->middleware('role:superadmin')->name('kelola_barang.create');
+    Route::post('/inventaris/kelolajenisbarang/store', [KelolaJenisBarangController::class, 'store'])->middleware('role:superadmin')->name('kelola_barang.store');
+    Route::get('/inventaris/kelolajenisbarang/{kelolajenisbarang}/edit', [KelolaJenisBarangController::class, 'edit'])->middleware('role:superadmin')->name('kelola_barang.edit');
+    Route::put('/inventaris/kelolajenisbarang/{kelolajenisbarang}/update', [KelolaJenisBarangController::class, 'update'])->middleware('role:superadmin')->name('kelola_barang.update');
+    Route::delete('/inventaris/kelolajenisbarang/{kelolajenisbarang}/destroy', [KelolaJenisBarangController::class, 'destroy'])->middleware('role:superadmin')->name('kelola_barang.destroy');
 
     //Kolam
     Route::get('/kolam/{kolam}/siklus/{siklus}', [KolamController::class, 'dataKolam'])->middleware('role:superadmin,admin,direktur,teknisi')->name('data_kolam');

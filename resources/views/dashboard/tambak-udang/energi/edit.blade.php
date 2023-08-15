@@ -20,18 +20,16 @@
                             </div>
 
                             <div>
-                                <x-input-label for="penggunaan" :value="__('Penggunaan Energi')" />
-                                <select name="penggunaan"
+                                <x-input-label for="penggunaan_id" :value="__('Penggunaan Energi')" />
+                                <select name="penggunaan_id"
                                     class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2">
                                     <option value="" disabled selected>Pilih satu opsi</option>
-                                    <option value="Kincir" {{ $energi->penggunaan == 'Kincir' ? 'selected' : ''
-                                        }}>Kincir</option>
-                                    <option value="Penerangan" {{ $energi->penggunaan == 'Penerangan' ? 'selected' : ''
-                                        }}>Penerangan</option>
-                                    <option value="Utility" {{ $energi->penggunaan == 'Utility' ? 'selected' : ''
-                                        }}>Utility</option>
+                                    @foreach ($penggunaan as $item)
+                                    <option value={{ $item->id }} {{ $energi->penggunaan_id === $item->id ? 'selected' :
+                                        '' }}>{{ $item->penggunaan }}</option>
+                                    @endforeach
                                 </select>
-                                <x-input-error :messages="$errors->get('penggunaan')" class="mt-2" />
+                                <x-input-error :messages="$errors->get('penggunaan_id')" class="mt-2" />
                             </div>
                             <div>
                                 <x-input-label for="sumber_energi" :value="__('Sumber Energi')" />
