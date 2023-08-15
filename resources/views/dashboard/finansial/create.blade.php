@@ -55,10 +55,10 @@
                             <x-input-label for="karyawan" :value="__('Nama Karyawan')" />
                             <select name="karyawan" id="karyawan"
                                 class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2">
-                                <option value="" disabled selected>Pilih satu opsi</option>
+                                <option value="" selected>Pilih satu opsi</option>
                                 @foreach ($karyawan as $row)
-                                    <option value="{{ $row->id }}" gaji="{{ $row->gaji }}"
-                                        bonus="{{ $row->bonus }}" nama="{{ $row->nama }}">{{ $row->nama }}
+                                    <option value="{{ $row->id }}" gaji="{{ $row->jabatan->gaji }}"
+                                        bonus="{{ $row->jabatan->bonus }}" nama="{{ $row->nama }}">{{ $row->nama }}
                                     </option>
                                 @endforeach
                             </select>
