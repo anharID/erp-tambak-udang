@@ -259,8 +259,7 @@
                             </tr>
                             <tr>
                                 <td class="p-2 font-medium ">Validasi</td>
-                                <td class="p-2 "
-                                    x-text={{ 'selectedData.is_validated == 0' ? "'Belum'" : "'Sudah'" }}></td>
+                                <td class="py-2 " x-text="selectedData.is_validated ? 'Sudah' : 'Belum'"></td>
                             </tr>
                             <tr>
                                 <td class="p-2 font-medium ">Catatan</td>

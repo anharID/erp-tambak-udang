@@ -131,7 +131,7 @@
                             </tr>
                             <tr>
                                 <td class="py-2 font-medium ">Tanggal Lahir</th>
-                                <td class="py-2 " x-text="selectedData.tanggal_lahir"></td>
+                                <td class="py-2 " x-text="formatDate(selectedData.tanggal_lahir)"></td>
                             </tr>
                             <tr>
                                 <td class="py-2 font-medium ">Nomor HP</td>
@@ -147,11 +147,11 @@
                             </tr>
                             <tr>
                                 <td class="py-2 font-medium ">Status</td>
-                                <td class="py-2 " x-text={{"selectedData.status" ? "'Bekerja'" : "'Cuti'"}}></td>
+                                <td class="py-2 " x-text="selectedData.status ? 'Bekerja' : 'Cuti'"></td>
                             </tr>
                             <tr>
                                 <td class="py-2 font-medium ">Gaji</td>
-                                <td class="py-2 " x-text="selectedData.jabatan.gaji"></td>
+                                <td class="py-2 " x-text="formatCurrency(selectedData.jabatan.gaji)"></td>
                             </tr>
                             <tr>
                                 <td class="py-2 font-medium ">Bonus</td>
@@ -176,8 +176,16 @@
 
             showKaryawan(data) {
                 this.selectedData = data;
+                console.log(this.selectedData);
                 this.showModal = true;
             },
         }))
     })
+    function formatCurrency(value) {
+        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(value);
+    }
+    function formatDate(date) {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(date).toLocaleDateString('id-ID', options);
+    }
 </script>
