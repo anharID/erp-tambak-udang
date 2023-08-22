@@ -143,7 +143,7 @@
             <main class="h-full overflow-y-auto bg-gray-100 dark:bg-gray-900">
                 <div class="min-h-screen">{{ $slot }}</div>
                 <footer>
-                    <nav class="bg-white py-2 border-t text-gray-500 md:py-2">
+                    <nav class="bg-white py-2 border-t text-gray-500 md:py-2 dark:bg-slate-800">
                         <div class="text-center pl-3 text-sm">
                             © 2023 CV Riz Samudera
                         </div>

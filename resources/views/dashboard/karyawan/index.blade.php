@@ -6,10 +6,10 @@
                 <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg">
                     <div class="w- full p-6 overflow-hidden">
                         @if (session('success'))
-                            <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4" role="alert">
-                                <p class="font-bold">Success</p>
-                                <p>{{ session('success') }}</p>
-                            </div>
+                        <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4" role="alert">
+                            <p class="font-bold">Success</p>
+                            <p>{{ session('success') }}</p>
+                        </div>
                         @endif
 
                         <a href="{{ route('karyawan.create') }}"
@@ -17,10 +17,10 @@
                             <i class="fa-solid fa-plus mr-1"></i> Tambah Karyawan
                         </a>
                         @can('hakSuperadmin')
-                            <a href="{{ route('jabatan.index') }}"
-                                class="ml-2 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-gray-600 border border-transparent rounded-lg active:bg-gray-600 hover:bg-gray-700 focus:outline-none focus:shadow-outline-gray">
-                                Detail Jabatan
-                            </a>
+                        <a href="{{ route('jabatan.index') }}"
+                            class="ml-2 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-gray-600 border border-transparent rounded-lg active:bg-gray-600 hover:bg-gray-700 focus:outline-none focus:shadow-outline-gray">
+                            Detail Jabatan
+                        </a>
                         @endcan
                         <div class="w-full mt-4">
                             <table class="w-full table-auto mt-4 datatable hover">
@@ -48,29 +48,28 @@
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700">
                                     @foreach ($karyawan as $row)
-                                        <tr>
-                                            <td class="px-6 py-4 whitespace-nowrap">{{ $row->nama }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap">{{ $row->no_hp }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap">{{ $row->email }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap">{{ $row->jabatan->jabatan ?? '-' }}
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">{{ $row->status }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap flex">
-                                                <button @click="showKaryawan({{ json_encode($row) }})"
-                                                    class="text-blue-600 mr-4"><i class="fa-solid fa-eye"></i></button>
-                                                <a href="{{ route('karyawan.edit', $row->id) }}"
-                                                    class="text-yellow-600 mr-4"><i
-                                                        class="fa-solid fa-pen-to-square"></i></a>
-                                                <form action="{{ route('karyawan.destroy', $row->id) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit"
-                                                        onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"
-                                                        class="text-red-600"><i class="fa-solid fa-trash"></i></button>
-                                                </form>
-                                            </td>
-                                        </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ $row->nama }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ $row->no_hp }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ $row->email }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ $row->jabatan->jabatan ?? '-' }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ $row->status }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap flex">
+                                            <button @click="showKaryawan({{ json_encode($row) }})"
+                                                class="text-blue-600 mr-4"><i class="fa-solid fa-eye"></i></button>
+                                            <a href="{{ route('karyawan.edit', $row->id) }}"
+                                                class="text-yellow-600 mr-4"><i
+                                                    class="fa-solid fa-pen-to-square"></i></a>
+                                            <form action="{{ route('karyawan.destroy', $row->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"
+                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"
+                                                    class="text-red-600"><i class="fa-solid fa-trash"></i></button>
+                                            </form>
+                                        </td>
+                                    </tr>
                                     @endforeach
                                 </tbody>
                             </table>
@@ -116,44 +115,46 @@
                     <table class="table-fixed w-full border border-gray-200">
                         <tbody class="divide-y divide-gray-200">
                             <tr>
-                                <td class="py-2 w-1/4 font-medium ">Nama Karyawan</td>
-                                <td class="py-2 " x-text="selectedData.nama"></td>
+                                <td class="py-2 w-1/4 font-medium dark:text-gray-300">Nama Karyawan</td>
+                                <td class="py-2 dark:text-gray-300" x-text="selectedData.nama"></td>
                             </tr>
                             <tr>
-                                <td class="py-2 font-medium ">Alamat</td>
-                                <td class="py-2 " x-text="selectedData.alamat"></td>
+                                <td class="py-2 font-medium dark:text-gray-300">Alamat</td>
+                                <td class="py-2 dark:text-gray-300" x-text="selectedData.alamat"></td>
                             </tr>
                             <tr>
-                                <td class="py-2 font-medium ">Tempat Lahir</td>
-                                <td class="py-2 " x-text="selectedData.tempat_lahir"></td>
+                                <td class="py-2 font-medium dark:text-gray-300">Tempat Lahir</td>
+                                <td class="py-2 dark:text-gray-300" x-text="selectedData.tempat_lahir"></td>
                             </tr>
                             <tr>
-                                <td class="py-2 font-medium ">Tanggal Lahir</th>
-                                <td class="py-2 " x-text="formatDate(selectedData.tanggal_lahir)"></td>
+                                <td class="py-2 font-medium dark:text-gray-300">Tanggal Lahir</th>
+                                <td class="py-2 dark:text-gray-300" x-text="formatDate(selectedData.tanggal_lahir)">
+                                </td>
                             </tr>
                             <tr>
-                                <td class="py-2 font-medium ">Nomor HP</td>
-                                <td class="py-2 " x-text="selectedData.no_hp"></td>
+                                <td class="py-2 font-medium dark:text-gray-300">Nomor HP</td>
+                                <td class="py-2 dark:text-gray-300" x-text="selectedData.no_hp"></td>
                             </tr>
                             <tr>
-                                <td class="py-2 font-medium ">Email</td>
-                                <td class="py-2 " x-text="selectedData.email"></td>
+                                <td class="py-2 font-medium dark:text-gray-300">Email</td>
+                                <td class="py-2 dark:text-gray-300" x-text="selectedData.email"></td>
                             </tr>
                             <tr>
-                                <td class="py-2 font-medium ">Jabatan</td>
-                                <td class="py-2 " x-text="selectedData.jabatan.jabatan"></td>
+                                <td class="py-2 font-medium dark:text-gray-300">Jabatan</td>
+                                <td class="py-2 dark:text-gray-300" x-text="selectedData.jabatan.jabatan"></td>
                             </tr>
                             <tr>
-                                <td class="py-2 font-medium ">Status</td>
-                                <td class="py-2 " x-text="selectedData.status"></td>
+                                <td class="py-2 font-medium dark:text-gray-300">Status</td>
+                                <td class="py-2 dark:text-gray-300" x-text="selectedData.status"></td>
                             </tr>
                             <tr>
-                                <td class="py-2 font-medium ">Gaji</td>
-                                <td class="py-2 " x-text="formatCurrency(selectedData.jabatan.gaji)"></td>
+                                <td class="py-2 font-medium dark:text-gray-300">Gaji</td>
+                                <td class="py-2 dark:text-gray-300" x-text="formatCurrency(selectedData.jabatan.gaji)">
+                                </td>
                             </tr>
                             <tr>
-                                <td class="py-2 font-medium ">Bonus</td>
-                                <td class="py-2 " x-text="selectedData.jabatan.bonus + '%'"></td>
+                                <td class="py-2 font-medium dark:text-gray-300">Bonus</td>
+                                <td class="py-2 dark:text-gray-300" x-text="selectedData.jabatan.bonus + '%'"></td>
                             </tr>
                         </tbody>
                     </table>
