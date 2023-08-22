@@ -3,7 +3,7 @@
 @endphp
 <x-admin>
     <div class="container grid py-12">
-        <div class="w-full mx-auto px-4 sm:px-6 lg:px-8 text-gray-900 dark:text-gray-100 overflow-hidden">
+        <div class="w-full mx-auto px-4 sm:px-6 lg:px-8 text-gray-900   overflow-hidden">
 
             <h1 class="mb-4 font-bold text-xl">Manajemen Finansial</h1>
             @if (!$param)
@@ -16,7 +16,7 @@
             <div class="flex items-center mb-4">
                 {{-- <span class="w-24">Pilih Siklus</span> --}}
                 <select
-                    class="mr-2 w-60 rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2"
+                    class="mr-2 w-60 rounded-md border-gray-300       focus:border-indigo-500   focus:ring-indigo-500   shadow-sm px-4 py-2"
                     name="siklus_id" onchange="location = this.value;">
                     <option value="">Pilih Siklus</option>
                     @if ($siklusSaatIni)
@@ -33,7 +33,7 @@
             </div>
 
             <div class="grid gap-6 mb-8 md:grid-cols-1">
-                <div class="min-w-0 h-96 p-4 bg-white rounded-lg shadow-sm dark:bg-gray-800">
+                <div class="min-w-0 h-96 p-4 bg-white rounded-lg shadow-sm  ">
                     <canvas id="myChart">
                         <p>Your browser does not support the canvas element.</p>
                     </canvas>
@@ -41,29 +41,35 @@
                 </div>
             </div>
             <div class="grid gap-6 mb-8 md:grid-cols-3 sm:grid-cols-2">
-                <div class="min-w-0 p-4 bg-blue-300 rounded-lg shadow-sm dark:bg-gray-800">
+                <div class="min-w-0 p-4 bg-blue-300 rounded-lg shadow-sm  ">
+                    <p class="text-base mb-2">Saldo</p>
+                    <p class="text-xl font-medium">
+                        {{ 'Rp ' . number_format($saldo ?? 0, 2, ',', '.') }}
+                    </p>
+                </div>
+                {{-- <div class="min-w-0 p-4 bg-blue-300 rounded-lg shadow-sm  ">
                     <p class="text-base mb-2">Saldo Hari Ini</p>
                     <p class="text-xl font-medium">
                         {{ 'Rp ' . number_format(($totalSaldoAwal + $totalPemasukan - $totalPengeluaran) ?? 0, 2, ',', '.') }}
                     </p>
-                </div>
-                {{-- <div class="min-w-0 p-4 bg-orange-300 rounded-lg shadow-sm dark:bg-gray-800">
+                </div> --}}
+                {{-- <div class="min-w-0 p-4 bg-orange-300 rounded-lg shadow-sm  ">
                     <p class="text-base mb-2">Laba/Rugi</p>
                     <p class="text-xl font-medium">
                         {{ 'Rp ' . number_format($totalPemasukan - $totalPengeluaran ?? 0, 2, ',', '.') }}
                     </p>
                 </div> --}}
-                <div class="min-w-0 p-4 bg-green-300 rounded-lg shadow-sm dark:bg-gray-800">
+                <div class="min-w-0 p-4 bg-green-300 rounded-lg shadow-sm  ">
                     <p class="text-base mb-2">Pemasukan</p>
                     <p class="text-xl font-medium">{{ 'Rp ' . number_format($totalPemasukan ?? 0, 2, ',', '.') }}</p>
                 </div>
-                <div class="min-w-0 p-4 bg-red-300 rounded-lg shadow-sm dark:bg-gray-800">
+                <div class="min-w-0 p-4 bg-red-300 rounded-lg shadow-sm  ">
                     <p class="text-base mb-2">Pengeluaran</p>
                     <p class="text-xl font-medium">{{ 'Rp ' . number_format($totalPengeluaran ?? 0, 2, ',', '.') }}
                     </p>
                 </div>
             </div>
-            <div class="bg-white mb-8 dark:bg-gray-800 shadow-sm sm:rounded-lg">
+            <div class="bg-white mb-8   shadow-sm sm:rounded-lg">
                 <table class="w-full">
                     <tbody>
                         <tr>
@@ -85,7 +91,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg">
+            <div class="bg-white   shadow-sm sm:rounded-lg">
                 <div class="w- full p-6 overflow-hidden">
                     @if (session('success'))
                         <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4" role="alert">
@@ -104,32 +110,32 @@
                     </a>
                     <div class="w-full mt-4">
                         <table class="w-full table-auto mt-4 datatable hover display nowrap">
-                            <thead class="bg-gray-50 dark:bg-gray-800">
+                            <thead class="bg-gray-50  ">
                                 <tr>
                                     <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500   uppercase tracking-wider">
                                         Tanggal</th>
                                     <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500   uppercase tracking-wider">
                                         Jenis Transaksi</th>
                                     <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500   uppercase tracking-wider">
                                         Keterangan</th>
                                     <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500   uppercase tracking-wider">
                                         Jumlah</th>
                                     <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500   uppercase tracking-wider">
                                         Catatan</th>
                                     <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500   uppercase tracking-wider">
                                         Status</th>
                                     <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500   uppercase tracking-wider">
                                         Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700">
+                            <tbody class="bg-white divide-y divide-gray-200    ">
                                 @foreach ($finansialList as $row)
                                     <tr>
                                         <td class="px-6 py-4 whitespace-nowrap">
@@ -172,12 +178,12 @@
             x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0  transform translate-y-1/2" @click.away="closeModal"
             @keydown.escape="closeModal"
-            class="w-full px-6 py-4 overflow-hidden bg-white rounded-t-lg dark:bg-gray-800 sm:rounded-lg sm:m-4 sm:max-w-xl"
+            class="w-full px-6 py-4 overflow-hidden bg-white rounded-t-lg   sm:rounded-lg sm:m-4 sm:max-w-xl"
             role="dialog" id="modal">
             <!-- Remove header if you don't want a close icon. Use modal body to place modal tile. -->
             <header class="flex justify-end">
                 <button
-                    class="inline-flex items-center justify-center w-6 h-6 text-gray-400 transition-colors duration-150 rounded dark:hover:text-gray-200 hover: hover:text-gray-700"
+                    class="inline-flex items-center justify-center w-6 h-6 text-gray-400 transition-colors duration-150 rounded   hover: hover:text-gray-700"
                     aria-label="close" @click="closeModal">
                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" role="img" aria-hidden="true">
                         <path
@@ -189,28 +195,28 @@
             <!-- Modal body -->
             <div class="mt-4 mb-6">
                 <!-- Modal title -->
-                <p class="mb-2 text-lg font-semibold text-gray-700 dark:text-gray-300">
+                <p class="mb-2 text-lg font-semibold text-gray-700  ">
                     Bonus Karyawan
                 </p>
                 <!-- Modal description -->
                 <table class="w-full table-auto mt-4 datatable hover display nowrap">
-                    <thead class="bg-gray-50 dark:bg-gray-800">
+                    <thead class="bg-gray-50  ">
                         <tr>
                             <th
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500   uppercase tracking-wider">
                                 Nama</th>
                             <th
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500   uppercase tracking-wider">
                                 Bonus</th>
                             <th
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500   uppercase tracking-wider">
                                 Nominal</th>
                             <th
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                class="px-6 py-3 text-left text-xs font-medium text-gray-500   uppercase tracking-wider">
                                 Aksi</th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700">
+                    <tbody class="bg-white divide-y divide-gray-200    ">
                         @foreach ($karyawan as $row)
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap">{{ $row->nama }}</td>
@@ -228,7 +234,7 @@
                 </table>
             </div>
             <footer
-                class="flex flex-col items-center justify-end px-6 py-3 -mx-6 -mb-4 space-y-4 sm:space-y-0 sm:space-x-6 sm:flex-row bg-gray-50 dark:bg-gray-800">
+                class="flex flex-col items-center justify-end px-6 py-3 -mx-6 -mb-4 space-y-4 sm:space-y-0 sm:space-x-6 sm:flex-row bg-gray-50  ">
             </footer>
         </div>
     </div>

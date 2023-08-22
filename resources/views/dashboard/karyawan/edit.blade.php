@@ -1,9 +1,9 @@
 <x-admin>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 text-gray-900 dark:text-gray-100">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 text-gray-900  ">
             <h1 class="mb-4 text-xl font-bold">Ubah Data Karyawan</h1>
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white   overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 ">
                     <form method="POST" action="{{ route('karyawan.update', $karyawan->id) }}">
                         @csrf
@@ -54,7 +54,7 @@
                         <!-- Jabatan -->
                         <div class="mt-4">
                             <x-input-label for="jabatan_id" :value="__('Jabatan')" />
-                            <select name="jabatan_id" class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2">
+                            <select name="jabatan_id" class="block mt-1 w-full rounded-md border-gray-300       focus:border-indigo-500   focus:ring-indigo-500   shadow-sm px-4 py-2">
                                 <option value="">Pilih Jabatan</option>
                                 @foreach($jabatan as $row)
                                 <option value="{{ $row->id }}" {{ $karyawan->jabatan_id == $row->id ? 'selected' : '' }}>{{ $row->jabatan }}</option>
@@ -66,10 +66,12 @@
                         <!-- Status -->
                         <div class="mt-4">
                             <x-input-label for="status" :value="__('Status')" />
-                            <input type="radio" id="cuti" name="status" value="0" class="form-radio h-3 w-3 mx-1" {{ $karyawan->status == '0' ? 'checked' : '' }}>
+                            <input type="radio" id="cuti" name="status" value="Cuti" class="form-radio h-3 w-3 mx-1" {{ $karyawan->status == 'Cuti' ? 'checked' : '' }}>
                             <x-input-label for="cuti" class="inline font-normal">Cuti</x-input-label><br>
-                            <input type="radio" id="bekerja" name="status" value="1" class="form-radio h-3 w-3 mx-1" {{ $karyawan->status == '1' ? 'checked' : '' }}>
-                            <x-input-label for="cuti" class="inline font-normal" for="bekerja">Bekerja</x-input-label><br>
+                            <input type="radio" id="bekerja" name="status" value="Bekerja" class="form-radio h-3 w-3 mx-1" {{ $karyawan->status == 'Bekerja' ? 'checked' : '' }}>
+                            <x-input-label for="bekerja" class="inline font-normal">Bekerja</x-input-label><br>
+                            <input type="radio" id="mengundurkan_diri" name="status" value="Mengundurkan Diri" class="form-radio h-3 w-3 mx-1" {{ $karyawan->status == 'Mengundurkan Diri' ? 'checked' : '' }}>
+                            <x-input-label class="inline font-normal" for="mengundurkan_diri">Mengundurkan Diri</x-input-label><br>
                             <x-input-error :messages="$errors->get('status')" class="mt-2" />
                         </div>
 

@@ -15,14 +15,16 @@ return new class extends Migration
     {
         Schema::create('karyawan', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('jabatan_id')->constrained('jabatan');
+            $table->unsignedBigInteger("jabatan_id")->nullable();
+            $table->foreign('jabatan_id')->references('id')->on('jabatan')->onDelete('set null');
+            // $table->foreignId('jabatan_id')->constrained('jabatan')->nullable()->nullOnDelete();
             $table->string("nama");
             $table->string("alamat");
             $table->string("tempat_lahir");
             $table->date("tanggal_lahir");
             $table->string("no_hp");
             $table->string("email")->unique();
-            $table->boolean("status");
+            $table->string("status");
             $table->timestamps();
         });
     }

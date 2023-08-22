@@ -45,7 +45,8 @@ class KaryawanController extends Controller
             'tanggal_lahir' => ['required', 'date'],
             'no_hp' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255'],
-            'status' => ['required', 'boolean'],
+            'status' => ['required'],
+            'jabatan_id' => ['required'],
 
         ]);
 
@@ -102,11 +103,13 @@ class KaryawanController extends Controller
             'tanggal_lahir' => ['required', 'date'],
             'no_hp' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255'],
-            'status' => ['required', 'boolean'],
+            'status' => ['required'],
+            'jabatan_id' => ['required'],
         ]);
 
 
         Karyawan::where('id', $karyawan->id)->update([
+            'jabatan_id' => $request->jabatan_id,
             'nama' => $request->nama,
             'alamat' => $request->alamat,
             'tempat_lahir' => $request->tempat_lahir,
@@ -127,6 +130,7 @@ class KaryawanController extends Controller
      */
     public function destroy(Karyawan $karyawan)
     {
+        
         $karyawan->delete();
 
         return redirect()->route('karyawan.index')->with('success', "Data berhasil dihapus");

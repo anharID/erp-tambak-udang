@@ -18,9 +18,9 @@ return new class extends Migration
             $table->unsignedBigInteger("karyawan_id")->nullable();
             $table->unsignedBigInteger("siklus_id")->nullable();
             $table->unsignedBigInteger("logistik_id")->nullable();
-            $table->foreign('karyawan_id')->references('id')->on('karyawan');
+            $table->foreign('karyawan_id')->references('id')->on('karyawan')->onDelete('set null');
             $table->foreign('siklus_id')->references('id')->on('siklus');
-            $table->foreign('logistik_id')->references('id')->on('logistik');
+            $table->foreign('logistik_id')->references('id')->on('logistik')->onDelete('set null');
             // $table->foreign('siklus_id')->references('id')->on('siklus');
             // $table->unsignedBigInteger("logistik_id")->nullable();
             // $table->foreign('logistik_id')->references('id')->on('logistik');

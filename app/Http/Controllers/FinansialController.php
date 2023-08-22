@@ -38,11 +38,12 @@ class FinansialController extends Controller
         $siklusSelesai = Siklus::whereNotNull('tanggal_selesai')->orderBy('tanggal_mulai', 'desc')->get();
 
         // Total Saldo Awal
-        $saldoAwal = $finansialList->where('jenis_transaksi','Saldo Awal');
+        $saldoAwal = $finansial->where('jenis_transaksi','Saldo Awal')->get();
         $totalSaldoAwal = 0;
         foreach ($saldoAwal as $row) {
             $totalSaldoAwal += $row->jumlah;
         }
+        
         // Total Pemasukan
         $pemasukan = $finansialList->whereIn('jenis_transaksi', ['Pemasukan', 'Penjualan Udang']);
         $totalPemasukan = 0;
@@ -72,6 +73,12 @@ class FinansialController extends Controller
         $totalBonusKaryawan = (Karyawan::join('jabatan', 'karyawan.jabatan_id', '=', 'jabatan.id')
         ->sum('jabatan.bonus') / 100) * $keuntunganKotor;
 
+        // Total Saldo 
+        $pemasukan0 = $finansial->whereIn('jenis_transaksi', ['Pemasukan', 'Penjualan Udang'])->where('siklus_id', $siklusId-1)->sum('jumlah');
+        $pengeluaran0 = $finansial->whereIn('jenis_transaksi', ['Pengeluaran', 'Gaji Karyawan', 'Bonus Karyawan'])->where('siklus_id', $siklusId-1)->sum('jumlah');
+        $saldo = $totalSaldoAwal + ($pemasukan0 - $pengeluaran0)+($totalPemasukan - $totalPengeluaran);
+        
+
         // Pemasukan
         $pemasukanBulanan = $pemasukan->groupBy(function ($item) {
             return Carbon::parse($item->tanggal)->format('F');
@@ -94,6 +101,7 @@ class FinansialController extends Controller
             'pemasukanBulanan' => $pemasukanBulanan,
             'pengeluaranBulanan' => $pengeluaranBulanan,
             'totalSaldoAwal' => $totalSaldoAwal,
+            'saldo' => $saldo,
             'totalPemasukan' => $totalPemasukan,
             'totalPengeluaran' => $totalPengeluaran,
             'totalPenjualan' => $totalPenjualan,
@@ -160,7 +168,7 @@ class FinansialController extends Controller
         }
         // Keuntungan Kotor
         $keuntunganKotor = $totalPemasukan - ($totalPengeluaran - $totalBonus);
-        return view("dashboard.finansial.create", compact('karyawan', 'kolam', 'finansialList', 'siklusId', 'keuntunganKotor'));
+        return view("dashboard.finansial.create", compact('karyawan', 'kolam', 'finansialList', 'finansial', 'siklusId', 'keuntunganKotor'));
     }
 
     /**
