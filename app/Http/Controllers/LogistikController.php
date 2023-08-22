@@ -55,6 +55,7 @@ class LogistikController extends Controller
     public function store(Request $request, $inventaris)
     {
         $request->validate([
+            'siklus_id' => ['required', 'string'],
             'tanggal' => ['required', 'date'],
             'keterangan' => ['required', 'string'],
             'sumber' => ['required', 'string', 'max:100'],
@@ -138,6 +139,7 @@ class LogistikController extends Controller
     public function update(Request $request, $inventaris, $logistik)
     {
         $request->validate([
+            'siklus_id' => ['required', 'string'],
             'tanggal' => ['required', 'date'],
             'keterangan' => ['required', 'string'],
             'sumber' => ['required', 'string', 'max:100'],

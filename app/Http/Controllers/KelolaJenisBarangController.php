@@ -21,7 +21,10 @@ class KelolaJenisBarangController extends Controller
     public function store(Request $request)
     {
         $validation = $request->validate([
-            'jenisbarang' => 'required',
+            'jenisbarang' => ['required', 'unique:kelolajenisbarang'],
+        ],
+        [
+            'jenisbarang.unique' => 'Data ini sudah ada.',
         ]);
 
         KelolaJenisBarang::create([
@@ -41,7 +44,10 @@ class KelolaJenisBarangController extends Controller
     public function update(Request $request, $kelolajenisbarangId)
     {
         $validation = $request->validate([
-            'jenisbarang' => 'required',
+            'jenisbarang' => ['required', 'unique:kelolajenisbarang'],
+        ],
+        [
+            'jenisbarang.unique' => 'Data ini sudah ada.',
         ]);
 
         $kelolajenisbarang = KelolaJenisBarang::find($kelolajenisbarangId);
@@ -52,8 +58,9 @@ class KelolaJenisBarangController extends Controller
         return redirect()->route('kelola_barang')->with('success', "Data berhasil diperbarui");
     }
 
-    public function destroy($kelolajenisbarang)
+    public function destroy($kelolajenisbarangId)
     {
+        $kelolajenisbarang = KelolaJenisBarang::findOrFail($kelolajenisbarangId);
         $kelolajenisbarang->delete();
 
         return redirect()->route('kelola_barang')->with('success', 'Data berhasil dihapus');
