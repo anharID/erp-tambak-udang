@@ -4,9 +4,9 @@
 <x-admin>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 text-gray-900  ">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 text-gray-900 dark:text-gray-100 ">
             <h1 class="mb-4 text-xl font-bold">Tambah Catatan Finansial</h1>
-            <div class="bg-white   overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white  dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 ">
                     <form method="POST" action="{{ route('finansial.store') }}">
                         @csrf
@@ -27,7 +27,7 @@
                         <div class="mt-4">
                             <x-input-label for="jenis_transaksi" :value="__('Jenis Transaksi')" />
                             <select name="jenis_transaksi" id="jenis_transaksi"
-                                class="block mt-1 w-full rounded-md border-gray-300       focus:border-indigo-500   focus:ring-indigo-500   shadow-sm px-4 py-2">
+                                class="block mt-1 w-full rounded-md border-gray-300  dark:border-gray-700 dark:bg-gray-900 dark:focus:ring-indigo-600  dark:focus:border-indigo-600 dark:text-gray-300     focus:border-indigo-500   focus:ring-indigo-500   shadow-sm px-4 py-2">
                                 <option value="" disabled selected>Pilih satu opsi</option>
                                 <option value="Saldo Awal">Saldo Awal</option>
                                 @if ($finansial->all()->isNotEmpty())
@@ -54,7 +54,7 @@
                         <div class="mt-4" id="karyawan_field" style="display:none;">
                             <x-input-label for="karyawan" :value="__('Nama Karyawan')" />
                             <select name="karyawan" id="karyawan"
-                                class="block mt-1 w-full rounded-md border-gray-300       focus:border-indigo-500   focus:ring-indigo-500   shadow-sm px-4 py-2">
+                                class="block mt-1 w-full rounded-md border-gray-300 dark:focus:border-indigo-600 dark:focus:ring-indigo-600  dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300     focus:border-indigo-500   focus:ring-indigo-500   shadow-sm px-4 py-2">
                                 <option value="" selected>Pilih satu opsi</option>
                                 @foreach ($karyawan as $row)
                                     <option value="{{ $row->id }}" gaji="{{ $row->jabatan->gaji }}"
@@ -70,7 +70,7 @@
                         <div class="mt-4" id="kolam_field" style="display:none;">
                             <x-input-label for="kolam" :value="__('Kolam')" />
                             <select name="kolam" id="kolam"
-                                class="block mt-1 w-full rounded-md border-gray-300       focus:border-indigo-500   focus:ring-indigo-500   shadow-sm px-4 py-2">
+                            class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2">
                                 <option value="" disabled selected>Pilih satu opsi</option>
                                 @foreach ($kolam as $row)
                                     <option nama="{{ $row->nama }}">{{ $row->nama }}</option>

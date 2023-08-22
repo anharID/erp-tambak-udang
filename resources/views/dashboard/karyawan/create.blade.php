@@ -1,9 +1,9 @@
 <x-admin>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 text-gray-900  ">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 text-gray-900 dark:text-gray-100">
             <h1 class="mb-4 text-xl font-bold">Tambah Karyawan</h1>
-            <div class="bg-white   overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 ">
                     <form method="POST" action="{{ route('karyawan.store') }}">
                         @csrf
@@ -53,7 +53,7 @@
                         <!-- Jabatan -->
                         <div class="mt-4">
                             <x-input-label for="jabatan_id" :value="__('Jabatan')" />
-                            <select name="jabatan_id" class="block mt-1 w-full rounded-md border-gray-300   focus:border-indigo-500   focus:ring-indigo-500   shadow-sm px-4 py-2">
+                            <select name="jabatan_id" class="block mt-1 w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2">
                                 <option value="">Pilih Jabatan</option>
                                 @foreach($jabatan as $row)
                                 <option value="{{ $row->id }}">{{ $row->jabatan }}</option>

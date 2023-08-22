@@ -1,9 +1,9 @@
 <x-admin>
     <div x-data="modalData">
         <div class="container grid py-12">
-            <div class="w-full mx-auto px-4 sm:px-6 lg:px-8 text-gray-900   overflow-hidden">
+            <div class="w-full mx-auto px-4 sm:px-6 lg:px-8 text-gray-900 dark:text-gray-100 overflow-hidden">
                 <h1 class="mb-4 font-bold text-xl">Manajemen Karyawan</h1>
-                <div class="bg-white   shadow-sm sm:rounded-lg">
+                <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg">
                     <div class="w- full p-6 overflow-hidden">
                         @if (session('success'))
                             <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4" role="alert">
@@ -24,43 +24,45 @@
                         @endcan
                         <div class="w-full mt-4">
                             <table class="w-full table-auto mt-4 datatable hover">
-                                <thead class="bg-gray-50  ">
+                                <thead class="bg-gray-50 dark:bg-gray-800">
                                     <tr>
                                         <th
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500   uppercase tracking-wider">
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                             Nama</th>
                                         <th
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500   uppercase tracking-wider">
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                             Nomor HP</th>
                                         <th
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500   uppercase tracking-wider">
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                             Alamat Email</th>
                                         <th
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500   uppercase tracking-wider">
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                             Jabatan</th>
                                         <th
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500   uppercase tracking-wider">
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                             Status</th>
                                         <th
-                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500   uppercase tracking-wider">
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                             Aksi</th>
                                     </tr>
                                 </thead>
-                                <tbody class="bg-white divide-y divide-gray-200    ">
+                                <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700">
                                     @foreach ($karyawan as $row)
                                         <tr>
                                             <td class="px-6 py-4 whitespace-nowrap">{{ $row->nama }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap">{{ $row->no_hp }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap">{{ $row->email }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap">{{ $row->jabatan->jabatan ?? '-'}}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap">{{ $row->status}}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap">{{ $row->jabatan->jabatan ?? '-' }}
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">{{ $row->status }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap flex">
-                                                <button @click="showKaryawan({{ json_encode($row) }})" class="text-blue-600 mr-4"><i
-                                                        class="fa-solid fa-eye"></i></button>
+                                                <button @click="showKaryawan({{ json_encode($row) }})"
+                                                    class="text-blue-600 mr-4"><i class="fa-solid fa-eye"></i></button>
                                                 <a href="{{ route('karyawan.edit', $row->id) }}"
                                                     class="text-yellow-600 mr-4"><i
                                                         class="fa-solid fa-pen-to-square"></i></a>
-                                                <form action="{{ route('karyawan.destroy', $row->id) }}" method="POST">
+                                                <form action="{{ route('karyawan.destroy', $row->id) }}"
+                                                    method="POST">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit"
@@ -90,12 +92,12 @@
                 x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100"
                 x-transition:leave-end="opacity-0  transform translate-y-1/2" @click.away="showModal = false"
                 @keydown.escape="showModal = false"
-                class="w-full px-6 py-4 overflow-hidden bg-white rounded-t-lg   sm:rounded-lg sm:m-4 sm:max-w-xl"
+                class="w-full px-6 py-4 overflow-hidden bg-white rounded-t-lg dark:bg-gray-800 sm:rounded-lg sm:m-4 sm:max-w-xl"
                 role="dialog" id="modal">
                 <!-- Remove header if you don't want a close icon. Use modal body to place modal tile. -->
                 <header class="flex justify-end">
                     <button
-                        class="inline-flex items-center justify-center w-6 h-6 text-gray-400 transition-colors duration-150 rounded   hover: hover:text-gray-700"
+                        class="inline-flex items-center justify-center w-6 h-6 text-gray-400 transition-colors duration-150 rounded dark:hover:text-gray-200 hover: hover:text-gray-700"
                         aria-label="close" @click="showModal = false">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" role="img" aria-hidden="true">
                             <path
@@ -107,7 +109,7 @@
                 <!-- Modal body -->
                 <div class="mt-3 mb-2">
                     <!-- Modal title -->
-                    <p class="mb-3 text-lg font-semibold text-gray-700  ">
+                    <p class="mb-3 text-lg font-semibold text-gray-700 dark:text-gray-300">
                         Data Karyawan
                     </p>
                     <!-- Modal description -->
@@ -157,7 +159,7 @@
                     </table>
                 </div>
                 <footer
-                    class="flex flex-col items-center justify-end px-6 py-3 -mx-6 -mb-4 space-y-4 sm:space-y-0 sm:space-x-6 sm:flex-row bg-gray-50  ">
+                    class="flex flex-col items-center justify-end px-6 py-3 -mx-6 -mb-4 space-y-4 sm:space-y-0 sm:space-x-6 sm:flex-row bg-gray-50 dark:bg-gray-800">
                 </footer>
             </div>
         </div>
@@ -177,11 +179,20 @@
             },
         }))
     })
+
     function formatCurrency(value) {
-        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(value);
+        return new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR'
+        }).format(value);
     }
+
     function formatDate(date) {
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const options = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        };
         return new Date(date).toLocaleDateString('id-ID', options);
     }
 </script>
