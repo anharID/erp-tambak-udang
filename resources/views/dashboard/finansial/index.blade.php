@@ -1,5 +1,5 @@
 @php
-    $param = request()->input('siklus_id');
+$param = request()->input('siklus_id');
 @endphp
 <x-admin>
     <div class="container grid py-12">
@@ -7,27 +7,27 @@
 
             <h1 class="mb-4 font-bold text-xl">Manajemen Finansial</h1>
             @if (!$param)
-                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
-                    <p class="text-sm italic mb-4">Tidak ada data siklus. Untuk memulai siklus
-                        silahkan mulai siklus pada halaman <a href="{{ route('kolam.index') }}" class="underline"
-                            target="_blank">Manajemen Tambak Udang</a>.</p>
-                </div>
+            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
+                <p class="text-sm italic mb-4">Tidak ada data siklus. Untuk memulai siklus
+                    silahkan mulai siklus pada halaman <a href="{{ route('kolam.index') }}" class="underline"
+                        target="_blank">Manajemen Tambak Udang</a>.</p>
+            </div>
             @endif
             <div class="flex items-center mb-4">
                 {{-- <span class="w-24">Pilih Siklus</span> --}}
                 <select
-                class="mr-2 w-60 rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2"
+                    class="mr-2 w-60 rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 shadow-sm px-4 py-2"
                     name="siklus_id" onchange="location = this.value;">
                     <option value="">Pilih Siklus</option>
                     @if ($siklusSaatIni)
-                        <option value="{{ route('finansial.index', ['siklus_id' => $siklusSaatIni->id]) }}"
-                            {{ $param == $siklusSaatIni->id ? 'selected' : '' }}>
-                            Siklus Aktif - {{ $siklusSaatIni->tanggal_mulai }}</option>
+                    <option value="{{ route('finansial.index', ['siklus_id' => $siklusSaatIni->id]) }}" {{
+                        $param==$siklusSaatIni->id ? 'selected' : '' }}>
+                        Siklus Aktif - {{ $siklusSaatIni->tanggal_mulai }}</option>
                     @endif
                     @foreach ($siklusSelesai as $item)
-                        <option value="{{ route('finansial.index', ['siklus_id' => $item->id]) }}"
-                            {{ $param == $item->id ? 'selected' : '' }}>Siklus
-                            {{ $item->tanggal_mulai }}</option>
+                    <option value="{{ route('finansial.index', ['siklus_id' => $item->id]) }}" {{ $param==$item->id ?
+                        'selected' : '' }}>Siklus
+                        {{ $item->tanggal_mulai }}</option>
                     @endforeach
                 </select>
             </div>
@@ -50,7 +50,8 @@
                 {{-- <div class="min-w-0 p-4 bg-blue-300 rounded-lg shadow-sm  ">
                     <p class="text-base mb-2">Saldo Hari Ini</p>
                     <p class="text-xl font-medium">
-                        {{ 'Rp ' . number_format(($totalSaldoAwal + $totalPemasukan - $totalPengeluaran) ?? 0, 2, ',', '.') }}
+                        {{ 'Rp ' . number_format(($totalSaldoAwal + $totalPemasukan - $totalPengeluaran) ?? 0, 2, ',',
+                        '.') }}
                     </p>
                 </div> --}}
                 {{-- <div class="min-w-0 p-4 bg-orange-300 rounded-lg shadow-sm  ">
@@ -94,10 +95,10 @@
             <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg">
                 <div class="w- full p-6 overflow-hidden">
                     @if (session('success'))
-                        <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4" role="alert">
-                            <p class="font-bold">Success</p>
-                            <p>{{ session('success') }}</p>
-                        </div>
+                    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4" role="alert">
+                        <p class="font-bold">Success</p>
+                        <p>{{ session('success') }}</p>
+                    </div>
                     @endif
 
                     <a href="{{ route('finansial.create', ['siklus_id' => $param]) }}"
@@ -137,28 +138,27 @@
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700">
                                 @foreach ($finansialList as $row)
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            {{ Carbon\Carbon::parse($row->tanggal)->format('d-m-o') }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $row->jenis_transaksi }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $row->keterangan }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            {{ 'Rp ' . number_format($row->jumlah, 2, ',', '.') }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $row->catatan }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $row->status }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap flex">
-                                            <a href="{{ route('finansial.edit', $row->id) }}"
-                                                class="text-yellow-600 mr-4"><i
-                                                    class="fa-solid fa-pen-to-square"></i></a>
-                                            <form action="{{ route('finansial.destroy', $row->id) }}" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit"
-                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"
-                                                    class="text-red-600"><i class="fa-solid fa-trash"></i></button>
-                                            </form>
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        {{ Carbon\Carbon::parse($row->tanggal)->format('d-m-o') }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->jenis_transaksi }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->keterangan }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        {{ 'Rp ' . number_format($row->jumlah, 2, ',', '.') }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->catatan }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->status }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap flex">
+                                        <a href="{{ route('finansial.edit', $row->id) }}"
+                                            class="text-yellow-600 mr-4"><i class="fa-solid fa-pen-to-square"></i></a>
+                                        <form action="{{ route('finansial.destroy', $row->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"
+                                                class="text-red-600"><i class="fa-solid fa-trash"></i></button>
+                                        </form>
+                                    </td>
+                                </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -199,7 +199,7 @@
                     Bonus Karyawan
                 </p>
                 <!-- Modal description -->
-                <table class="w-full table-auto mt-4 datatable hover display nowrap">
+                <table class="w-full table-auto mt-4 datatable hover display nowrap ">
                     <thead class="bg-gray-50 dark:bg-gray-800">
                         <tr>
                             <th
@@ -218,17 +218,19 @@
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700">
                         @foreach ($karyawan as $row)
-                            <tr>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ $row->nama }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">{{ $row->jabatan->bonus . '%' }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    {{ 'Rp ' . number_format(($row->jabatan->bonus / 100) * $keuntunganKotor, 2, ',', '.') }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap flex">
-                                    <a href="{{ route('karyawan.edit', $row->id) }}" target="_blank"
-                                        class="text-yellow-600 mr-4"><i class="fa-solid fa-pen-to-square"></i></a>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap dark:text-gray-300">{{ $row->nama }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap dark:text-gray-300">{{ $row->jabatan->bonus . '%' }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap dark:text-gray-300">
+                                {{ 'Rp ' . number_format(($row->jabatan->bonus / 100) * $keuntunganKotor, 2, ',', '.')
+                                }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap flex dark:text-gray-300">
+                                <a href="{{ route('karyawan.edit', $row->id) }}" target="_blank"
+                                    class="text-yellow-600 mr-4"><i class="fa-solid fa-pen-to-square"></i></a>
+                            </td>
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>
@@ -245,4 +247,3 @@
     const chartDataPemasukan = @JSON($pemasukanBulanan);
     const chartDataPengeluaran = @JSON($pengeluaranBulanan);
 </script>
-

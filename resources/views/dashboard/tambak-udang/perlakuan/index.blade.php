@@ -5,7 +5,7 @@
             <div class="flex flex-row items-center mb-4">
                 {{-- Kembali --}}
                 <a href="{{ route('data_kolam', ['kolam' => $kolam->id, 'siklus' => $siklus->id]) }}"
-                    class="mr-2 flex items-center justify-center bg-gray-300 rounded-full w-8 h-8">
+                    class="mr-2 flex items-center justify-center bg-gray-300 dark:bg-slate-500 rounded-full w-8 h-8">
                     <i class="fa-solid fa-arrow-left fa-lg"></i>
                 </a>
                 <h1 class="font-bold text-2xl">Perlakuan pada Udang Kolam {{ $kolam->nama }}</h1>

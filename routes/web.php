@@ -34,7 +34,7 @@ use Illuminate\Support\Facades\Auth;
 |
  */
 
-Auth::routes(['verify' => true]);
+// Auth::routes(['verify' => true]);
 
 Route::redirect('/', '/dashboard');
 

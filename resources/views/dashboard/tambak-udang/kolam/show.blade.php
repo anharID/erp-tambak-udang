@@ -21,7 +21,7 @@ $currentRoute = request()->url();
                     <div class="flex flex-row items-center">
                         {{-- Kembali --}}
                         <a href="{{ route('kolam.index') }}"
-                            class="mr-2 flex items-center justify-center bg-gray-300 rounded-full w-8 h-8">
+                            class="mr-2 flex items-center justify-center bg-gray-300 dark:bg-slate-500 rounded-full w-8 h-8">
                             <i class="fa-solid fa-arrow-left fa-lg"></i>
                         </a>
                         <h1 class="font-bold text-2xl">Kolam {{ $kolam->nama }}</h1>
@@ -65,7 +65,8 @@ $currentRoute = request()->url();
                                 <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                                     <div class="grid-cols-1">
                                         <p class="flex justify-center text-xl font-semibold">{{
-                                            $monitoring->last()->suhu }} <span class="text-sm text-gray-600">
+                                            $monitoring->last()->suhu }} <span
+                                                class="text-sm text-gray-600 dark:text-gray-300">
                                                 &deg;C</span></p>
                                         <p class="flex justify-center">Suhu</p>
                                     </div>
@@ -76,13 +77,15 @@ $currentRoute = request()->url();
                                     </div>
                                     <div class="grid-cols-1">
                                         <p class="flex justify-center text-xl font-semibold">{{
-                                            $monitoring->last()->do }} <span class="text-sm text-gray-600"> mg/L</span>
+                                            $monitoring->last()->do }} <span
+                                                class="text-sm text-gray-600 dark:text-gray-300"> mg/L</span>
                                         </p>
                                         <p class="flex justify-center">DO</p>
                                     </div>
                                     <div class="grid-cols-1">
                                         <p class="flex justify-center text-xl font-semibold">{{
-                                            $monitoring->last()->salinitas }} <span class="text-sm text-gray-600">
+                                            $monitoring->last()->salinitas }} <span
+                                                class="text-sm text-gray-600 dark:text-gray-300">
                                                 ppt</span></p>
                                         <p class="flex justify-center text">Salinitas</p>
                                     </div>
@@ -103,13 +106,15 @@ $currentRoute = request()->url();
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div class="grid-cols-1">
                                         <p class="flex justify-center text-xl font-semibold">{{
-                                            $jumlahPakanTerpakaiHariIni }} <span class="text-sm text-gray-600">
+                                            $jumlahPakanTerpakaiHariIni }} <span
+                                                class="text-sm text-gray-600 dark:text-gray-300">
                                                 Kg</span></p>
                                         <p class="flex justify-center">Pakan terpakai hari ini</p>
                                     </div>
                                     <div class="grid-cols-1">
                                         <p class="flex justify-center text-xl font-semibold">{{
-                                            $pakan->sum('jumlah_kg') }} <span class="text-sm text-gray-600">
+                                            $pakan->sum('jumlah_kg') }} <span
+                                                class="text-sm text-gray-600 dark:text-gray-300">
                                                 Kg</span></p>
                                         <p class="flex justify-center">Pakan terpakai Komulatif</p>
                                     </div>
@@ -129,19 +134,22 @@ $currentRoute = request()->url();
                                 <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                                     <div class="grid-cols-1">
                                         <p class="flex justify-center text-xl font-semibold">{{
-                                            $sampling->last()->adg }} <span class="text-sm text-gray-600">
+                                            $sampling->last()->adg }} <span
+                                                class="text-sm text-gray-600 dark:text-gray-300">
                                                 gr</span></p>
                                         <p class="flex justify-center">ADG</p>
                                     </div>
                                     <div class="grid-cols-1">
                                         <p class="flex justify-center text-xl font-semibold">{{
-                                            $sampling->last()->biomas }} <span class="text-sm text-gray-600">
+                                            $sampling->last()->biomas }} <span
+                                                class="text-sm text-gray-600 dark:text-gray-300">
                                                 Kg</span></p>
                                         <p class="flex justify-center">Biomassa</p>
                                     </div>
                                     <div class="grid-cols-1">
                                         <p class="flex justify-center text-xl font-semibold">{{
-                                            $sampling->last()->sr }} <span class="text-sm text-gray-600">
+                                            $sampling->last()->sr }} <span
+                                                class="text-sm text-gray-600 dark:text-gray-300">
                                                 %</span></p>
                                         <p class="flex justify-center">SR</p>
                                     </div>
@@ -181,13 +189,15 @@ $currentRoute = request()->url();
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div class="grid-cols-1">
                                         <p class="flex justify-center text-xl font-semibold">{{
-                                            $panen->last()->tonase_jumlah }} <span class="text-sm text-gray-600">
+                                            $panen->last()->tonase_jumlah }} <span
+                                                class="text-sm text-gray-600 dark:text-gray-300">
                                                 Kg</span></p>
                                         <p class="flex justify-center">Panen terakhir ({{ $panen->last()->status }})</p>
                                     </div>
                                     <div class="grid-cols-1">
                                         <p class="flex justify-center text-xl font-semibold">{{
-                                            $panen->sum('tonase_jumlah') }} <span class="text-sm text-gray-600">
+                                            $panen->sum('tonase_jumlah') }} <span
+                                                class="text-sm text-gray-600 dark:text-gray-300">
                                                 Kg</span></p>
                                         <p class="flex justify-center">Total tonase panen</p>
                                     </div>
@@ -209,14 +219,16 @@ $currentRoute = request()->url();
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div class="grid-cols-1">
                                         <p class="flex justify-center text-xl font-semibold">{{
-                                            $energi->last()->kwh }} <span class="text-sm text-gray-600">
+                                            $energi->last()->kwh }} <span
+                                                class="text-sm text-gray-600 dark:text-gray-300">
                                                 KWh</span></p>
                                         <p class="flex justify-center">Penggunaan terakhir ({{
                                             $energi->last()->penggunaan->penggunaan }})</p>
                                     </div>
                                     <div class="grid-cols-1">
                                         <p class="flex justify-center text-xl font-semibold">{{
-                                            $energi->sum('kwh') }} <span class="text-sm text-gray-600">
+                                            $energi->sum('kwh') }} <span
+                                                class="text-sm text-gray-600 dark:text-gray-300">
                                                 KWh</span></p>
                                         <p class="flex justify-center">Penggunaan total</p>
                                     </div>
