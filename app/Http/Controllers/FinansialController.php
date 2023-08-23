@@ -37,6 +37,13 @@ class FinansialController extends Controller
         // Ambil siklus selesai
         $siklusSelesai = Siklus::whereNotNull('tanggal_selesai')->orderBy('tanggal_mulai', 'desc')->get();
 
+        if (!$siklusId && $siklusSaatIni) {
+            return redirect()->route('finansial.index', ['siklus_id' => $siklusSaatIni]);
+        }
+        if (!$siklusId && !$siklusSaatIni && ($siklusSelesai->first())) {
+            return redirect()->route('finansial.index', ['siklus_id' => $siklusSelesai->first()->id]);
+        }
+
         // Total Saldo Awal
         $saldoAwal = $finansial->where('jenis_transaksi','Saldo Awal')->get();
         $totalSaldoAwal = 0;
@@ -111,13 +118,6 @@ class FinansialController extends Controller
             'siklusSelesai' => $siklusSelesai
         ];
 
-        if (!$siklusId && $siklusSaatIni) {
-            return redirect()->route('finansial.index', ['siklus_id' => $siklusSaatIni]);
-        }
-        if (!$siklusId && !$siklusSaatIni && ($siklusSelesai->first())) {
-            return redirect()->route('finansial.index', ['siklus_id' => $siklusSelesai->first()->id]);
-        }
-        
         return view("dashboard.finansial.index", $data);
     }
 
