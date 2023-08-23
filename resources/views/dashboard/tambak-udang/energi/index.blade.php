@@ -24,14 +24,14 @@
 
                     @if ($siklusBerjalan)
                     <a href="{{ route('energi.create',  ['kolamId' => $kolam->id,'siklus'=>$siklus->id]) }}"
-                        class="px-4 py-2 mr-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
+                        class="px-4 py-2 inline-block mr-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
                         <i class="fa-solid fa-plus mr-1"></i> Tambah Catatan
                     </a>
                     @endif
 
                     @can('hakSuperadmin')
                     <a href="{{ route('kategori_penggunaan') }}" target="_blank"
-                        class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
+                        class="px-4 py-2 mt-2 inline-block text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
                         <i class="fa-solid fa-plus mr-1"></i> Kategori Penggunaan
                     </a>
                     @endcan

@@ -13,13 +13,15 @@
                         @endif
 
                         <a href="{{ route('inventaris.create') }}"
-                            class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
+                            class="px-4 py-2 mr-4 inline-block text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
                             <i class="fa-solid fa-plus mr-1"></i> Tambah Inventaris
                         </a>
+                        @can('hakSuperadmin')
                         <a href="{{ route('kelola_barang') }}"
-                            class="ml-4 px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
+                            class="px-4 py-2 inline-block text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
                             Kelola Jenis Barang
                         </a>
+                        @endcan
 
                         <div class="w-full overflow-x-auto mt-4">
                             <table class="w-full table-auto mt-4 hover display nowrap datatable">

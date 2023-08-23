@@ -66,12 +66,6 @@
                                             Size</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                             rowspan="2">
-                                            Populasi</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
-                                            rowspan="2">
-                                            ABW</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
-                                            rowspan="2">
                                             Status</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                             rowspan="2">
@@ -110,9 +104,6 @@
                                         <td class="px-6 py-4 whitespace-nowrap">{{ $row->tonase_jumlah }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">{{ $row->size_besar }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">{{ $row->size_kecil }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $row->populasi_terambil }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $row->abw }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">{{ $row->status }}</td>
                                         <div class="hidden">{{ $row->siklus }}</div>
                                         <div class="hidden">{{ $row->kolam }}</div>
