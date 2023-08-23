@@ -13,7 +13,7 @@
                     @endif
                     <form method="POST" action="{{ route('logistik.update', [$inventaris->id, $logistik->id]) }}">
                         @csrf
-
+                        @method('put')
                         <!-- Siklus -->
                         <div class="mt-4">
                             <x-input-label for="siklus_id" :value="__('Siklus')" />
