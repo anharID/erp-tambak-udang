@@ -39,7 +39,7 @@ class DashboardController extends Controller
 
         if ($siklusSaatIni) {
             $doc = Carbon::now()->diffInDays($siklusSaatIni->tanggal_mulai);
-            $finansial = Finansial::where('siklus_id', $siklusSaatIni->id)->get();
+            $finansial = Finansial::get();
         } else {
             $doc = null;
             $finansial = Finansial::get();

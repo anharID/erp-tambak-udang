@@ -74,10 +74,9 @@ class FinansialController extends Controller
         ->sum('jabatan.bonus') / 100) * $keuntunganKotor;
 
         // Total Saldo 
-        $pemasukan0 = $finansial->whereIn('jenis_transaksi', ['Pemasukan', 'Penjualan Udang'])->where('siklus_id', $siklusId-1)->sum('jumlah');
-        $pengeluaran0 = $finansial->whereIn('jenis_transaksi', ['Pengeluaran', 'Gaji Karyawan', 'Bonus Karyawan'])->where('siklus_id', $siklusId-1)->sum('jumlah');
+        $pemasukan0 = $finansial->where('siklus_id', '<', $siklusId)->whereIn('jenis_transaksi', ['Pemasukan', 'Penjualan Udang'])->sum('jumlah');
+        $pengeluaran0 = $finansial->where('siklus_id', '<', $siklusId)->whereIn('jenis_transaksi', ['Pengeluaran', 'Gaji Karyawan', 'Bonus Karyawan'])->sum('jumlah');
         $saldo = $totalSaldoAwal + ($pemasukan0 - $pengeluaran0)+($totalPemasukan - $totalPengeluaran);
-        
 
         // Pemasukan
         $pemasukanBulanan = $pemasukan->groupBy(function ($item) {
