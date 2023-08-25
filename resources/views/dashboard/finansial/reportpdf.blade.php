@@ -155,7 +155,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($finansialList->whereIn('jenis_transaksi', ['Pengeluaran', 'Gaji Karyawan'])->sortBy('tanggal') as $row)
+            @foreach ($finansialList->whereIn('jenis_transaksi', ['Pengeluaran', 'Gaji Karyawan', 'Bonus Karyawan'])->sortBy('tanggal') as $row)
                 <tr>
                     <td>{{ $row->keterangan }}</td>
                     <td>{{ Carbon\Carbon::parse($row->tanggal)->format('j F o') }}</td>
