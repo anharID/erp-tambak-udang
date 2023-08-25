@@ -1,6 +1,5 @@
 <!-- Desktop sidebar -->
-<aside class="z-20 hidden w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0 bg-no-repeat bg-bottom"
-  style="background-image: url({{ asset('img/udang.png') }}); background-size: contain;">
+<aside class="z-20 hidden w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0">
   <div class="py-4 text-gray-500 dark:text-gray-400">
     <a class="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200" href="#">
       CV Riz Samudera
@@ -107,10 +106,8 @@
   x-transition:leave-end="opacity-0"
   class="fixed inset-0 z-10 flex items-end bg-black bg-opacity-50 sm:items-center sm:justify-center"></div>
 
-<aside
-  class="fixed inset-y-0 z-20 flex-shrink-0 w-64 mt-16 overflow-y-auto bg-white dark:bg-gray-800 md:hidden bg-no-repeat bg-bottom"
-  style="background-image: url({{ asset('img/udang.png') }}); background-size: contain;" x-show="isSideMenuOpen"
-  x-transition:enter="transition ease-in-out duration-150"
+<aside class="fixed inset-y-0 z-20 flex-shrink-0 w-64 mt-16 overflow-y-auto bg-white dark:bg-gray-800 md:hidden"
+  x-show="isSideMenuOpen" x-transition:enter="transition ease-in-out duration-150"
   x-transition:enter-start="opacity-0 transform -translate-x-20" x-transition:enter-end="opacity-100"
   x-transition:leave="transition ease-in-out duration-150" x-transition:leave-start="opacity-100"
   x-transition:leave-end="opacity-0 transform -translate-x-20" @keydown.escape="closeSideMenu">
@@ -178,7 +175,7 @@
         <span class="absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
         @endif
         <a class="{{ request()->is('inventaris*') ? 'text-gray-800 dark:text-gray-100' : '' }} inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-          href="buttons.html">
+          href="{{ route('inventaris.index') }}">
           <i class="fa-solid fa-warehouse fa-sm"></i>
           <span class="ml-4">Manajemen Inventaris</span>
         </a>

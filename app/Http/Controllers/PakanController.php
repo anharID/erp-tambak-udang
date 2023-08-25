@@ -101,7 +101,7 @@ class PakanController extends Controller
             'keterangan' => 'stok_keluar',
             'stok_masuk' => null,
             'stok_keluar' => $request->jumlah_kg,
-            'sumber' => 'Gudang Pakan',
+            'sumber' => $inventaris->lokasi,
             'catatan' => 'digunakan pada kolam ' . $kolam->nama,
         ]);
 
@@ -148,7 +148,7 @@ class PakanController extends Controller
         $siklus = $kolam->siklus()->findOrFail($siklusId);
         $pakan = $siklus->pakan()->findOrFail($pakanId);
 
-        $inventaris = Inventaris::where('jenis_barang', 'Pakan')->get();
+        $inventaris = Inventaris::where('jenisbarang_id', 1)->get();
 
         return view('dashboard.tambak-udang.pakan.edit', compact('kolam', 'siklus', 'pakan', 'inventaris'));
     }
@@ -205,7 +205,7 @@ class PakanController extends Controller
                 'keterangan' => 'stok_keluar',
                 'stok_masuk' => null,
                 'stok_keluar' => $request->jumlah_kg,
-                'sumber' => 'Gudang Pakan',
+                'sumber' => $dtInventaris->lokasi,
                 'catatan' => 'digunakan pada kolam ' . $kolam->nama,
             ]);
         } else {

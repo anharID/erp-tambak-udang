@@ -63,9 +63,6 @@
                                         Jumlah (Kg)</th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                        Catatan</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                         Validasi</th>
                                     @if ($siklusBerjalan)
                                     <th
@@ -81,7 +78,6 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->waktu_pemberian }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->no_pakan }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->jumlah_kg }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $row->catatan }}</td>
                                     <div class="hidden">{{ $row->siklus }}</div>
                                     <div class="hidden">{{ $row->kolam }}</div>
                                     <td class="px-6 py-4 whitespace-nowrap">
