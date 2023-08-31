@@ -49,12 +49,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     //Siklus
-    Route::get('/tambah-siklus', [SiklusController::class, 'create'])->middleware('role:superadmin,teknisi')->name('buat_siklus');
-    Route::post('/tambah-siklus/store', [SiklusController::class, 'store'])->middleware('role:superadmin,teknisi')->name('siklus.store');
-    Route::get('/siklus/{siklus}/edit', [SiklusController::class, 'edit'])->middleware('role:superadmin,teknisi')->name('edit_siklus');
-    Route::put('/siklus/{siklus}/update', [SiklusController::class, 'updateSiklus'])->middleware('role:superadmin,teknisi')->name('update_siklus');
-    Route::put('/siklus/{siklus}/tutup-siklus', [SiklusController::class, 'tutupSiklus'])->middleware('role:superadmin,teknisi')->name('tutup_siklus');
-    Route::delete('/siklus/{siklus}/delete', [SiklusController::class, 'destroy'])->middleware('role:superadmin,teknisi')->name('hapus_siklus');
+    Route::get('/tambah-siklus', [SiklusController::class, 'create'])->middleware('role:superadmin,teknisi,direktur')->name('buat_siklus');
+    Route::post('/tambah-siklus/store', [SiklusController::class, 'store'])->middleware('role:superadmin,teknisi,direktur')->name('siklus.store');
+    Route::get('/siklus/{siklus}/edit', [SiklusController::class, 'edit'])->middleware('role:superadmin,teknisi,direktur,direktur')->name('edit_siklus');
+    Route::put('/siklus/{siklus}/update', [SiklusController::class, 'updateSiklus'])->middleware('role:superadmin,teknisi,direktur')->name('update_siklus');
+    Route::put('/siklus/{siklus}/tutup-siklus', [SiklusController::class, 'tutupSiklus'])->middleware('role:superadmin,teknisi,direktur')->name('tutup_siklus');
+    Route::delete('/siklus/{siklus}/delete', [SiklusController::class, 'destroy'])->middleware('role:superadmin,teknisi,direktur')->name('hapus_siklus');
 
     Route::get('/siklus/budidaya/{siklus}/exportpdf', [SiklusController::class, 'export'])->name('exportpdf');
     Route::get('/finansial/{siklus}/exportpdf', [FinansialController::class, 'export'])->name('finansial_exportpdf');

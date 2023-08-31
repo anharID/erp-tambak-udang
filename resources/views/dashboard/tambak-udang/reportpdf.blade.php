@@ -152,7 +152,7 @@
                 <p class="caption">*Nilai SR ideal > 80 %</p>
                 @endif
 
-                @if ($rataFCR >= 1.1 && $rataFCR <= 1.2) <h4>Nilai FCR <span class="text-green">sudah ideal</span></h4>
+                @if ($rataFCR >= 1.1 && $rataFCR <= 1.3) <h4>Nilai FCR <span class="text-green">sudah ideal</span></h4>
                     <p>Dilihat dari rata-rata hasil akhir feed conversion ratio (FCR) yaitu <span class="text-green">{{
                             $rataFCR }}</span> dapat dikatakan
                         sudah ideal.</p>
@@ -163,7 +163,7 @@
                             }}</span> dapat
                         dikatakan
                         tidak ideal.</p>
-                    <p class="caption">*NIlai FCR ideal 1.1 - 1.2</p>
+                    <p class="caption">*NIlai FCR ideal 1.1 - 1.3</p>
                     @endif
                     @if ($rataADG >= 0.2 && $rataADG <= 0.5) <h4>Pertumbuhan udang <span class="text-green">sudah
                             ideal</span></h4>
@@ -271,10 +271,10 @@
                         </td>
                         <td class="{{ isset($data[1]) && ($data[1]->do < 5 || $data[1]->do > 8) ? 'text-red' : '' }}">{{
                             $data[1]->do ?? '-' }}</td>
-                        <td class="{{ ($data[0]->salinitas < 20 || $data[0]->salinitas > 35) ? 'text-red' : '' }}">{{
+                        <td class="{{ ($data[0]->salinitas < 15 || $data[0]->salinitas > 35) ? 'text-red' : '' }}">{{
                             $data[0]->salinitas }}</td>
                         <td
-                            class="{{ isset($data[1]) && ($data[1]->salinitas < 20 || $data[1]->salinitas > 35) ? 'text-red' : '' }}">
+                            class="{{ isset($data[1]) && ($data[1]->salinitas < 15 || $data[1]->salinitas > 35) ? 'text-red' : '' }}">
                             {{ $data[1]->salinitas ?? '-' }}</td>
                     </tr>
                     @endforeach
@@ -286,7 +286,7 @@
                             colspan="2">{{ round($d['monitoringAll']->avg('suhu'), 2) }}</td>
                         <td class="{{ ($d['monitoringAll']->avg('do') < 5 || $d['monitoringAll']->avg('do') > 8) ? 'text-red' : '' }}"
                             colspan="2">{{ round($d['monitoringAll']->avg('do'), 2) }}</td>
-                        <td class="{{ ($d['monitoringAll']->avg('salinitas') < 20 || $d['monitoringAll']->avg('salinitas') > 35) ? 'text-red' : '' }}"
+                        <td class="{{ ($d['monitoringAll']->avg('salinitas') < 15 || $d['monitoringAll']->avg('salinitas') > 35) ? 'text-red' : '' }}"
                             colspan="2">{{ round($d['monitoringAll']->avg('salinitas'), 2) }}</td>
                     </tr>
                 </tbody>

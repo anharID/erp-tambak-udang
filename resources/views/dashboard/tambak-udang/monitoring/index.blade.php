@@ -111,7 +111,7 @@
                                                 method="POST">
                                                 @csrf
                                                 <button type="submit"
-                                                    onclick="return confirm('Aksi ini tidak dapat dibatalkan! Tandai catatan ini sebagai sudah divalidasi? ')"
+                                                    onclick="return confirm('Tandai catatan ini sebagai sudah divalidasi? ')"
                                                     class="text-green-600 mr-4"><i
                                                         class="fa-regular fa-circle-check"></i></button>
                                             </form>
@@ -129,7 +129,7 @@
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit"
-                                                    onclick="return confirm('Aksi ini tidak dapat dibatalkan! Apakah Anda yakin ingin menghapus catatan ini? ')"
+                                                    onclick="return confirm('Apakah Anda yakin ingin menghapus catatan ini? ')"
                                                     class="text-red-600"><i class="fa-solid fa-trash"></i></button>
                                             </form>
                                             @else

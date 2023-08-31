@@ -191,7 +191,7 @@
                 <div class="mt-3 mb-2 overflow-auto h-full">
                     <!-- Modal title -->
                     <p class="mb-3 text-lg font-semibold text-gray-700 dark:text-gray-300">
-                        Data Pakan
+                        Data Panen
                     </p>
                     <!-- Modal description -->
                     <table class="table-fixed w-full border border-gray-200 mb-14">

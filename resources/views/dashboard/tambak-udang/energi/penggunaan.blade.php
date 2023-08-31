@@ -51,7 +51,7 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
-                                                onclick="return confirm('Aksi ini tidak dapat dibatalkan! Aksi ini akan menghapus semua data yang berhubungnan dengan penggunaan {{ $row->penggunaan }}. Apakah Anda yakin ingin menghapus catatan ini?  ')"
+                                                onclick="return confirm('Aksi ini akan menghapus semua data yang berhubungnan dengan penggunaan {{ $row->penggunaan }}. Apakah Anda yakin ingin kategori penggunaan ini?  ')"
                                                 class="text-red-600"><i class="fa-solid fa-trash"></i></button>
                                         </form>
                                     </td>
