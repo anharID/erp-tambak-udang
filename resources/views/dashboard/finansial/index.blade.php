@@ -211,9 +211,11 @@ $param = request()->input('siklus_id');
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                 Nominal</th>
+                            @can('aksesKaryawan')    
                             <th
                                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                 Aksi</th>
+                            @endcan
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700">
@@ -226,10 +228,12 @@ $param = request()->input('siklus_id');
                                 {{ 'Rp ' . number_format(($row->jabatan->bonus / 100) * $keuntunganKotor, 2, ',', '.')
                                 }}
                             </td>
+                            @can('aksesKaryawan')
                             <td class="px-6 py-4 whitespace-nowrap flex dark:text-gray-300">
                                 <a href="{{ route('karyawan.edit', $row->id) }}" target="_blank"
                                     class="text-yellow-600 mr-4"><i class="fa-solid fa-pen-to-square"></i></a>
                             </td>
+                            @endcan
                         </tr>
                         @endforeach
                     </tbody>
