@@ -198,7 +198,7 @@
                             </tr>
                             <tr>
                                 <td class="p-2 font-medium dark:text-gray-300">ABW</td>
-                                <td class="p-2 dark:text-gray-300" x-text="selectedData.abw + 'g'"></td>
+                                <td class="p-2 dark:text-gray-300" x-text="selectedData.abw + ' g'"></td>
                             </tr>
                             <tr>
                                 <td class="p-2 font-medium dark:text-gray-300">ADG</td>
