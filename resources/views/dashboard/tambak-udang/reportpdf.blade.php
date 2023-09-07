@@ -103,6 +103,10 @@
             </tr>
         </table>
 
+        @if ($siklus->tanggal_selesai == null)
+        <p class="caption">*SIklus masih berjalan, data belum bersifat final</p>
+        @endif
+
         {{-- Tabel kolam yang digunakan siklus --}}
         <div>
             <table class="table w-full">
