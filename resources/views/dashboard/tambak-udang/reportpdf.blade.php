@@ -180,7 +180,7 @@
                         <p class="caption">*Nilai ADG ideal 0.2 - 0.5</p>
                         @endif
                         @if (($rataSuhu >26 && $rataSuhu< 32) && ($rataPH>7.5 && $rataPH< 8.5) && ($rataDO>5 && $rataDO<
-                                    8) && ($rataSal>15 && $rataSal< 25) ) <h4>Kualitas air kolam <span
+                                    8) && ($rataSal>10 && $rataSal< 25) ) <h4>Kualitas air kolam <span
                                             class="text-green">sudah
                                             stabil</span></h4>
                                         <p>Kolam yang stabil dapat meningkatkan pertumbuhan dan kelangsungan hidup
@@ -271,10 +271,10 @@
                         </td>
                         <td class="{{ isset($data[1]) && ($data[1]->do < 5 || $data[1]->do > 8) ? 'text-red' : '' }}">{{
                             $data[1]->do ?? '-' }}</td>
-                        <td class="{{ ($data[0]->salinitas < 15 || $data[0]->salinitas > 35) ? 'text-red' : '' }}">{{
+                        <td class="{{ ($data[0]->salinitas < 10 || $data[0]->salinitas > 35) ? 'text-red' : '' }}">{{
                             $data[0]->salinitas }}</td>
                         <td
-                            class="{{ isset($data[1]) && ($data[1]->salinitas < 15 || $data[1]->salinitas > 35) ? 'text-red' : '' }}">
+                            class="{{ isset($data[1]) && ($data[1]->salinitas < 10 || $data[1]->salinitas > 35) ? 'text-red' : '' }}">
                             {{ $data[1]->salinitas ?? '-' }}</td>
                     </tr>
                     @endforeach
@@ -286,12 +286,12 @@
                             colspan="2">{{ round($d['monitoringAll']->avg('suhu'), 2) }}</td>
                         <td class="{{ ($d['monitoringAll']->avg('do') < 5 || $d['monitoringAll']->avg('do') > 8) ? 'text-red' : '' }}"
                             colspan="2">{{ round($d['monitoringAll']->avg('do'), 2) }}</td>
-                        <td class="{{ ($d['monitoringAll']->avg('salinitas') < 15 || $d['monitoringAll']->avg('salinitas') > 35) ? 'text-red' : '' }}"
+                        <td class="{{ ($d['monitoringAll']->avg('salinitas') < 10 || $d['monitoringAll']->avg('salinitas') > 35) ? 'text-red' : '' }}"
                             colspan="2">{{ round($d['monitoringAll']->avg('salinitas'), 2) }}</td>
                     </tr>
                 </tbody>
             </table>
-            <p class="caption">*Parameter ideal : pH 7.5 -8.5; Suhu 26-32 &deg;C; DO 5-8 mg/L; Salinitas 15-25ppt.</p>
+            <p class="caption">*Parameter ideal : pH 7.5 -8.5; Suhu 26-32 &deg;C; DO 5-8 mg/L; Salinitas 10-25ppt.</p>
         </div>
 
         <div>
