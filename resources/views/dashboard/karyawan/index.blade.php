@@ -16,7 +16,7 @@
                             class="px-4 py-2 mr-4 inline-block text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue">
                             <i class="fa-solid fa-plus mr-1"></i> Tambah Karyawan
                         </a>
-                        @can('hakSuperadmin')
+                        @can('aksesKaryawan')
                         <a href="{{ route('jabatan.index') }}"
                             class="px-4 inline-block py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-gray-600 border border-transparent rounded-lg active:bg-gray-600 hover:bg-gray-700 focus:outline-none focus:shadow-outline-gray">
                             Detail Jabatan

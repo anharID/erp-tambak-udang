@@ -52,13 +52,13 @@ class FinansialController extends Controller
         }
         
         // Total Pemasukan
-        $pemasukan = $finansialList->whereIn('jenis_transaksi', ['Pemasukan', 'Penjualan Udang']);
+        $pemasukan = $finansialList->whereIn('jenis_transaksi', ['Pemasukan', 'Penjualan Udang'])->sortBy('tanggal');
         $totalPemasukan = 0;
         foreach ($pemasukan as $row) {
             $totalPemasukan += $row->jumlah;
         }
         // Total Pengeluaran
-        $pengeluaran = $finansialList->whereIn('jenis_transaksi', ['Pengeluaran', 'Gaji Karyawan', 'Bonus Karyawan']);
+        $pengeluaran = $finansialList->whereIn('jenis_transaksi', ['Pengeluaran', 'Gaji Karyawan', 'Bonus Karyawan'])->sortBy('tanggal');
         $totalPengeluaran = 0;
         foreach ($pengeluaran as $row) {
             $totalPengeluaran += $row->jumlah;

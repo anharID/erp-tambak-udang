@@ -98,7 +98,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/users', UserController::class)->middleware('role:superadmin');
 
     Route::resource('/karyawan', KaryawanController::class)->middleware('role:superadmin,admin,direktur');
-    Route::resource('/jabatan', JabatanController::class)->middleware('role:superadmin');
+    Route::resource('/jabatan', JabatanController::class)->middleware('role:superadmin,admin,direktur');
 
     Route::resource('/finansial', FinansialController::class)->middleware('role:superadmin,direktur,manajer keuangan');
 

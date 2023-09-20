@@ -140,7 +140,7 @@ $param = request()->input('siklus_id');
                                 @foreach ($finansialList as $row)
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        {{ Carbon\Carbon::parse($row->tanggal)->format('d-m-o') }}</td>
+                                        {{ $row->tanggal }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->jenis_transaksi }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->keterangan }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
