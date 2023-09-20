@@ -152,7 +152,7 @@ class SiklusController extends Controller
             $sr = round($sr_raw, 2);
 
             if ($pakanData->sum('jumlah_kg') !== 0) {
-                $fcr_raw = $panenData->sum('tonase_jumlah') / $pakanData->sum('jumlah_kg');
+                $fcr_raw =  $pakanData->sum('jumlah_kg') / $panenData->sum('tonase_jumlah');
                 $fcr = round($fcr_raw, 2);
             } else {
                 $fcr = 0;

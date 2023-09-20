@@ -73,7 +73,7 @@ class SamplingController extends Controller
         $pakanKemarin = $siklusSaatIni->pakan()->where('kolam_id', $kolamId)->where('tanggal', $tanggalSebelumSampling)->get();
         $totalPakan = $pakanKemarin->sum('jumlah_kg');
         $pakanKomulatif = $siklusSaatIni->pakan()->where('kolam_id', $kolamId)->where('tanggal', '<', now()->subDay())->sum('jumlah_kg');
-
+        $panen = $siklusSaatIni->panen()->where('kolam_id', $kolamId)->get();
 
         //UMUR
         $tanggalMulai = Carbon::parse($siklusSaatIni->tanggal_mulai);
@@ -107,7 +107,11 @@ class SamplingController extends Controller
         $survivalRate = (($biomassa * $size) / $totalTebar) * 100;
 
         //FCR
-        $fcr = $pakanKomulatif / $biomassa;
+        if ($panen->count() > 0) {
+            $fcr = $pakanKomulatif / ($biomassa + $panen->sum('tonase_jumlah'));
+        } else {
+            $fcr = $pakanKomulatif / $biomassa;
+        }
 
         //Store Data
         $sampling = new Sampling();
@@ -183,7 +187,8 @@ class SamplingController extends Controller
         $pakanKemarin = $siklusSaatIni->pakan()->where('kolam_id', $kolamId)->where('tanggal', $tanggalSebelumSampling)->get();
         $totalPakan = $pakanKemarin->sum('jumlah_kg');
         $pakanKomulatif = $siklusSaatIni->pakan->where('kolam_id', $kolamId)->where('tanggal', '<', now()->subDay())->sum('jumlah_kg');
-
+        $panen = $siklusSaatIni->panen()->where('kolam_id', $kolamId)->get();
+        // dd($panen);
 
         //UMUR
         $tanggalMulai = Carbon::parse($siklusSaatIni->tanggal_mulai);
@@ -194,7 +199,8 @@ class SamplingController extends Controller
         $abw = $validation['berat_sampling'] / $validation['banyak_sampling'];
 
         //ADG
-        $lastSampling = $siklusSaatIni->sampling()->where('id', '<', $samplingId)->latest()->first();
+        $lastSampling = $siklusSaatIni->sampling()->where('kolam_id', $kolamId)->where('id', '<', $samplingId)->latest()->first();
+        // dd($lastSampling);
         if ($lastSampling) {
             $abwSebelumnya = $lastSampling->abw;
             $adg = ($abw - $abwSebelumnya) / 7;
@@ -216,7 +222,12 @@ class SamplingController extends Controller
         $survivalRate = (($biomassa * $size) / $totalTebar) * 100;
 
         //FCR
-        $fcr = $pakanKomulatif / $biomassa;
+        if ($panen->count() > 0) {
+            $fcr = $pakanKomulatif / ($biomassa + $panen->sum('tonase_jumlah'));
+        } else {
+            $fcr = $pakanKomulatif / $biomassa;
+        }
+
 
         //Update Data
         $sampling->update([
