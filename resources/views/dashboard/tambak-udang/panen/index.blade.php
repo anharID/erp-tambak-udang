@@ -59,22 +59,22 @@
                                         <th style="text-align:center;"
                                             class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                             colspan="3">
-                                            Tonase</th>
+                                            Tonase (kg)</th>
                                         <th style="text-align:center;"
                                             class="px-6 py-3 text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                             colspan="2">
-                                            Size</th>
+                                            Size (ekor/kg)</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                             rowspan="2">
-                                            Status</th>
+                                            Status Panen</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                             rowspan="2">
                                             Validasi</th>
-                                        @if ($siklusBerjalan)
+                                        {{-- @if ($siklusBerjalan) --}}
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
                                             rowspan="2">
                                             Aksi</th>
-                                        @endif
+                                        {{-- @endif --}}
                                     </tr>
                                     <tr>
                                         <th
@@ -111,8 +111,10 @@
                                             {{ $row->is_validated == 0 ? 'Belum' : 'Sudah' }}
                                         </td>
 
-                                        @if ($siklusBerjalan)
                                         <td class="px-6 py-4 whitespace-nowrap flex">
+                                            <button @click="showModalData({{ json_encode($row) }})"
+                                                class="text-blue-600 mr-4"><i class="fa-solid fa-eye"></i></button>
+                                            @if ($siklusBerjalan)
                                             @can('hakTeknisi')
                                             @if ($row->is_validated == 0)
                                             <form
@@ -127,8 +129,7 @@
                                             @endif
                                             @endcan
                                             @if ($row->is_validated == 0 || auth()->user()->role === 'superadmin')
-                                            <button @click="showModalData({{ json_encode($row) }})"
-                                                class="text-blue-600 mr-4"><i class="fa-solid fa-eye"></i></button>
+
                                             <a href="{{ route('panen.edit', ['kolamId' => $kolam->id, 'siklus' => $siklus->id, 'panen' => $row->id]) }}"
                                                 class="text-yellow-600 mr-4"><i
                                                     class="fa-solid fa-pen-to-square"></i></a>
@@ -144,8 +145,8 @@
                                             @else
                                             -
                                             @endif
+                                            @endif
                                         </td>
-                                        @endif
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -227,11 +228,11 @@
                             </tr>
                             <tr>
                                 <td class="p-2 font-medium dark:text-gray-300">Size Besar</td>
-                                <td class="p-2 dark:text-gray-300" x-text="selectedData.size_besar"></td>
+                                <td class="p-2 dark:text-gray-300" x-text="selectedData.size_besar + ' ekor/kg'"></td>
                             </tr>
                             <tr>
                                 <td class="p-2 font-medium dark:text-gray-300">Size Kecil</td>
-                                <td class="p-2 dark:text-gray-300" x-text="selectedData.size_kecil"></td>
+                                <td class="p-2 dark:text-gray-300" x-text="selectedData.size_kecil + ' ekor/kg'"></td>
                             </tr>
                             <tr>
                                 <td class="p-2 font-medium dark:text-gray-300">Populasi</td>
@@ -239,15 +240,15 @@
                             </tr>
                             <tr>
                                 <td class="p-2 font-medium dark:text-gray-300">ABW</td>
-                                <td class="p-2 dark:text-gray-300" x-text="selectedData.abw"></td>
+                                <td class="p-2 dark:text-gray-300" x-text="selectedData.abw + ' gram'"></td>
                             </tr>
                             <tr>
-                                <td class="p-2 font-medium dark:text-gray-300">Status</td>
+                                <td class="p-2 font-medium dark:text-gray-300">Status Panen</td>
                                 <td class="p-2 dark:text-gray-300" x-text="selectedData.status"></td>
                             </tr>
                             <tr>
                                 <td class="p-2 font-medium dark:text-gray-300">Validasi</td>
-                                <td class="py-2 dark:text-gray-300"
+                                <td class="p-2 dark:text-gray-300"
                                     x-text="selectedData.is_validated ? 'Sudah' : 'Belum'"></td>
                             </tr>
                             <tr>

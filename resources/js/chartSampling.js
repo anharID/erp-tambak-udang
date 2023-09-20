@@ -7,7 +7,7 @@ const selectChart = document.getElementById("selectChart");
 let chart
 
 const makeChart = (prop = 'abw', label = 'ABW') => {
-  return chart =  new Chart(ctx, {
+    return chart = new Chart(ctx, {
         type: "line",
         data: {
             datasets: [
@@ -29,10 +29,32 @@ const makeChart = (prop = 'abw', label = 'ABW') => {
             scales: {
                 y: {
                     beginAtZero: true,
-                    // title: { display: true, text: "seconds" },
+                    title: {
+                        display: true,
+                        text: label,
+                        color: "#000",
+                        font: {
+                            size: 14,
+                            weight: "normal",
+                            family: "Figtree",
+                        },
+                    },
+                },
+                x: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: "Tanggal",
+                        color: "#000",
+                        font: {
+                            size: 14,
+                            weight: "normal",
+                            family: "Figtree",
+                        },
+                    },
                 },
             },
-    
+
             maintainAspectRatio: false,
             plugins: {
                 title: {
@@ -52,7 +74,7 @@ const makeChart = (prop = 'abw', label = 'ABW') => {
             },
         },
     });
-    
+
 }
 
 makeChart()
@@ -61,7 +83,7 @@ selectChart.addEventListener("change", (e) => {
     const selectedOption = e.target.options[e.target.selectedIndex];
     const label = selectedOption.getAttribute("chartLabel");
     const prop = e.target.value;
-    if (chart){
+    if (chart) {
         chart.destroy()
     }
     makeChart(prop, label)

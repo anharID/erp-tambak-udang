@@ -43,11 +43,11 @@
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                         Validasi</th>
-                                    @if ($siklusBerjalan)
+                                    {{-- @if ($siklusBerjalan) --}}
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                         Aksi</th>
-                                    @endif
+                                    {{-- @endif --}}
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700">
@@ -58,8 +58,8 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $row->is_validated == 0 ? 'Belum' :
                                         'Sudah' }}</td>
 
-                                    @if ($siklusBerjalan)
                                     <td class="px-6 py-4 whitespace-nowrap flex">
+                                        @if ($siklusBerjalan)
                                         @can('hakTeknisi')
                                         @if ($row->is_validated == 0)
                                         <form
@@ -88,8 +88,10 @@
                                         @else
                                         -
                                         @endif
+                                        @else
+                                        -
+                                        @endif
                                     </td>
-                                    @endif
                                 </tr>
                                 @endforeach
                             </tbody>

@@ -41,7 +41,29 @@ const makeChart = (prop = 'suhu', label = 'Suhu') => {
             scales: {
                 y: {
                     beginAtZero: true,
-                    // title: { display: true, text: "seconds" },
+                    title: {
+                        display: true,
+                        text: label,
+                        color: "#000",
+                        font: {
+                            size: 14,
+                            weight: "normal",
+                            family: "Figtree",
+                        },
+                    },
+                },
+                x: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: "Tanggal",
+                        color: "#000",
+                        font: {
+                            size: 14,
+                            weight: "normal",
+                            family: "Figtree",
+                        },
+                    },
                 },
             },
 

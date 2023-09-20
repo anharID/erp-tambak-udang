@@ -63,24 +63,24 @@
                                             Tanggal</th>
                                         <th
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                            Umur</th>
+                                            Umur (Hari)</th>
                                         <th
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                            ABW</th>
+                                            ABW (gram)</th>
                                         <th
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                            ADG</th>
+                                            ADG (gram/hari)</th>
                                         <th
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                            Biomassa</th>
+                                            Biomassa (kg)</th>
                                         <th
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                             Validasi</th>
-                                        @if ($siklusBerjalan)
+                                        {{-- @if ($siklusBerjalan) --}}
                                         <th
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                             Aksi</th>
-                                        @endif
+                                        {{-- @endif --}}
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-900 dark:divide-gray-700">
@@ -97,8 +97,10 @@
                                             {{ $row->is_validated == 0 ? 'Belum' : 'Sudah' }}
                                         </td>
 
-                                        @if ($siklusBerjalan)
                                         <td class="px-6 py-4 whitespace-nowrap flex">
+                                            <button @click="showModalData({{ json_encode($row) }})"
+                                                class="text-blue-600 mr-4"><i class="fa-solid fa-eye"></i></button>
+                                            @if ($siklusBerjalan)
                                             @can('hakTeknisi')
                                             @if ($row->is_validated == 0)
                                             <form
@@ -113,8 +115,6 @@
                                             @endif
                                             @endcan
                                             @if ($row->is_validated == 0 || auth()->user()->role === 'superadmin')
-                                            <button @click="showModalData({{ json_encode($row) }})"
-                                                class="text-blue-600 mr-4"><i class="fa-solid fa-eye"></i></button>
                                             <a href="{{ route('sampling.edit', ['kolamId' => $kolam->id, 'siklus' => $siklus->id, 'sampling' => $row->id]) }}"
                                                 class="text-yellow-600 mr-4"><i
                                                     class="fa-solid fa-pen-to-square"></i></a>
@@ -130,8 +130,8 @@
                                             @else
                                             -
                                             @endif
+                                            @endif
                                         </td>
-                                        @endif
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -194,15 +194,15 @@
                             </tr>
                             <tr>
                                 <td class="p-2 font-medium dark:text-gray-300">Umur</td>
-                                <td class="p-2 dark:text-gray-300" x-text="selectedData.umur"></td>
+                                <td class="p-2 dark:text-gray-300" x-text="selectedData.umur + ' hari'"></td>
                             </tr>
                             <tr>
                                 <td class="p-2 font-medium dark:text-gray-300">ABW</td>
-                                <td class="p-2 dark:text-gray-300" x-text="selectedData.abw + ' g'"></td>
+                                <td class="p-2 dark:text-gray-300" x-text="selectedData.abw + ' gram'"></td>
                             </tr>
                             <tr>
                                 <td class="p-2 font-medium dark:text-gray-300">ADG</td>
-                                <td class="p-2 dark:text-gray-300" x-text="selectedData.adg + ' g/hari'"></td>
+                                <td class="p-2 dark:text-gray-300" x-text="selectedData.adg + ' gram/hari'"></td>
                             </tr>
                             <tr>
                                 <td class="p-2 font-medium dark:text-gray-300">Size</td>
@@ -226,7 +226,7 @@
                             </tr>
                             <tr>
                                 <td class="p-2 font-medium dark:text-gray-300">Validasi</td>
-                                <td class="py-2 dark:text-gray-300"
+                                <td class="p-2 dark:text-gray-300"
                                     x-text="selectedData.is_validated ? 'Sudah' : 'Belum'"></td>
                             </tr>
                             <tr>
